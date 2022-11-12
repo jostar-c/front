@@ -9,9 +9,8 @@
       </div>
       <div class="user">
         <router-link to="personalpage">
-          <!-- 注意！！！记得改为从后端调取的头像图片信息！！！！！！！！！ -->
           <img
-            src="../../static/user.png"
+            src="../../static/userimg.png"
             href="#"
             width="15px"
             height="auto"

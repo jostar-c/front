@@ -8,16 +8,17 @@
         </a>
       </div>
       <div class="user">
-        <!-- 注意！！！登录与未登录跳转目标页面不同，记得改为判断全局变量islogin后进行不同跳转！！！！！！！！！ -->
-        <router-link to="login">
-          <!-- 注意！！！注册与个人中心图标不同，记得改为判断全局变量islogin后改变不同地址！！！！！！！！！ -->
-          <img
-            src="../../static/user.png"
-            href="#"
-            width="15px"
-            height="auto"
-          />
-        </router-link>
+        <img
+          :src="
+            islogin == 0
+              ? require('../../static/user.png')
+              : require('../../static/userimg.png')
+          "
+          href="#"
+          width="15px"
+          height="auto"
+          @click="goTopersonalpage()"
+        />
       </div>
     </div>
     <!-- top部分end -->
@@ -56,24 +57,20 @@
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
           <li>
-            <!-- 注意！！！登录与未登录跳转目标页面不同，记得改为判断全局变量islogin后进行不同跳转！！！！！！！！！ -->
-            <router-link to="comments"><b>校友留言</b></router-link>
+            <a @click="goTocomments()"><b>校友留言</b></a>
           </li>
           <li>
-            <!-- 注意！！！登录与未登录跳转目标页面不同，记得改为判断全局变量islogin后进行不同跳转！！！！！！！！！ -->
-            <router-link to="schoolphoto"><b>校园风光</b></router-link>
+            <a @click="goToschoolphoto()"><b>校园风光</b></a>
           </li>
           <li>
-            <!-- 注意！！！登录与未登录跳转目标页面不同，记得改为判断全局变量islogin后进行不同跳转！！！！！！！！！ -->
-            <router-link to="groupphoto"><b>虚拟合影</b></router-link>
+            <a @click="goTogroupphoto()"><b>虚拟合影</b></a>
           </li>
         </ul>
       </div>
       <!-- 搜索模块 -->
       <div class="search">
         <input type="text" value="输入您要搜索的专业、毕业年份、班级" />
-        <!-- 注意！！！登录与未登录跳转目标页面不同，记得改为判断全局变量islogin后进行不同跳转！！！！！！！！！ -->
-        <router-link to="class_search"><button></button></router-link>
+        <button @click="goToclass_search()"></button>
       </div>
     </div>
     <!-- 头部区域end-->
@@ -106,6 +103,35 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
+export default {
+  data() {
+    return {
+      islogin: this.global.islogin,
+    };
+  },
+  methods: {
+    goTopersonalpage() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/personalpage");
+    },
+    goToclass_search() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/class_search");
+    },
+    goTocomments() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/comments");
+    },
+    goToschoolphoto() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/schoolphoto");
+    },
+    goTogroupphoto() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/groupphoto");
+    },
+  },
+};
 </script>
 
 <style>

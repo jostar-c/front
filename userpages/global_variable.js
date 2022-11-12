@@ -1,5 +1,5 @@
 const baseURL = 'www.baidu.com'
-const islogin = 0
+const islogin = 1
 
 export default {
   baseURL,
