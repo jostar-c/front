@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="building">
     <!-- 1.top部分start -->
     <div class="top">
       <div class="fzulink">
@@ -76,7 +76,29 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <div>bigevent</div>
+    <div class="topic">
+      <p>学院动态</p>
+      <div class="line" />
+    </div>
+    <div class="showevents">
+      <ul>
+        <li v-for="eventdata in eventdatas" :key="eventdata.id">
+          <a :href="eventdata.eventurl" target="_blank">
+            {{ eventdata.title }}
+          </a>
+          <span>{{ eventdata.time }}</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="block" style="text-align: center; margin: 2%">
+      <el-pagination
+        layout="prev, pager, next"
+        :total="sumevents"
+        @current-change="getPageNum"
+      >
+      </el-pagination>
+    </div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -107,6 +129,59 @@ export default {
   data() {
     return {
       islogin: this.global.islogin,
+      sumevents: 500,
+      eventdatas: [
+        {
+          title: "1",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "2",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "3",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "4",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "5",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "6",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "7",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "8",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "9",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+        {
+          title: "10",
+          eventurl: this.global.baseURL,
+          time: "2022 - 11 - 11",
+        },
+      ],
     };
   },
   methods: {
@@ -130,6 +205,15 @@ export default {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/groupphoto");
     },
+    getPageNum(val) {
+      // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
+      console.log(val);
+    },
+  },
+  created() {
+    console.log(
+      "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
+    );
   },
 };
 </script>
@@ -230,6 +314,7 @@ body {
   height: 42px;
   /* 此处会层叠w里面的margin */
   margin: 30px auto;
+  width: 100%;
 }
 
 /* search 搜索模块 */
@@ -268,7 +353,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: 0;
+  bottom: -40px;
   width: 100%;
 }
 
@@ -277,5 +362,53 @@ body {
   color: #666;
   text-align: center;
   padding-top: 5px;
+}
+.building {
+  background: url("../../static/6_bigevent/topimg.png");
+  width: 100%;
+  min-height: 900px;
+  /* position: fixed; */
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+}
+.topic {
+  margin-top: 18%;
+}
+.topic p {
+  display: block;
+  height: 70px;
+  margin-left: 10%;
+  font-size: 24px;
+  color: #a40404;
+}
+/* 横线 */
+.line {
+  height: 2px;
+  margin-top: -2%;
+  margin-left: 8%;
+  margin-right: 8%;
+  background: #d4c4c4;
+  position: relative;
+}
+
+.showevents {
+  margin-left: 15%;
+  margin-right: 15%;
+}
+.showevents ul li {
+  margin-top: 2%;
+  display: block;
+  font-size: 18px;
+  color: #a40404;
+}
+.showevents ul li a {
+  margin-left: 0;
+}
+.showevents ul li span {
+  float: right;
 }
 </style>
