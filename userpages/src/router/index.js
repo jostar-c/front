@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 //import HelloWorld from '@/components/HelloWorld'
 import homepage from '../../pages/1_homepage/homepage.vue'
+import map from '../../pages/1_homepage/map.vue'
 import login from '../../pages/2_login/login.vue'
 import register from '../../pages/3_register/register.vue'
 import personalpage from '../../pages/4_personalpage/personalpage.vue'
@@ -25,6 +26,11 @@ export default new Router({
       path: '/',
       name: 'homepage',
       component: homepage
+    },
+    {
+      path: '/map',
+      name: 'map',
+      component: map
     },
     {
       path: '/login',

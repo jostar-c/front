@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="building">
     <!-- 1.top部分start -->
     <div class="top">
       <div class="fzulink">
@@ -76,12 +76,72 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <div>
-      homepage
-      <router-link to="map">
-        <button>map</button>
-      </router-link>
+    <div class="map">
+      <!-- <img src="../../static/1_homepage/map.png" /> -->
+
+      <el-button
+        @click="
+          addid = 1;
+          dialogFormVisible = true;
+        "
+        style="
+          background-color: unset;
+          border: none;
+          height: 6%;
+          width: 4%;
+          margin-left: 61%;
+          margin-top: 16%;
+        "
+      ></el-button>
+
+      <el-button
+        @click="
+          addid = 0;
+          dialogFormVisible = true;
+        "
+        style="
+          background-color: unset;
+          border: none;
+          height: 11%;
+          width: 9%;
+          margin-top: 21%;
+          margin-left: -2.5%;
+        "
+      ></el-button>
+
+      <el-button
+        @click="
+          addid = 2;
+          dialogFormVisible = true;
+        "
+        style="
+          background-color: unset;
+          border: none;
+          height: 7%;
+          width: 7%;
+          margin-top: 42%;
+          margin-left: -1%;
+        "
+      ></el-button>
+
+      <!-- 查看照片时候的弹出层 -->
+      <el-dialog
+        :title="events[addid].address"
+        :visible.sync="dialogFormVisible"
+        width="50%"
+        top="10%"
+        center
+      >
+        <div style="width: 100%; text-align: center">
+          <img
+            :src="events[addid].img"
+            style="display: inline-block; height: auto; max-width: 100%"
+          />
+          <p style="color: brown">活动：{{ events[addid].event }}</p>
+        </div>
+      </el-dialog>
     </div>
+    <div><b class="download" @click="download()">下载电子地图</b></div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -94,8 +154,8 @@
     </div>
   </div>
 </template>
-
-<script>
+  
+  <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -111,7 +171,26 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
+      addid: 0,
       islogin: this.global.islogin,
+      dialogFormVisible: false, //弹出层默认为关闭
+      events: [
+        {
+          address: "图书馆",
+          img: "../../static/1_homepage/fuyouge.png",
+          event: "暂无",
+        },
+        {
+          address: "中楼",
+          img: "../../static/1_homepage/fuyouge.png",
+          event: "暂无",
+        },
+        {
+          address: "福友阁",
+          img: "../../static/1_homepage/fuyouge.png",
+          event: "演唱会",
+        },
+      ],
     };
   },
   methods: {
@@ -135,11 +214,24 @@ export default {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/groupphoto");
     },
+    download() {
+      //创建一个a标签
+      var alink = document.createElement("a");
+      //设置href指向
+      alink.href = "../../static/1_homepage/map.png";
+      //设置图片下载名字
+      alink.download = "map.png";
+      //点击a标签
+      alink.click();
+    },
+  },
+  created() {
+    console.log("向后端请求各地点的活动存入events");
   },
 };
 </script>
-
-<style>
+  
+  <style>
 * {
   margin: 0;
   padding: 0;
@@ -235,6 +327,7 @@ body {
   height: 42px;
   /* 此处会层叠w里面的margin */
   margin: 30px auto;
+  width: 100%;
 }
 
 /* search 搜索模块 */
@@ -282,5 +375,37 @@ body {
   color: #666;
   text-align: center;
   padding-top: 5px;
+}
+
+.building {
+  background: url("../../static/1_homepage/topimg.png");
+  width: 100%;
+  min-height: 900px;
+  /* position: fixed; */
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+}
+
+.map {
+  margin-top: 11%;
+  background: url("../../static/1_homepage/map.png");
+  width: 90%;
+  margin-left: 5%;
+  height: 1100px;
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  display: flex;
+}
+
+.download {
+  margin-top: -10%;
+  margin-right: 15%;
+  float: right;
+  font-size: 24px;
+  color: #a40404;
 }
 </style>
