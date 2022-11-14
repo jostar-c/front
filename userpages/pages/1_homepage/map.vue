@@ -124,6 +124,36 @@
         "
       ></el-button>
 
+      <el-button
+        @click="
+          addid = 3;
+          dialogFormVisible = true;
+        "
+        style="
+          background-color: unset;
+          border: none;
+          height: 7%;
+          width: 6%;
+          margin-top: 16%;
+          margin-left: -5%;
+        "
+      ></el-button>
+
+      <el-button
+        @click="
+          addid = 4;
+          dialogFormVisible = true;
+        "
+        style="
+          background-color: unset;
+          border: none;
+          height: 6%;
+          width: 8%;
+          margin-top: 11%;
+          margin-left: -1%;
+        "
+      ></el-button>
+
       <!-- 查看照片时候的弹出层 -->
       <el-dialog
         :title="events[addid].address"
@@ -177,7 +207,7 @@ export default {
       events: [
         {
           address: "图书馆",
-          img: "../../static/1_homepage/fuyouge.png",
+          img: "../../static/1_homepage/tushuguan.jpg",
           event: "暂无",
         },
         {
@@ -189,6 +219,16 @@ export default {
           address: "福友阁",
           img: "../../static/1_homepage/fuyouge.png",
           event: "演唱会",
+        },
+        {
+          address: "东三",
+          img: "../../static/1_homepage/dongsan.jpg",
+          event: "暂无",
+        },
+        {
+          address: "文楼",
+          img: "../../static/1_homepage/wenlou.jpg",
+          event: "暂无",
         },
       ],
     };
