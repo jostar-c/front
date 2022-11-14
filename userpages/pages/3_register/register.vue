@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height: 100%">
     <!-- 1.top部分start -->
     <div class="top">
       <div class="fzulink">
@@ -14,18 +14,18 @@
     <div class="banner">
       <!-- logo部分 -->
       <div class="logo">
-        <img src="../../static/logo.png" width="80px" height="auto" />
+        <img src="../../static/logo.png" width="80px" height="auto"/>
       </div>
 
       <div class="fzu">
-        <img src="../../static/fzu.png" alt="" width="170px" height="auto" />
-        <img src="../../static/line.png" alt="" width="auto" height="80px" />
+        <img src="../../static/fzu.png" alt="" width="170px" height="auto"/>
+        <img src="../../static/line.png" alt="" width="auto" height="80px"/>
       </div>
 
       <div>
         <p>
           福州大学计算机与大数据学院40周年
-          <br />
+          <br/>
           /软件学院20周年庆
         </p>
       </div>
@@ -33,27 +33,121 @@
     <!-- banner部分end -->
 
     <!-- 功能主题 -->
-    <div>register</div>
+
+    <div class="container">
+      <div class="box">
+        <h2>注册</h2>
+        <div style="text-align: center;">
+          <span style="color: red;">{{ err }}</span>
+        </div>
+        <form>
+          <div class="inputBox">
+            <input type="text" name="" required="" v-model="username">
+            <label>账号</label>
+          </div>
+          <div class="inputBox">
+            <input type="password" name="" required="" v-model="nickname">
+            <label>昵称</label>
+          </div>
+          <div class="inputBox">
+            <input type="password" name="" required="" v-model="password">
+            <label>密码</label>
+          </div>
+          <div class="inputBox">
+            <input type="password" name="" required="" v-model="gyear">
+            <label>毕业年份</label>
+          </div>
+          <div class="inputBox">
+            <input type="password" name="" required="" v-model="profession">
+            <label>专业</label>
+          </div>
+          <div class="inputBox">
+            <input type="password" name="" required="" v-model="classe">
+            <label>班级</label>
+          </div>
+          <div class="submit">
+            <!--  @click.prevent="btn"-->
+            <input type="submit" value="注册" @click.prevent="login"/>
+          </div>
+        </form>
+      </div>
+    </div>
+
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
       <p>
         学院地址：福州市闽侯县学园路2号福州大学计算机与大数据学院/软件学院
-        <br />
+        <br/>
         版权声明：© 2022 栋感光波. 版权所有. 保留所有权利
       </p>
       <!-- footer 底部制作区域end -->
     </div>
   </div>
+
 </template>
-            
-  <script>
+
+
+<script>
+export default {
+  name: "Login",
+  data() {
+    return {
+      userName: '',
+      petname: '',
+      password: '',
+      gyear: '',
+      profession: '',
+      classe: '',
+      err: '',
+    }
+  },
+  methods: {
+    login() {
+      http({
+        method: 'post',
+        url: 'toRegister',
+        params: {
+          username: this.username,
+          nickname: this.nickname,
+          password: this.password,
+          gyear: this.gyear,
+          profession: this.profession,
+          classe: this.classe
+        }
+      }).then(res => {
+        if (res.data.code === 200) {
+          window.localStorage.setItem("userName", this.userName)
+          this.$router.replace('/all')
+        } else {
+          this.err = "";
+          this.$router.replace("/")
+          this.err = this.err.concat("账号已存在")
+        }
+      }).catch(err => {
+        console.log("error")
+      })
+    }
+  },
+}
+
 </script>
-            
-            <style>
+
+<style>
+
 * {
   margin: 0;
   padding: 0;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);
 }
 
 .logo {
@@ -67,17 +161,20 @@
   margin-left: 5px;
   margin-top: 12px;
 }
+
 /* top 区域 */
 .top {
   height: 24px;
   background-color: #9c5757;
 }
+
 .top a {
   margin-left: 5px;
   margin-top: 0;
   font-size: 14px;
   color: #fff;
 }
+
 .user {
   float: right;
   margin-top: -17px;
@@ -90,6 +187,7 @@
   height: 100px;
   background-color: #a40404;
 }
+
 .banner p {
   float: left;
   color: rgb(249, 233, 233);
@@ -97,6 +195,7 @@
   padding-left: 10px;
   padding-top: 17px;
 }
+
 .nav {
   float: left;
   margin-left: 60px;
@@ -138,25 +237,7 @@ a {
 }
 
 body {
-  height: 900px;
   position: relative;
-}
-
-.header {
-  height: 42px;
-  /* 此处会层叠w里面的margin */
-  margin: 30px auto;
-}
-
-/* search 搜索模块 */
-
-.search {
-  margin-top: -18px;
-  float: left;
-  width: 412px;
-  height: 35px;
-  background-color: rgb(235, 135, 135);
-  margin-left: 60px;
 }
 
 .search input {
@@ -186,4 +267,79 @@ body {
   text-align: center;
   padding-top: 5px;
 }
+
+
+.box {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  padding: 40px;
+  background: rgba(163, 162, 162, 0.5);
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(234, 233, 233, 0.5);
+  border-radius: 10px;
+  /*登录窗口边角圆滑*/
+}
+
+.box h2 {
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+}
+
+.box .inputBox {
+  position: relative;
+}
+
+.box .inputBox input {
+  width: 100%;
+  padding: 10px 0;
+  font-side: 16px;
+  color: #fff;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  /*输入框设置*/
+  border: none;
+  border-bottom: 1px solid #fff;
+  outline: none;
+  background: transparent;
+}
+
+.box .inputBox label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #fff;
+  pointer-events: none;
+  transition: .5s;
+}
+
+.box .inputBox input:focus ~ label,
+.box .inputBox input:valid ~ label {
+  top: -18px;
+  left: 0;
+  color: #03a9f4;
+  font-size: 12px;
+}
+
+.box input[type="submit"] {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #f4032f;
+  padding: 10px 35px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.submit {
+  text-align: center;
+}
+
 </style>

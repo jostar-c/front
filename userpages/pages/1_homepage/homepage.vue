@@ -379,7 +379,7 @@ body {
   padding-bottom: 30px;
 }
 .yqzb-module {
-  width: 90%;
+  width: 70%;
   margin: 0 auto;
 }
 .yqzb-title {
