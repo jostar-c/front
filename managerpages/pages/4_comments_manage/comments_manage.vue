@@ -138,7 +138,7 @@
     </el-dialog>
   </div>
 </template>
-      
+
       <script>
 export default {
   methods: {
@@ -250,7 +250,7 @@ export default {
   },
 };
 </script>
-      
+
 <style>
 .c-title {
   border-bottom: 2px solid #b1b1b1;

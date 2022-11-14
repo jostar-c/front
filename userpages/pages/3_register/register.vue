@@ -42,11 +42,11 @@
         </div>
         <form>
           <div class="inputBox">
-            <input type="text" name="" required="" v-model="username">
+            <input type="text" name="" required="" v-model="uname">
             <label>账号</label>
           </div>
           <div class="inputBox">
-            <input type="password" name="" required="" v-model="nickname">
+            <input type="text" name="" required="" v-model="nickname">
             <label>昵称</label>
           </div>
           <div class="inputBox">
@@ -54,15 +54,15 @@
             <label>密码</label>
           </div>
           <div class="inputBox">
-            <input type="password" name="" required="" v-model="gyear">
+            <input type="text" name="" required="" v-model="yearOfGraduate">
             <label>毕业年份</label>
           </div>
           <div class="inputBox">
-            <input type="password" name="" required="" v-model="profession">
+            <input type="text" name="" required="" v-model="umajor">
             <label>专业</label>
           </div>
           <div class="inputBox">
-            <input type="password" name="" required="" v-model="classe">
+            <input type="text" name="" required="" v-model="uclass">
             <label>班级</label>
           </div>
           <div class="submit">
@@ -90,34 +90,34 @@
 
 <script>
 export default {
-  name: "Login",
+  name: "Register",
   data() {
     return {
-      userName: '',
-      petname: '',
+      uname: '',
+      nickname: '',
       password: '',
-      gyear: '',
-      profession: '',
-      classe: '',
+      yearOfGraduate: '',
+      umajor: '',
+      uclass: '',
       err: '',
     }
   },
   methods: {
-    login() {
+    register() {
       http({
         method: 'post',
-        url: 'toRegister',
+        url: 'http://localhost:8081/user/register',
         params: {
-          username: this.username,
+          uname: this.uname,
           nickname: this.nickname,
           password: this.password,
-          gyear: this.gyear,
-          profession: this.profession,
-          classe: this.classe
+          yearOfGraduate: this.yearOfGraduate,
+          umajor: this.umajor,
+          uclass: this.uclass
         }
       }).then(res => {
         if (res.data.code === 200) {
-          window.localStorage.setItem("userName", this.userName)
+          window.localStorage.setItem("uname", this.uname)
           this.$router.replace('/all')
         } else {
           this.err = "";
