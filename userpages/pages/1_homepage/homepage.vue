@@ -76,11 +76,75 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <div>
-      homepage
-      <router-link to="map">
-        <button>map</button>
-      </router-link>
+    <div class="content-container">
+      <div class="yqzb-module">
+        <div class="yqzb-title">院庆直播</div>
+        <div class="yqzb-content">
+          <video
+            playsinline=""
+            controls=""
+            disablepictureinpicture=""
+            controlslist="nodownload"
+            jm_neat="1007234049"
+          >
+            <source src="https://cdn.modao.cc/Default_video.mp4" />
+            Video element is not supported in this browser.
+          </video>
+
+          <div class="flex" style="margin-top: 30px">
+            <div class="c-left">
+              <div class="xyly-module">
+                <div class="m-title">校友留言</div>
+                <div
+                  class="flex flex-ac comment-item"
+                  v-for="item in commentList"
+                  :key="item.id"
+                >
+                  <img
+                    width="24"
+                    src="../../static/1_homepage/user-avatar.jpg"
+                    alt=""
+                  />
+                  <div class="flex-g1">{{ item.title }}</div>
+                  <img
+                    width="24"
+                    src="../../static/1_homepage/like-icon.jpg"
+                    alt=""
+                  />
+                  <img
+                    width="24"
+                    src="../../static/1_homepage/comment-icon.jpg"
+                    alt=""
+                  />
+                </div>
+              </div>
+
+              <div class="lxwm-module">
+                <div class="m-title">联系我们</div>
+                <div class="lxwm-module-content">
+                  <div>12345678</div>
+                  <div>12345678</div>
+                  <div>12345678@qq.com</div>
+                </div>
+              </div>
+            </div>
+            <div class="c-right">
+              <div class="m-title">福大地图</div>
+              <div>
+                <img @click="$router.push('/map')" src="../../static/1_homepage/map.png" alt="">
+              </div>
+              <div class="flex flex-ac">
+                <div class="flex-g1"></div>
+                <div>下载纸质地图</div>
+                <img class="link-icon" width="24" src="../../static/1_homepage/rjt.jpg" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      <div class="bottom">
+        <img src="../../static/1_homepage/bottom.jpg" alt="">
+      </div>
+      </div>
     </div>
 
     <!-- footer 底部制作区域start -->
@@ -112,6 +176,32 @@ export default {
   data() {
     return {
       islogin: this.global.islogin,
+      commentList: [
+        {
+          id: 1,
+          title: "母校变化之大...",
+        },
+        {
+          id: 2,
+          title: "母校变化之大...",
+        },
+        {
+          id: 3,
+          title: "母校变化之大...",
+        },
+        {
+          id: 4,
+          title: "母校变化之大...",
+        },
+        {
+          id: 5,
+          title: "母校变化之大...",
+        },
+        {
+          id: 6,
+          title: "母校变化之大...",
+        },
+      ],
     };
   },
   methods: {
@@ -272,7 +362,7 @@ body {
 .footer {
   height: 40px;
   background-color: #bfbfbf;
-  position: absolute;
+  /* position: fixed; */
   bottom: 0;
   width: 100%;
 }
@@ -282,5 +372,89 @@ body {
   color: #666;
   text-align: center;
   padding-top: 5px;
+}
+.content-container {
+  background: url(../../static/1_homepage/topimg.jpeg) center 0 no-repeat;
+  background-size: 100% auto;
+  padding-bottom: 30px;
+}
+.yqzb-module {
+  width: 70%;
+  margin: 0 auto;
+}
+.yqzb-title {
+  color: #fff;
+  font-size: 18px;
+  line-height: 44px;
+  text-indent: 2em;
+  background: rgba(194, 3, 3, 0.72);
+}
+.yqzb-content {
+  padding: 20px 50px;
+  background: #fff;
+  border: 1px solid rgb(187, 187, 187);
+}
+.yqzb-content video {
+  display: block;
+  width: 100%;
+}
+.flex {
+  display: flex;
+}
+
+.flex-ac {
+  align-items: center;
+}
+.flex-g1 {
+  flex: 1;
+  flex-grow: 1;
+}
+.flex-je {
+  justify-content: flex-end;
+}
+.comment-item {
+  padding: 15px 0;
+  border-bottom: 2px solid #b1b1b1;
+  font-size: 18px;
+}
+.xyly-module {
+  width: 500px;
+}
+.m-title {
+  font-family: SourceHanSansSC;
+  font-size: 24px;
+  color: #fff;
+  line-height: 44px;
+  text-indent: 1em;
+  background: rgba(194, 3, 3, 0.72);
+}
+.lxwm-module{
+  margin-top:30px;
+}
+.lxwm-module-content {
+  padding-top:20px;
+  line-height: 40px;
+  font-size: 18px;
+  color: rgba(16, 16, 16, 0.6);
+}
+.c-right{
+  margin-left:100px;
+}
+.c-right .m-title{
+  max-width:400px;
+}
+.c-right  img{
+  width:100%;
+  cursor:pointer;
+}
+.bottom{
+  margin-top:30px;
+}
+.bottom img{
+  width:100%;
+  height:200px;
+}
+.link-icon{
+  width:24px !important;
 }
 </style>

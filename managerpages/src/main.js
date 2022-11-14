@@ -8,7 +8,7 @@ import globalfunc from '../global_func'
 import ElementUI from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css'
-
+import './assets/common.css'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
