@@ -99,11 +99,23 @@
                   size="small"
                   >查看评论</el-button
                 >
-                <el-button type="text" size="small">删除</el-button>
+                <el-button
+                  type="text"
+                  size="small"
+                  @click="deleteClick(scope.row)"
+                  >删除</el-button
+                >
               </template>
             </el-table-column>
           </el-table>
-          <el-pagination background layout="prev, pager, next" :total="1000">
+          <el-pagination
+            :page-size="8"
+            background
+            layout="prev, pager, next"
+            :total="tablenum"
+            style="text-align: center; margin-top: 3%"
+            @current-change="getPageNum"
+          >
           </el-pagination>
         </div>
       </div>
@@ -119,12 +131,12 @@
           <div class="flex-g1">
             <div class="flex flex-ac">
               <img width="24" src="../../static/user-avatar.jpg" alt="" />
-              <div class="comment-title">{{ item.title }}</div>
+              <div class="comment-title">{{ item.name }}</div>
             </div>
             <div class="comment-text">{{ item.text }}</div>
           </div>
           <div>
-            <div class="comment-time">1小时前</div>
+            <div class="comment-time">{{ item.date }}</div>
             <el-button @click="delComment(item.id)" type="text">删除</el-button>
           </div>
         </div>
@@ -143,17 +155,35 @@
 export default {
   methods: {
     handleClick(row) {
-      console.log(row);
+      // 改为向后端传送查看第几条留言和当前页数，后端返回目标留言对应的评论赋给commentData进行渲染更新
+      console.log(row.id);
+      console.log(this.currentpage);
       this.dialogVisible = true;
     },
+    deleteClick(row) {
+      // 改为向后端传送删除第几条留言和当前页数，后端返回目标留言删除后的当前页面8条留言赋给tableData进行渲染更新
+      console.log(row.id);
+      console.log(this.currentpage);
+    },
     delComment(id) {
+      // 改为向后端传送删除第几条评论，后端返回目标页剩余的留言赋给commentData进行渲染更新
       console.log(id);
     },
+    getPageNum(val) {
+      // 改为向后端传送目标页数后后端返回目标页对应的8条留言赋给tableData进行渲染更新
+      this.currentpage = val;
+      console.log(this.currentpage);
+    },
+  },
+  created() {
+    console.log("向后端请求前8条留言信息存入tableData");
   },
 
   data() {
     return {
       dialogVisible: false,
+      tablenum: 500,
+      currentpage: 1,
       tableData: [
         {
           id: 1,
@@ -203,18 +233,6 @@ export default {
           name: "王小虎",
           text: "母校变化有具体的信息",
         },
-        {
-          id: 9,
-          date: "2016-05-02",
-          name: "王小虎",
-          text: "母校变化有具体的信息",
-        },
-        {
-          id: 10,
-          date: "2016-05-02",
-          name: "王小虎",
-          text: "母校变化有具体的信息",
-        },
       ],
       commentData: [
         {
@@ -222,28 +240,24 @@ export default {
           date: "2016-05-02",
           name: "王小虎",
           text: "母校变化有具体的信息",
-          title: "母校变化有具体的信息",
         },
         {
           id: 2,
           date: "2016-05-02",
           name: "王小虎",
           text: "母校变化有具体的信息",
-          title: "母校变化有具体的信息",
         },
         {
           id: 3,
           date: "2016-05-02",
           name: "王小虎",
           text: "母校变化有具体的信息",
-          title: "母校变化有具体的信息",
         },
         {
           id: 4,
           date: "2016-05-02",
           name: "王小虎",
           text: "母校变化有具体的信息",
-          title: "母校变化有具体的信息",
         },
       ],
     };
@@ -273,7 +287,7 @@ export default {
 .comment-time {
   color: #999;
 }
-.el-dialog{
+.el-dialog {
   border-radius: 20px;
 }
 </style>
