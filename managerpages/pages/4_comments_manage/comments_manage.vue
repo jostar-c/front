@@ -83,7 +83,7 @@
               align="center"
             >
             </el-table-column>
-            <el-table-column prop="text" label=" 留言"> </el-table-column>
+            <el-table-column prop="text" label=" 留言" align="center"> </el-table-column>
             <el-table-column
               prop="date"
               label="时间"
