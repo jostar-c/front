@@ -33,7 +33,69 @@
     <!-- banner部分end -->
 
     <!-- 功能主题 -->
-    <div>class_search</div>
+    <!-- 搜索模块 -->
+    <div class="container">
+      <div class="block">
+        <el-date-picker
+          v-model="value_g"
+          type="year"
+          placeholder="请选择年级"
+          format="yyyy 届"
+          value-format="yyyy"
+          style="margin-top: 3%"
+        >
+        </el-date-picker>
+        <el-select
+          v-model="value_s"
+          placeholder="请选择专业"
+          style="margin-top: 3%"
+        >
+          <el-option
+            v-for="item in subject"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
+        </el-select>
+        <el-select
+          v-model="value_c"
+          placeholder="请选择班级"
+          style="margin-top: 3%"
+        >
+          <el-option
+            v-for="item in classno"
+            :key="item"
+            :label="item"
+            :value="item"
+          >
+          </el-option>
+        </el-select>
+        <span @click="searchclass()">
+          <img
+            src="../../static/5_class_search/button.png"
+            alt=""
+            class="search"
+          />
+        </span>
+      </div>
+    </div>
+
+    <div style="margin-top: 4%">
+      <span style="color: red; margin-left: 6%">搜索结果</span>
+      <el-divider></el-divider>
+    </div>
+
+    <div
+      v-if="showclass && value[0] != '' && value[1] != '' && value[2] != ''"
+      width="50%"
+      top="10%"
+    >
+      <i class="dotClass"></i>
+      <span style="margin-left: 2%; color: red" @click="openclass()">
+        {{ value[0] }}届{{ value[1] }}{{ value[2] }}
+      </span>
+    </div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -60,9 +122,40 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
+export default {
+  data() {
+    return {
+      value: [],
+      showclass: false,
+      subject: ["计算机类", "软件工程", "大数据", "信息安全", "人工智能"],
+      classno: ["1班", "2班", "3班", "4班", "5班", "6班", "7班", "8班", "9班"],
+      value_g: "",
+      value_s: "",
+      value_c: "",
+    };
+  },
+  methods: {
+    searchclass() {
+      this.value[0] = this.value_g;
+      this.value[1] = this.value_s;
+      this.value[2] = this.value_c;
+      this.showclass = false;
+      this.showclass = true;
+      console.log(this.value);
+    },
+    openclass() {
+      this.$router.push({
+        path: "/inclass",
+        query: {
+          value: this.value,
+        },
+      });
+    },
+  },
+};
 </script>
         
-        <style>
+<style>
 * {
   margin: 0;
   padding: 0;
@@ -163,31 +256,8 @@ body {
 /* search 搜索模块 */
 
 .search {
-  margin-top: -18px;
-  float: left;
-  width: 412px;
-  height: 35px;
-  background-color: rgb(235, 135, 135);
-  margin-left: 60px;
-}
-
-.search input {
-  float: left;
-  width: 345px;
-  height: 35px;
-  border: 1px solid #a40404;
-  border-right: 0;
-  color: #bfbfbf;
-  font-size: 14px;
-  padding-left: 15px;
-}
-
-.search button {
-  float: left;
-  width: 50px;
-  height: 38px;
-  border: 0;
-  background: url(../../static/button.png);
+  width: 18px;
+  height: 18px;
 }
 
 /* footer 模块 */
@@ -205,5 +275,14 @@ body {
   color: #666;
   text-align: center;
   padding-top: 5px;
+}
+
+.dotClass {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 90px;
+  background-color: red;
+  display: inline-block;
 }
 </style>

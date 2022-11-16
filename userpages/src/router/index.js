@@ -7,6 +7,7 @@ import login from '../../pages/2_login/login.vue'
 import register from '../../pages/3_register/register.vue'
 import personalpage from '../../pages/4_personalpage/personalpage.vue'
 import class_search from '../../pages/5_class_search/class_search.vue'
+import inclass from '../../pages/5_class_search/inclass.vue'
 import bigevent from '../../pages/6_bigevent/bigevent.vue'
 import comments from '../../pages/7_comments/comments.vue'
 import schoolphoto from '../../pages/8_schoolphoto/schoolphoto.vue'
@@ -51,6 +52,11 @@ export default new Router({
       path: '/class_search',
       name: 'class_search',
       component: class_search
+    },
+    {
+      path: '/inclass',
+      name: 'inclass',
+      component: inclass
     },
     {
       path: '/bigevent',
