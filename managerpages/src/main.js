@@ -22,3 +22,10 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+//引入 echarts
+import echarts from 'echarts'
+Vue.prototype.$echarts = echarts
+
+import VCharts from 'v-charts'
+Vue.use(VCharts) 

@@ -1,3 +1,5 @@
+
+
 <template>
   <div>
     <!-- 1.top部分start -->
@@ -43,32 +45,48 @@
   </div>
 
     <div class="message">
-      <div class="nicheng">
-        <p>昵称:  浪花朵朵</p>
-      </div>
-      <br />
-      <div class="youxiang">
-        <p>邮箱:  70980546@qq.com</p>
-      </div>
-      <br />
-      <div class="biyenianfen">
-        <p>毕业年份: 2002</p>
-      </div>
-      <br />
-      <div class="zhuanye">
-        <p>专业: 计算机科学与技术</p> 
-      </div>
-      <br />
-      <div class="banji">
-        <p>班级: 01班</p>
-      </div>
+        <!-- <p>账号</p> -->
+        
+        <form action="#">
+            <span>昵称</span>
+            <input type="search" placeholder="请输入您的昵称" name="search" class="input">
+        </form>
+        <form action="#">
+            <span>邮箱/手机号码</span>
+            <input type="search" placeholder="请输入您的联系方式" name="search" class="input">
+        </form>
+        <form action="#">
+            <span>毕业年份</span>
+            <input type="search" placeholder="请输入您的毕业年份" name="search" class="input">
+        </form>
+        <form action="#">
+            <span>专业</span>
+            <input type="search" placeholder="请输入您的专业" name="search" class="input">
+        </form>
+        <form action="#">
+            <span>班级</span>
+            <input type="search" placeholder="请输入您的班级" name="search" class="input">
+        </form>
 
-      <div >
-        <router-link to="messageupdate">
-                    <button>编辑资料</button>
-        </router-link>
-      </div>
+        <div >
+          
+  <el-button
+    plain
+    @click="open4">
+    提 交
+  </el-button>
+        </div>
     </div>
+
+  <el-upload
+  class="avatar-uploader"
+  action="https://jsonplaceholder.typicode.com/posts/"
+  :show-file-list="false"
+  :on-success="handleAvatarSuccess"
+  :before-upload="beforeAvatarUpload">
+  <img v-if="imageUrl" :src="imageUrl" class="avatar">
+  <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+</el-upload>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -83,6 +101,38 @@
 </template>
           
 <script>
+  export default {
+    data() {
+      return {
+        imageUrl: '',
+        text: '',
+        textarea: ''
+      };
+    },
+    methods: {
+      open4() {
+        this.$notify.error({
+          title: '错误',
+          message: '您填写的信息有误'
+        });
+      },
+      handleAvatarSuccess(res, file) {
+        this.imageUrl = URL.createObjectURL(file.raw);
+      },
+      beforeAvatarUpload(file) {
+        const isJPG = file.type === 'image/jpeg';
+        const isLt2M = file.size / 1024 / 1024 < 2;
+
+        if (!isJPG) {
+          this.$message.error('上传头像图片只能是 JPG 格式!');
+        }
+        if (!isLt2M) {
+          this.$message.error('上传头像图片大小不能超过 2MB!');
+        }
+        return isJPG && isLt2M;
+      }
+    }
+  }
 </script>
           
           <style>
@@ -90,6 +140,34 @@
   margin: 0;
   padding: 0;
 }
+
+.avatar-uploader .el-upload {
+    margin-top: 70px;
+    margin-left: 149px;
+    width: 100px;
+    height: 100px;
+    border: 1px dashed #686363;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #393837;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
 
 .logo {
   float: left;
@@ -211,9 +289,6 @@ body{
     /* font-family: sans-serif; */
     background-image: url(../../static/personalpage-bg.jpg);
     background-repeat: no-repeat;
-    /* background-size: contain; */
-    /* 溢出隐藏 */
-    /* overflow: hidden; */
      background-size: cover;
   } 
 
@@ -256,26 +331,37 @@ body{
   text-align: center;
 }
 
-.message p{
-  margin-top: 10px;
-  padding-top: 23px;
+.message span{
   font-size: 20px;
-  text-align: center;
 }
+.input{
+    display: table-cell;
+    width: 400px;
+    height: 30px;
+    border-radius: 20px;
+    border: none;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 50px;
+  }
+  
+  .input:placeholder-shown {
+    font-size: 16px;
+  }
 
 .message button{
-    margin-top: 30px;
-    width: 120px;
-    height: 40px;
-    border: none;
-    border-radius: 30px 30px 30px 30px;
-    background-color: #ffffff;
-    color: #a40404;
-    letter-spacing: 1px;
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 70px;
-}
+      margin-top: 20px; 
+      width: 120px;
+      height: 40px;
+      border: none;
+      border-radius: 30px 30px 30px 30px;
+      background-color: #ffffff;
+      color: #a40404;
+      letter-spacing: 1px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 70px;
+  }
 
 /* footer 模块 */
 

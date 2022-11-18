@@ -22,3 +22,6 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+
+import VueCropper from 'vue-cropper';
+Vue.use(VueCropper);
