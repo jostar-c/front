@@ -143,6 +143,38 @@
         </div>
       </div>
     </div>
+    <el-button type="text" @click="dialogFormVisible = true">封禁</el-button>
+
+    <el-dialog title="" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <el-form-item label="封禁原因" :label-width="formLabelWidth">
+          <el-input v-model="form.name" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="封禁时长" :label-width="formLabelWidth">
+          <el-select v-model="form.region" placeholder="请选择活动区域">
+            <el-option label="7天" value="seven"></el-option>
+            <el-option label="一个月" value="thirty"></el-option>
+            <el-option label="永久" value="forever"></el-option>
+          </el-select>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
+    <el-dialog title="" :visible.sync="dialogVisible">
+      <div style="display: flex;align-items: center;justify-content: center;flex-direction: column">
+          <span style="font-size: 25px;margin-bottom: 10px">解封原因 ： {{banData.reason}}</span>
+          <div style="font-size: 25px;margin-right:75px "><span style="">解封时长 ： </span><span>{{banData.duration}}</span></div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
   </div>
 </template>
 
@@ -152,10 +184,12 @@ export default {
     banClick(id) {
       // 改为向后端传送封禁第几个用户，后端返回封禁后的用户信息赋给tableData进行渲染更新
       console.log(id);
+      this.dialogFormVisible = true;
     },
     unlockClick(id) {
       // 改为向后端传送解封第几个用户，后端返回解封后的用户信息赋给tableData进行渲染更新
       console.log(id);
+      this.dialogVisible = true;
     },
   },
   created() {
@@ -165,6 +199,7 @@ export default {
   data() {
     return {
       dialogVisible: false,
+      dialogFormVisible: false,
       tablenum: 500,
       currentpage: 1,
       tableData: [
@@ -241,7 +276,22 @@ export default {
           state: "正常",
         },
       ],
-
+      banData:
+        {
+          reason: "发表不良信息",
+          duration: "一个月",
+        },
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      formLabelWidth: '80px'
     };
   },
 };
