@@ -266,7 +266,21 @@ export default {
     },
   },
   created() {
-    console.log("向后端请求各地点的活动存入events");
+    var _this = this;
+    this.$axios
+      .get("http://192.168.31.77:8080/test/user_show")
+      .then(function (response) {
+        //具体操作
+        console.log(response.data);
+        for (var i = 0; i < 5; i++)
+          for (var j = 0; j < 5; j++)
+            if (response.data[i].address == _this.events[j].address) {
+              _this.events[j].event = response.data[i].activity_name;
+            }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
 };
 </script>

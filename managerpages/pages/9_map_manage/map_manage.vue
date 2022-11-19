@@ -187,16 +187,38 @@ export default {
         });
     },
     change(id) {
-      console.log(
-        "将id对应的活动更改传给后端" +
-          id +
-          this.events[id].address +
-          this.events[id].event
-      );
+      this.$axios
+        .post("http://10.133.11.124:8080/test/update", {
+          address: this.events[id].address,
+          activity_name: this.events[id].event,
+        })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log("post失败");
+          console.log(err);
+        });
+
+      console.log(id + this.events[id].address + this.events[id].event);
     },
   },
   created() {
-    console.log("向后端请求各地点的活动存入events");
+    var _this = this;
+    this.$axios
+      .get("http://10.133.11.124:8080/test/user_show")
+      .then(function (response) {
+        //具体操作
+        console.log(response.data);
+        for (var i = 0; i < 5; i++)
+          for (var j = 0; j < 5; j++)
+            if (response.data[i].address == _this.events[j].address) {
+              _this.events[j].event = response.data[i].activity_name;
+            }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   },
 };
 </script>

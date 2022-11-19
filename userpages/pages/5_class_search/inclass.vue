@@ -172,6 +172,7 @@
 </template>
           
   <script>
+// const axios = require("axios");
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -188,6 +189,11 @@ export default {
   data() {
     return {
       value: [],
+      // classvalue: {
+      //   umajor: this.value[1],
+      //   grade: this.value[0],
+      //   uclass: this.value[2],
+      // },
       isinclass: false,
       joinclassVisible: false,
       formLabelWidth: "120px",
@@ -450,6 +456,26 @@ export default {
   created() {
     this.getquery();
     // 改为向后端传送value（年级，专业，班级）与用户账户后后端返回该班级的班级信息（用户是否加入班级与同学信息，包括头像学号姓名）
+    // var that = this;
+    // axios.get("地址").then(function (resp) {
+    //   that.XXX变量 = resp.data;
+    // });
+    this.$axios
+      .post("http://192.168.43.207:8081/user/classSelect/classUserList", {
+        params: {
+          umajor: this.value[1],
+          grade: this.value[0],
+          uclass: this.value[2],
+        },
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch((err) => {
+        console.log("post失败");
+        console.log(err);
+      });
+
     this.sum = 20;
     for (i = 0; i < this.sum; i++) {
       this.smessage[i].imglink = "../../static/userimg.png";
