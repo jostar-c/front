@@ -9,8 +9,9 @@
       </div>
       <div class="user">
         <router-link to="personalpage">
+          <!-- 注意！！！记得改为从后端调取的头像图片信息！！！！！！！！！ -->
           <img
-            src="../../static/userimg.png"
+            src="../../static/user.png"
             href="#"
             width="15px"
             height="auto"
@@ -73,7 +74,28 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <div>groupphoto</div>
+    <div class="select">
+      <p>请选择您想使用的照片模板</p>
+      </div>
+
+      <div class="temp">
+        <div class="temp1">
+          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+        </div>
+
+        <div class="temp2">
+          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+        </div>
+
+        <div class="temp3">
+          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+        </div>
+
+        <div class="temp4">
+          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+        </div>
+        
+      </div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -230,6 +252,51 @@ body {
   background: url(../../static/button.png);
 }
 
+
+.select {
+  height: 40px;
+  margin-top: -44px;
+  background-color: #a40404;
+}
+
+.select p{
+  text-align: center;
+  font-size: 20px;
+  padding-top: 5px;
+  color:#fff
+}
+
+.temp{
+  float: left;
+  margin-top: 70px;
+  margin-left: 70px;
+  margin-right: 70px;
+}
+
+.temp1{
+  float: left;
+ 
+  margin-left: 140px;
+}
+
+.temp2{
+  float: left;
+ 
+  margin-left: 140px;
+}
+
+.temp3{
+  float: left;
+  margin-top: 30px;
+  margin-left: 140px;
+}
+
+.temp4{
+  float: left;
+  margin-top: 30px;
+  margin-left: 140px;
+}
+
 /* footer 模块 */
 
 .footer {
@@ -246,4 +313,6 @@ body {
   text-align: center;
   padding-top: 5px;
 }
+
+
 </style>

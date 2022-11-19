@@ -53,7 +53,7 @@
           </li>
           <li>
             <router-link to="map_manage"
-              >地图活动信息更新 <span>&gt;</span></router-link
+              >地图活动信息更新<span>&gt;</span></router-link
             >
           </li>
           <li>

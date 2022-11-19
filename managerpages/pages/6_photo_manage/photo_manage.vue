@@ -38,7 +38,7 @@
           </li>
           <li>
             <router-link to="photo_manage"
-              >上传图片审核 <span>&gt;</span></router-link
+              >上传图片审核<span>&gt;</span></router-link
             >
           </li>
           <!-- <li>

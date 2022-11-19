@@ -33,7 +33,7 @@
           </li>
           <li>
             <router-link to="comments_manage"
-              >留言评论审核 <span>&gt;</span></router-link
+              >留言评论审核<span>&gt;</span></router-link
             >
           </li>
           <li>
@@ -83,7 +83,8 @@
               align="center"
             >
             </el-table-column>
-            <el-table-column prop="text" label=" 留言" align="center"> </el-table-column>
+            <el-table-column prop="text" label=" 留言" align="center">
+            </el-table-column>
             <el-table-column
               prop="date"
               label="时间"

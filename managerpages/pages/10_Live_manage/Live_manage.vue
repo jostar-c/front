@@ -58,7 +58,7 @@
           </li>
           <li>
             <router-link to="Live_manage"
-              >直播跳转链接管理 <span>&gt;</span></router-link
+              >直播跳转链接管理<span>&gt;</span></router-link
             >
           </li>
         </ul>

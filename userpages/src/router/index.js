@@ -13,6 +13,9 @@ import comments from '../../pages/7_comments/comments.vue'
 import schoolphoto from '../../pages/8_schoolphoto/schoolphoto.vue'
 import groupphoto from '../../pages/9_groupphoto/groupphoto.vue'
 import recruit from '../../pages/10_recruit/recruit.vue'
+import messageupdate from '../../pages/4_personalpage/messageupdate.vue'
+import selectposition from '../../pages/9_groupphoto/selectposition.vue'
+import show from '../../pages/9_groupphoto/show.vue'
 
 Vue.use(Router)
 
@@ -84,6 +87,22 @@ export default new Router({
       path: '/recruit',
       name: 'recruit',
       component: recruit
+    },
+    {
+      path: '/messageupdate',
+      name: 'messageupdate',
+      component: messageupdate
+    },
+    {
+      path: '/selectposition',
+      name: 'selectposition',
+      component: selectposition
+    }
+    ,
+    {
+      path: '/show',
+      name: 'show',
+      component: show
     }
   ]
 })
