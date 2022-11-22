@@ -131,19 +131,28 @@
             <div class="c-right">
               <div class="m-title">福大地图</div>
               <div>
-                <img @click="$router.push('/map')" src="../../static/1_homepage/map.png" alt="">
+                <img
+                  @click="$router.push('/map')"
+                  src="../../static/1_homepage/map.png"
+                  alt=""
+                />
               </div>
               <div class="flex flex-ac">
                 <div class="flex-g1"></div>
                 <div>下载纸质地图</div>
-                <img class="link-icon" width="24" src="../../static/1_homepage/rjt.jpg" alt="">
+                <img
+                  class="link-icon"
+                  width="24"
+                  src="../../static/1_homepage/rjt.jpg"
+                  alt=""
+                />
               </div>
             </div>
           </div>
         </div>
-      <div class="bottom">
-        <img src="../../static/1_homepage/bottom.jpg" alt="">
-      </div>
+        <div class="bottom">
+          <img src="../../static/1_homepage/bottom.jpg" alt="" />
+        </div>
       </div>
     </div>
 
@@ -175,7 +184,7 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      islogin: this.global.islogin,
+      islogin: Boolean(sessionStorage.getItem("islogin")),
       commentList: [
         {
           id: 1,
@@ -225,6 +234,12 @@ export default {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/groupphoto");
     },
+  },
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
   },
 };
 </script>
@@ -428,33 +443,33 @@ body {
   text-indent: 1em;
   background: rgba(194, 3, 3, 0.72);
 }
-.lxwm-module{
-  margin-top:30px;
+.lxwm-module {
+  margin-top: 30px;
 }
 .lxwm-module-content {
-  padding-top:20px;
+  padding-top: 20px;
   line-height: 40px;
   font-size: 18px;
   color: rgba(16, 16, 16, 0.6);
 }
-.c-right{
-  margin-left:100px;
+.c-right {
+  margin-left: 100px;
 }
-.c-right .m-title{
-  max-width:400px;
+.c-right .m-title {
+  max-width: 400px;
 }
-.c-right  img{
-  width:100%;
-  cursor:pointer;
+.c-right img {
+  width: 100%;
+  cursor: pointer;
 }
-.bottom{
-  margin-top:30px;
+.bottom {
+  margin-top: 30px;
 }
-.bottom img{
-  width:100%;
-  height:200px;
+.bottom img {
+  width: 100%;
+  height: 200px;
 }
-.link-icon{
-  width:24px !important;
+.link-icon {
+  width: 24px !important;
 }
 </style>

@@ -202,7 +202,7 @@ export default {
   data() {
     return {
       addid: 0,
-      islogin: this.global.islogin,
+      islogin: Boolean(sessionStorage.getItem("islogin")),
       dialogFormVisible: false, //弹出层默认为关闭
       events: [
         {
@@ -266,6 +266,10 @@ export default {
     },
   },
   created() {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
     var _this = this;
     this.$axios
       .get("http://192.168.31.77:8080/test/user_show")

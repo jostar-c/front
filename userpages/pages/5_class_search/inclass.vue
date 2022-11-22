@@ -171,7 +171,7 @@
   </div>
 </template>
           
-  <script>
+  <script >
 // const axios = require("axios");
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
@@ -433,42 +433,64 @@ export default {
     },
 
     joinclass() {
-      this.isinclass = true;
+      this.isinclass = true; ////////////////////////////////////////////////////////////////////
       // 改为向后端传送用户信息，包括头像学号姓名，并加入smessage
-      this.smessage[this.sum].imglink = "../../static/userimg.png";
-      this.smessage[this.sum].sname = this.uname;
-      this.smessage[this.sum].sno = this.usno;
-      console.log(this.smessage[this.sum]);
-      this.sum++;
+      this.$axios
+        .post("http://192.168.43.207:8081/user/classSelect/classUserList", {
+          umajor: this.value[1],
+          grade: this.value[0],
+          uclass: this.value[2],
+          uid: sessionStorage.getItem("uid"),
+          sno: this.usno,
+          realname: this.uname,
+        })
+        .then((response) => {
+          this.smessage[this.sum].imglink = sessionStorage.getItem("userimg");
+          this.smessage[this.sum].sname = this.uname;
+          this.smessage[this.sum].sno = this.usno;
+          console.log(this.smessage[this.sum]);
+          this.sum++;
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log("post失败");
+          console.log(err);
+        });
     },
 
     showclassmate(i) {
       // 改为向后端传送this.smessage[i].sno,请求该用户信息赋给classmate
       this.classmate.imglink = this.smessage[i].imglink;
+
       this.classmate.userid = "浪花朵朵";
       this.classmate.email = this.smessage[i].sno + "@qq.com";
       this.classmate.grade = "2020";
       this.classmate.subject = "计算机科学与技术";
       this.classmate.class = "3班";
+
       this.showclassmateVisible = true;
     },
   },
   created() {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
     this.getquery();
     // 改为向后端传送value（年级，专业，班级）与用户账户后后端返回该班级的班级信息（用户是否加入班级与同学信息，包括头像学号姓名）
-    // var that = this;
-    // axios.get("地址").then(function (resp) {
-    //   that.XXX变量 = resp.data;
-    // });
     this.$axios
       .post("http://192.168.43.207:8081/user/classSelect/classUserList", {
-        params: {
-          umajor: this.value[1],
-          grade: this.value[0],
-          uclass: this.value[2],
-        },
+        uid: sessionStorage.getItem("uid"),
+        umajor: this.value[1],
+        grade: this.value[0],
+        uclass: this.value[2],
       })
-      .then(function (response) {
+      .then((response) => {
+        this.sum = response.data.count * 1;
+        for (var i = 0; i < this.sum; i++) {
+          this.smessage[i].sno = response[i + 1].key;
+          this.smessage[i].sname = response[i + 1].value;
+        }
         console.log(response);
       })
       .catch((err) => {
@@ -476,6 +498,7 @@ export default {
         console.log(err);
       });
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     this.sum = 20;
     for (i = 0; i < this.sum; i++) {
       this.smessage[i].imglink = "../../static/userimg.png";

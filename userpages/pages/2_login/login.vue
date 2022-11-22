@@ -49,22 +49,27 @@
               <!-- <p>账号</p> -->
               <i class="fas fa-user"></i>
               <span>账号</span>
-              <input type="text" placeholder="请输入邮箱或手机号" /> </span
+              <input
+                type="text"
+                placeholder="请输入邮箱或手机号"
+                v-model="uname"
+              /> </span
             ><br />
             <span>
               <!-- <p>密码</p> -->
               <i class="fas fa-lock"></i>
               <span>密码</span>
-              <input type="password" placeholder="请输入密码" /> </span
+              <input
+                type="password"
+                placeholder="请输入密码"
+                v-model="password"
+              /> </span
             ><br />
             <div>
-              <router-link to="/">
-                <button>登录</button>
-              </router-link>
+              <button @click="login()">登录</button>
             </div>
           </form>
         </div>
-        {{ islogin }}
       </div>
 
       <!-- banner部分end -->
@@ -90,6 +95,78 @@
 // 　　　　     };
 //       document.body.style.overflow='hidden';
 //       document.addEventListener("touchmove",mo,false);//禁止页面滑动
+export default {
+  data() {
+    return {
+      uname: "",
+      password: "",
+      success: false,
+      count: "", //倒计时
+    };
+  },
+  methods: {
+    login() {
+      //将用户账号密码发送给后端，若已注册，则返回"true"，否则返回"false"，弹窗显示未注册
+      // this.$axios
+      //   .post("", {
+      //     uname: this.uname,
+      //     password: this.password,
+      //   })
+      //   .then((response) => {
+      //     sessionStorage.setItem("uid", response.data.user.uid);
+      //     sessionStorage.setItem("uname", response.data.user.uname);
+      //     sessionStorage.setItem("email", response.data.user.email);
+      //     sessionStorage.setItem("grade", response.data.user.grade);
+      //     sessionStorage.setItem("major", response.data.user.major);
+      //     sessionStorage.setItem("uclass", response.data.user.uclass);
+      //     sessionStorage.setItem("userimg", response.data.user.userimg);
+      //     sessionStorage.setItem("islogin", "true");
+      //     this.success = true;
+      //     this.$message({
+      //       showClose: true,
+      //       message: response.data.msg,
+      //       type: "success",
+      //     });
+      //     console.log(response);
+      //   })
+      //   .catch((err) => {
+      //     this.$message({
+      //       showClose: true,
+      //       message: err.data.msg,
+      //       type: "error",
+      //     });
+      //     console.log(err);
+      //   });
+
+      ////////////////////////////////////////模拟/////////////////////////////////////////////////
+      sessionStorage.setItem("uid", "21");
+      sessionStorage.setItem("islogin", "true");
+      this.success = true;
+      this.$message({
+        showClose: true,
+        message: "登录成功",
+        type: "success",
+      });
+      console.log(this.success);
+      /////////////////////////////////////////////////////////////////////////////////////////////
+
+      if (this.success) {
+        clearTimeout(this.timer); //清除延迟执行
+        this.timer = setTimeout(() => {
+          //设置延迟执行
+          //跳转的页面
+          this.$router.push("/");
+        }, 1000);
+      }
+    },
+  },
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
+  },
+};
 </script>
         
 

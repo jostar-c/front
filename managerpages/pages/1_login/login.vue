@@ -44,6 +44,12 @@ export default {
       console.log("submit!");
     },
   },
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
+  },
 };
 </script>
     

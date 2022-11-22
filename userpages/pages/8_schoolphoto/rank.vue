@@ -73,46 +73,55 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <button id="left">
-      <i class="el-icon-refresh"></i>
-      刷新图片
-    </button>
-    <div id="right">
-      <div id="upload">贴上您拍摄的照片</div>
-      <router-link to="rank">
-        <div id="rank">查看排行榜</div>
-      </router-link>
-    </div>
 
-    <p id="main">校友眼中的校园风光</p>
-    <div id="heart">
-      <router-link to="photo">
-        <img :src="lp1" class="p" id="lp1" @click="pushlp1(lp1, goodlp1)" />
-      </router-link>
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp0" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="p1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp0" />
+    <router-link to="schoolphoto">
+      <div id="ranktop">
+        <i class="el-icon-back"></i>
+        <div id="rankback">返回</div>
+      </div>
+    </router-link>
+
+    <div id="therank">
+      <div class="bigger1">
+        <div class="bigger2">NO.1</div>
+        <img :src="no1" class="bigger3" />
+        <div class="bigger4">
+          <i class="el-icon-star-on biggergood"></i>
+          {{ good1 }}
+        </div>
+      </div>
+      <div class="bigger1">
+        <div class="bigger2">NO.2</div>
+        <img :src="no2" class="bigger3" />
+        <div class="bigger4">
+          <i class="el-icon-star-on biggergood"></i>
+          {{ good2 }}
+        </div>
+      </div>
+      <div class="bigger1">
+        <div class="bigger2">NO.3</div>
+        <img :src="no3" class="bigger3" />
+        <div class="bigger4">
+          <i class="el-icon-star-on biggergood"></i>
+          {{ good3 }}
+        </div>
+      </div>
+      <div class="smaller1">
+        <div class="smaller2">NO.4</div>
+        <img :src="no4" class="smaller3" />
+        <div class="smaller4">
+          <i class="el-icon-star-on smallergood"></i>
+          {{ good4 }}
+        </div>
+      </div>
+      <div class="smaller1">
+        <div class="smaller2">NO.5</div>
+        <img :src="no5" class="smaller3" />
+        <div class="smaller4">
+          <i class="el-icon-star-on smallergood"></i>
+          {{ good5 }}
+        </div>
+      </div>
     </div>
 
     <!-- footer 底部制作区域start -->
@@ -126,8 +135,8 @@
     </div>
   </div>
 </template>
-    
-    <script>
+      
+      <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -143,22 +152,21 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      lp1: "../../static/8_schoolphoto/p.jpg",
-      goodlp1: 150,
+      no1: "../../static/8_schoolphoto/p.jpg",
+      no2: "../../static/8_schoolphoto/p.jpg",
+      no3: "../../static/8_schoolphoto/p.jpg",
+      no4: "../../static/8_schoolphoto/p.jpg",
+      no4: "../../static/8_schoolphoto/p.jpg",
+      no5: "../../static/8_schoolphoto/p.jpg",
+      good1: 999,
+      good2: 888,
+      good3: 777,
+      good4: 666,
+      good5: 555,
     };
   },
-  methods: {
-    pushlp1(lp1, goodlp1) {
-      this.$router.push({
-        path: "/photo",
-        query: {
-          ph: this.lp1,
-          good: this.goodlp1,
-        },
-      });
-    },
-  },
-  created() {
+  methods: {},
+  created: function () {
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
@@ -166,8 +174,8 @@ export default {
   },
 };
 </script>
-    
-    <style>
+      
+      <style>
 * {
   margin: 0;
   padding: 0;
@@ -301,7 +309,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -70%;
+  bottom: -135%;
   width: 100%;
 }
 
@@ -311,188 +319,86 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-#left {
-  width: 60px;
-  height: 60px;
-  border: 0px;
-  background-color: white;
-  margin-left: 100px;
-  text-align: center;
+#ranktop {
+  width: 100px;
+  height: 40px;
+  background-color: #a40404;
 }
-.el-icon-refresh {
-  font-size: 65px;
-  color: #a40404;
-  margin-left: -4px;
+.el-icon-back {
+  margin-left: 5px;
+  color: white;
+  font-size: 40px;
 }
-#right {
-  width: 250px;
-  height: 160px;
+#rankback {
+  width: 55px;
+  height: 40px;
+  font-size: 22px;
   float: right;
-  margin-right: 100px;
-}
-#upload {
-  width: 250px;
-  height: 70px;
-  border-radius: 30px;
-  font-size: 25px;
-  text-align: center;
-  line-height: 70px;
   color: white;
-  background-color: #a40404;
+  line-height: 40px;
 }
-#rank {
-  margin-top: 20px;
-  width: 250px;
-  height: 70px;
-  border-radius: 30px;
-  font-size: 25px;
-  text-align: center;
-  line-height: 70px;
-  color: white;
-  background-color: #a40404;
-}
-#main {
-  width: 300px;
-  margin-right: auto;
-  margin-left: auto;
-  text-align: center;
-  margin-top: 40px;
-  color: #a40404;
-  font-size: 30px;
-  font-weight: 600;
-}
-#heart {
-  margin-top: 15px;
-  width: 1500px;
-  height: 1070px;
+#therank {
+  width: 800px;
+  height: auto;
   margin-right: auto;
   margin-left: auto;
 }
-.p {
-  width: 200px;
-  height: 150px;
+.bigger1 {
+  width: 800px;
+  height: 400px;
 }
-#lp1 {
-  margin-left: 15%;
+.bigger2 {
+  width: 150px;
+  height: 400px;
+  font-size: 45px;
+  font-weight: bold;
+  text-align: center;
+  color: #a40404;
   float: left;
 }
-#lp2 {
-  margin-top: 90px;
-  margin-left: -50px;
+.bigger3 {
+  width: 550px;
   float: left;
 }
-#lp3 {
-  margin-top: 130px;
-  margin-left: -450px;
+.bigger4 {
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  float: left;
+  font-size: 25px;
+}
+.smaller1 {
+  width: 700px;
+  height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.smaller2 {
+  width: 150px;
+  height: 300px;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  color: #a40404;
   float: left;
 }
-#lp4 {
-  margin-top: 170px;
-  margin-left: -300px;
+.smaller3 {
+  width: 450px;
   float: left;
 }
-#lp5 {
-  margin-top: 240px;
-  margin-left: -510px;
+.smaller4 {
+  width: 100px;
+  height: 35px;
+  float: left;
+  line-height: 35px;
+  font-size: 20px;
+}
+.biggergood {
+  font-size: 40px;
   float: left;
 }
-#lp6 {
-  margin-top: 350px;
-  margin-left: -530px;
-  float: left;
-}
-#lp7 {
-  margin-top: 470px;
-  margin-left: -480px;
-  float: left;
-}
-#lp8 {
-  margin-top: 570px;
-  margin-left: -420px;
-  float: left;
-}
-#lp9 {
-  margin-top: 670px;
-  margin-left: -350px;
-  float: left;
-}
-#lp10 {
-  margin-top: 770px;
-  margin-left: -260px;
-  float: left;
-}
-#lp11 {
-  margin-top: 840px;
-  margin-left: -140px;
-  float: left;
-}
-#lp0 {
-  margin-left: -120px;
-  margin-top: 200px;
-  float: left;
-}
-#p1 {
-  margin-left: -110px;
-  margin-top: 910px;
-  float: left;
-}
-#rp1 {
-  margin-right: 0px;
-  float: right;
-}
-#rp2 {
-  margin-top: 90px;
-  margin-right: -50px;
-  float: right;
-}
-#rp3 {
-  margin-top: 130px;
-  margin-right: -450px;
-  float: right;
-}
-#rp4 {
-  margin-top: 0px;
-  margin-right: 100px;
-  float: right;
-}
-#rp5 {
-  margin-top: 110px;
-  margin-right: -220px;
-  float: right;
-}
-#rp6 {
-  margin-top: 230px;
-  margin-right: -170px;
-  float: right;
-}
-#rp7 {
-  margin-top: 330px;
-  margin-right: -140px;
-  float: right;
-}
-#rp8 {
-  margin-top: 430px;
-  margin-right: -130px;
-  float: right;
-}
-#rp9 {
-  margin-top: 440px;
-  margin-right: -200px;
-  float: right;
-}
-#rp10 {
-  margin-top: 540px;
-  margin-right: -110px;
-  float: right;
-}
-#rp11 {
-  margin-top: 610px;
-  margin-right: -80px;
-  float: right;
-}
-#rp0 {
-  margin-left: -120px;
-  margin-top: -850px;
+.smallergood {
+  font-size: 35px;
   float: left;
 }
 </style>

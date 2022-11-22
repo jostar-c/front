@@ -177,6 +177,10 @@ export default {
     },
   },
   created() {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
     console.log("向后端请求前8条留言信息存入tableData");
   },
 

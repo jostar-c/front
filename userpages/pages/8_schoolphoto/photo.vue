@@ -7,6 +7,16 @@
           福州大学计算机与大数据学院/软件学院
         </a>
       </div>
+      <div class="user">
+        <router-link to="personalpage">
+          <img
+            src="../../static/userimg.png"
+            href="#"
+            width="15px"
+            height="auto"
+          />
+        </router-link>
+      </div>
     </div>
     <!-- top部分end -->
 
@@ -32,48 +42,45 @@
     </div>
     <!-- banner部分end -->
 
-    <!-- 功能主题 -->
-
-    <div class="top2">
-      <div class="top2-ruturn">
-        <router-link to="/" title="返回主页"
-          >&lt;&nbsp;&nbsp;个人信息主页</router-link
-        >
+    <!-- 1.头部区域start -->
+    <div class="header w">
+      <!-- 导航栏部分 nav -->
+      <div class="nav">
+        <ul>
+          <li>
+            <router-link to="/"><b>首页</b></router-link>
+          </li>
+          <li>
+            <router-link to="bigevent"><b>大事记</b></router-link>
+          </li>
+          <li>
+            <router-link to="comments"><b>校友留言</b></router-link>
+          </li>
+          <li style="background-color: tomato">
+            <router-link to="schoolphoto"><b>校园风光</b></router-link>
+          </li>
+          <li>
+            <router-link to="groupphoto"><b>虚拟合影</b></router-link>
+          </li>
+        </ul>
+      </div>
+      <!-- 搜索模块 -->
+      <div class="search">
+        <input type="text" value="输入您要搜索的专业、毕业年份、班级" />
+        <router-link to="class_search"><button></button></router-link>
       </div>
     </div>
+    <!-- 头部区域end-->
 
-    <img class="avatar" :src="imageUrl" />
-
-    <div class="message">
-      <div class="nicheng">
-        <p>昵称: 浪花朵朵</p>
-        <!-- <p>昵称: {{ uname }}</p> -->
-      </div>
-      <br />
-      <div class="youxiang">
-        <p>邮箱/电话: 70980546@qq.com</p>
-        <!-- <p>邮箱/电话: {{ eamil }}</p> -->
-      </div>
-      <br />
-      <div class="biyenianfen">
-        <p>年级: 2002</p>
-        <!-- <p>年级: {{ grade }}</p> -->
-      </div>
-      <br />
-      <div class="zhuanye">
-        <p>专业: 计算机科学与技术</p>
-        <!-- <p>专业: {{ major }}</p> -->
-      </div>
-      <br />
-      <div class="banji">
-        <p>班级: 01班</p>
-        <!-- <p>班级: {{ uclass }}</p> -->
-      </div>
-
-      <div>
-        <router-link to="messageupdate">
-          <button>编辑资料</button>
-        </router-link>
+    <!-- 功能主题 -->
+    <div id="ph">
+      <img :src="ph" alt="" id="pho" />
+      <div id="goods">
+        <i class="el-icon-star-on" id="phgood"></i>
+        {{ good }}
+        <router-link to="schoolphoto"
+          ><button id="phback">返回</button></router-link
+        >
       </div>
     </div>
 
@@ -88,30 +95,41 @@
     </div>
   </div>
 </template>
-          
-<script >
+      
+      <script>
+//1.获取所有元素元素
+var btns = document.getElementsByTagName("button");
+for (var i = 0; i < btns.length; i++) {
+  btns[i].onclick = function () {
+    //2.清空所有默认的样式
+    for (var i = 0; i < btns.length; i++) {
+      btns[i].style.backgroundColor = "";
+    }
+    //3.添加颜色
+    this.style.backgroundColor = "red";
+  };
+}
 export default {
   data() {
-    return {
-      uname: sessionStorage.getItem("uname"),
-      eamil: sessionStorage.getItem("email"),
-      grade: sessionStorage.getItem("grade"),
-      major: sessionStorage.getItem("major"),
-      uclass: sessionStorage.getItem("uclass"),
-      // imageUrl: sessionStorage.getItem("userimg"),
-      imageUrl: "../../static/avatar.jpg",
-    };
+    return {};
   },
-  created: function () {
+  methods: {
+    getParams() {
+      this.ph = this.$route.query.ph;
+      this.good = this.$route.query.good;
+    },
+  },
+  created() {
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
     }
+    this.getParams();
   },
 };
 </script>
-          
-  <style>
+      
+      <style>
 * {
   margin: 0;
   padding: 0;
@@ -231,90 +249,56 @@ body {
   padding-left: 15px;
 }
 
-body {
-  /*margin-bottom: 100px */
-  /* size: 100px auto; */
-  /* font-family: sans-serif; */
-  background-image: url(../../static/personalpage-bg.jpg);
-  background-repeat: no-repeat;
-  /* background-size: contain; */
-  /* 溢出隐藏 */
-  /* overflow: hidden; */
-  background-size: cover;
-}
-
-.top2 {
+.search button {
   float: left;
-  width: 100%;
-  height: 30px;
-  background-color: #ffffff;
-  margin-top: -10px;
-  padding-left: 10px;
-  padding-top: 5px;
-}
-
-.top2-return {
-  float: left;
-  color: #a40404;
-}
-
-.avatar {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  background-size: 100% 100%;
-  background-repeat: none;
-  background-color: rgb(161, 163, 223);
-  top: 230px;
-  left: 150px;
-  position: absolute;
-}
-
-.message {
-  width: 800px;
-  height: 470px;
-  background-color: rgba(243, 242, 248, 0.758);
-  top: 230px;
-  left: 290px;
-  position: absolute;
-  text-align: center;
-}
-
-.message p {
-  margin-top: 10px;
-  padding-top: 23px;
-  font-size: 20px;
-  text-align: center;
-}
-
-.message button {
-  margin-top: 30px;
-  width: 120px;
-  height: 40px;
-  border: none;
-  border-radius: 30px 30px 30px 30px;
-  background-color: #ffffff;
-  color: #a40404;
-  letter-spacing: 1px;
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 70px;
+  width: 50px;
+  height: 38px;
+  border: 0;
+  background: url(../../static/button.png);
 }
 
 /* footer 模块 */
 
 .footer {
   height: 40px;
-  background-color: #bfbfbfb7;
-  position: fixed;
+  background-color: #bfbfbf;
+  position: absolute;
   bottom: 0;
   width: 100%;
 }
 
 .footer p {
   font-size: 12px;
-  color: rgb(83, 82, 82);
+  color: #666;
   text-align: center;
   padding-top: 5px;
+}
+#ph {
+  width: 600px;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+#pho {
+  width: 600px;
+}
+#goods {
+  margin-top: 10px;
+  font-size: 20px;
+  height: 40px;
+  width: 600px;
+  line-height: 40px;
+}
+#phgood {
+  font-size: 40px;
+  float: left;
+}
+#phback {
+  float: right;
+  height: 30px;
+  width: 60px;
+  background-color: #a40404;
+  color: white;
+  border: 0px;
 }
 </style>

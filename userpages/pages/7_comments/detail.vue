@@ -72,52 +72,49 @@
     </div>
     <!-- 头部区域end-->
 
-    <!-- 发布留言栏 -->
-    <div id="issue">
-      <!-- 写留言 -->
-      <div id="issueleft">
+    <!-- 具体评论 -->
+    <div id="comment">
+      <img :src="head" class="photo" />
+      <p class="name">{{ name }}</p>
+      <p class="time">{{ time }}</p>
+      <div class="inside">{{ inside }}</div>
+      <div class="say">
+        <i class="el-icon-s-comment"></i>
+      </div>
+      <div class="good">
+        <i class="el-icon-star-on"></i>
+      </div>
+      <div class="blank"></div>
+    </div>
+
+    <div id="issue2">
+      <!-- 评论 -->
+      <div id="issueleft2">
         <el-input
-          id="issuecomments"
+          id="issuecomments2"
           type="textarea"
-          placeholder="对学校说点什么吧"
-          :autosize="{ minRows: 4, maxRows: 4 }"
-          v-model="textarea"
+          placeholder="评论点什么吧"
+          maxlength="15"
+          show-word-limit
+          :autosize="{ minRows: 2, maxRows: 4 }"
+          v-model="message"
         >
         </el-input>
       </div>
       <!-- 添加照片 -->
-      <div id="picture"></div>
+
       <!-- 发布 -->
-      <div id="push"></div>
+      <div id="push2">发布评论</div>
     </div>
 
-    <!-- 留言展示顶部 -->
-    <div id="showtop">
-      <!-- 左侧文字 -->
-      <div id="lefttext">留言展示</div>
-      <!-- 右侧刷新图标 -->
-      <div id="refresh" @click="refresh">
-        <i class="el-icon-refresh-left"></i>
-      </div>
-      <!-- 右侧文字 -->
-      <button id="righttext" @click="changeSort">{{ sort }}</button>
-    </div>
-
-    <div id="comments">
+    <div id="comments2">
       <div id="comment" v-for="(item, index) in comments" :key="item">
         <img :src="comments[index].head" class="photo" />
-        <p class="name">{{ comments[index].name }}</p>
-        <p class="time">{{ comments[index].time }}</p>
-        <div class="inside">{{ comments[index].inside }}</div>
-        <router-link to="detail">
-          <div class="say" @click="pushdetail(index)">
-            <i class="el-icon-s-comment"></i>
-          </div>
-        </router-link>
-        <div class="good">
-          <i class="el-icon-star-on"></i>
+        <div class="name2">
+          {{ comments[index].name }}: {{ comments[index].inside }}
         </div>
-        <div class="blank"></div>
+        <p class="time">{{ comments[index].time }}</p>
+        <div class="blank2"></div>
       </div>
     </div>
 
@@ -132,9 +129,8 @@
     </div>
   </div>
 </template>
-
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
-  <script>
+      
+      <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -147,79 +143,47 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
-//留言输入框
 export default {
   data() {
     return {
-      sort: "按热度排序",
-      textarea: "",
+      message: "",
       comments: [
         {
           head: "../../static/userimg.png",
-          name: "张三",
+          name: "大炮",
           time: "2022.11.13",
           inside: "我爱母校",
         },
         {
           head: "../../static/userimg.png",
-          name: "李四",
+          name: "飞机",
           time: "2022.11.12",
           inside: "母校加油",
         },
         {
           head: "../../static/userimg.png",
-          name: "王五",
+          name: "坦克",
           time: "20221.11.11",
           inside: "感恩母校培养",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "老六",
-          time: "2022.11.10",
-          inside: "感谢母校",
         },
       ],
     };
   },
   methods: {
-    changeSort() {
-      if (this.sort == "按热度排序") {
-        this.sort = "按时间排序";
-        //在这里改变排序方式
-      } else {
-        this.sort = "按热度排序";
-        //在这里改变排序方式
-      }
-    },
-    good() {
-      //判断点赞
-    },
-    refresh() {
-      //在这里刷新留言
-    },
-    pushdetail(i) {
-      this.$router.push({
-        path: "/detail",
-        query: {
-          head: this.comments[i].head,
-          name: this.comments[i].name,
-          time: this.comments[i].time,
-          inside: this.comments[i].inside,
-        },
-      });
+    getParams() {
+      this.head = this.$route.query.head;
+      this.name = this.$route.query.name;
+      this.time = this.$route.query.time;
+      this.inside = this.$route.query.inside;
     },
   },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
+  created() {
+    this.getParams();
   },
 };
-//排序方式
 </script>
-  
-  <style>
+      
+      <style>
 * {
   margin: 0;
   padding: 0;
@@ -353,7 +317,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -30%;
+  bottom: 0;
   width: 100%;
 }
 
@@ -364,144 +328,61 @@ body {
   padding-top: 5px;
 }
 
-/* 发布留言 */
-#issue {
+#issue2 {
   width: 1100px;
-  height: 100px;
+  height: 54px;
   margin-left: auto;
   margin-right: auto;
   border: 1px solid #a40404;
   color: #bfbfbf;
   font-size: 14px;
 }
-#issuecomments {
-  width: 800px;
-  height: 100px;
+#issuecomments2 {
+  width: 942px;
+  height: 54px;
   margin-left: 0px;
   margin-top: 2px;
   border: Transparent;
   color: #a40404;
   font-size: 14px;
 }
-#issueleft {
+#issueleft2 {
   float: left;
-}
-#picture {
-  width: 100px;
-  height: 100px;
-  padding-left: 0px;
-  margin-top: -1px;
-  border: 1px solid #a40404;
-  float: left;
-  /* background: url(../../static/7_comments/picture.jpg); */
-}
-#push {
-  width: 196px;
-  height: 100px;
-  padding-left: 0px;
-  margin-top: -1px;
-  border: 1px solid #a40404;
-  float: right;
-  /* background: url(../../static/7_comments/push.jpg); */
 }
 
-/* 留言展示顶部 */
-#showtop {
-  margin-top: 20px;
-  width: 1102px;
-  height: 30px;
-  margin-left: auto;
-  margin-right: auto;
-  background-color: #c20a0a;
+.el-icon-camera-solid {
+  padding-top: 9px;
+  padding-left: 7px;
+  font-size: 40px;
+  color: #a40404;
 }
-#lefttext {
-  width: 80px;
-  height: 30px;
-  float: left;
-  line-height: 30px;
-  color: #fff;
-  text-align: center;
-}
-#refresh {
-  width: 30px;
-  height: 30px;
+#push2 {
+  width: 154px;
+  height: 54px;
+  padding-left: 0px;
+  margin-top: -1px;
+  border: 1px solid #a40404;
+  color: white;
+  background-color: #a40404;
   float: right;
-}
-.el-icon-refresh-left {
-  padding-top: 5px;
-  padding-left: 5px;
-  color: #fff;
+  line-height: 54px;
   font-size: 20px;
-}
-#righttext {
-  width: 90px;
-  height: 30px;
-  float: right;
-  line-height: 30px;
-  margin-right: 10px;
-  background-color: #c20a0a;
-  border: 0px;
-  color: #fff;
   text-align: center;
 }
-#comments {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 1100px;
-  height: auto;
-}
-#comment {
-  margin-left: auto;
-  margin-right: auto;
-  width: 1100px;
-  height: auto;
-  border: 1px solid #a40404;
-}
 
-/* 头像 */
-.photo {
-  margin-top: 15px;
-  margin-left: 15px;
-  width: 60px;
-  height: 60px;
-  float: left;
+#comments2 {
+  margin-left: auto;
+  margin-right: auto;
+  width: 1102px;
+  height: auto;
 }
-/* 名称 时间 */
-.name {
-  margin-top: 20px;
+.blank2 {
+  height: 22px;
+}
+.name2 {
+  margin-top: 24px;
   margin-left: 90px;
   font-weight: 500;
-  font-size: 20px;
-}
-.time {
-  margin-top: 5px;
-  margin-left: 90px;
-  font-size: 13px;
-  color: rgb(149, 149, 149);
-}
-.inside {
-  margin-top: 20px;
-  margin-left: 20px;
-}
-.good {
-  float: right;
-  padding-right: 10px;
-}
-.say {
-  float: right;
-  padding-right: 10px;
-}
-.el-icon-s-comment {
-  font-size: 28px;
-  margin-top: 2px;
-  margin-right: 10px;
-}
-.el-icon-star-on {
-  font-size: 30px;
-  margin-right: 5px;
-}
-.blank {
-  height: 40px;
+  font-size: 16px;
 }
 </style>

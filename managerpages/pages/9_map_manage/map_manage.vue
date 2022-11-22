@@ -204,6 +204,11 @@ export default {
     },
   },
   created() {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
+
     var _this = this;
     this.$axios
       .get("http://10.133.11.124:8080/test/user_show")

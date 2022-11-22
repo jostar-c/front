@@ -8,19 +8,19 @@ import globalfunc from '../global_func'
 import ElementUI from 'element-ui'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-
+import $ from 'jquery'
 
 import 'element-ui/lib/theme-chalk/index.css'
 
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-Vue.prototype.global = globalvariable
+Vue.prototype.$global = globalvariable
 Vue.use(globalfunc)
 Vue.use(VueAxios, axios)
 Vue.prototype.$axios = axios;
 
-
+sessionStorage.setItem("userimgUrl", "");
 
 /* eslint-disable no-new */
 new Vue({

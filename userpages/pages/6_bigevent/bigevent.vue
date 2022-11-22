@@ -128,57 +128,57 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      islogin: this.global.islogin,
+      islogin: Boolean(sessionStorage.getItem("islogin")),
       sumevents: 500,
       eventdatas: [
         {
           title: "1",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "2",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "3",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "4",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "5",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "6",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "7",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "8",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "9",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
         {
           title: "10",
-          eventurl: this.global.baseURL,
+          eventurl: this.$global.baseURL,
           time: "2022 - 11 - 11",
         },
       ],
@@ -207,13 +207,39 @@ export default {
     },
     getPageNum(val) {
       // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
+      $.ajax({
+        url: "",
+        type: "get",
+        data: {
+          x: 2,
+        },
+        //dataType: 'json',
+        success: (e) => {
+          console.log(e.data[0]);
+        },
+      });
       console.log(val);
     },
   },
   created() {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
     console.log(
       "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
     );
+    $.ajax({
+      url: "",
+      type: "get",
+      data: {
+        x: 1,
+      },
+      //dataType: 'json',
+      success: (e) => {
+        console.log(e.data[0]);
+      },
+    });
   },
 };
 </script>
