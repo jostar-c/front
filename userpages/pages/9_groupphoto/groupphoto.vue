@@ -80,19 +80,19 @@
 
       <div class="temp">
         <div class="temp1">
-          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+          <router-link to="selectposition"><img src="../../static/p1.jpg" alt="" width="360px" height="auto" /></router-link>
         </div>
 
         <div class="temp2">
-          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+          <router-link to="show"><img src="../../static/p2.jpg" alt="" width="400px" height="auto" /></router-link>
         </div>
 
         <div class="temp3">
-          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+          <router-link to="selectposition"><img src="../../static/p3.jpg" alt="" width="400px" height="auto" /></router-link>
         </div>
 
         <div class="temp4">
-          <router-link to="selectposition"><img src="../../static/bg.png" alt="" width="400px" height="auto" /></router-link>
+          <router-link to="selectposition"><img src="../../static/p4.jpg" alt="" width="400px" height="auto" /></router-link>
         </div>
         
       </div>
@@ -275,26 +275,26 @@ body {
 
 .temp1{
   float: left;
- 
-  margin-left: 140px;
+  margin-top: -30px;
+  margin-left: 280px;
 }
 
 .temp2{
   float: left;
- 
-  margin-left: 140px;
+  margin-left: 0px;
+  margin-top: 20px;
 }
 
 .temp3{
   float: left;
-  margin-top: 30px;
-  margin-left: 140px;
+  margin-top: -47px;
+  margin-left: 200px;
 }
 
 .temp4{
   float: left;
-  margin-top: 30px;
-  margin-left: 140px;
+  margin-top: -5px;
+  margin-left: 0px;
 }
 
 /* footer 模块 */

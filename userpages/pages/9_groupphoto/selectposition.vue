@@ -74,20 +74,15 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-    <div class="select">
-      <p>请选择您想放置的位置</p>
+    <div class="return">
+      <p><i class="el-icon-arrow-left"></i>返回选择模板</p>
       </div>
 
-    <div class="information">
-      <div class="selfid"><p>参与合照人员: 浪花朵朵</p></div>
-      <div class="addsomeone">
-        <p>邀请好友  <i class="el-icon-circle-plus"></i></p>
-      </div>
-    </div>
 
       <div class="temp">
-          <router-link to="bigevent"><img src="../../static/bg.png" alt="" width="1020px" height="auto" /></router-link>
+          <canvas width="1020" :height="canvasHeight" id="canvas"></canvas>
       </div>
+      <el-button @click="downloadImage">下载到本地</el-button>
 
       <div class="footerBtn">
     <el-button @click="dialogVisible=true">上传头像</el-button>
@@ -132,7 +127,7 @@
           </el-col>
         </el-row>
         <el-row class="footerBtn" align="center">
-          <el-button type="primary " size="medium" round @click="confirm('blob')"><router-link to="show">确认</router-link></el-button>
+          <el-button type="primary " size="medium" round @click="confirm('blob')">确认</el-button>
           <el-button type="info" size="medium" round @click="handleClose">取消</el-button>
         </el-row>
       </span>
@@ -148,6 +143,8 @@
       </p>
       <!-- footer 底部制作区域end -->
     </div>
+
+    <div ref="delBtn" style="position: fixed;top: 0px;left: 0px;z-index:100;display:none;padding: 4px 8px;background-color: #fff" @click="delEl">删除</div>
   </div>
 </template>
       
@@ -167,10 +164,12 @@ for (var i = 0; i < btns.length; i++) {
 </script> -->
 
 <script>
-//数据库里需要存两份图片地址，一张为原图地址，一张为裁剪后的头像地址
+import { fabric } from 'fabric'
+import backgroundImage from '../../static/p1.jpg'
 export default {
   data() {
     return {
+      canvasHeight: 0,
       dialogVisible: false,
       options: {
         autoCrop: true, //默认生成截图框
@@ -189,9 +188,61 @@ export default {
         laterUrl: "", //裁剪后图片路径  /static/logo.png
         attachType: "photo" //附件类型
       },
+      fabricInstance: null
     };
   },
+  mounted(){
+    //现在用的是本地图片，后期可以通过传递图片url为参数的方式来动态修改背景图
+    this.initCanvas(backgroundImage)
+  },
   methods: {
+    delEl(){console.log(4)},
+    //参数背景图片地址
+    initCanvas(backgroundImage){
+      // 设置背景图
+      // 参数1：背景图资源（可以引入本地，也可以使用网络图）
+      // 参数2：设置完背景图执行以下重新渲染canvas的操作，这样背景图就会展示出来了
+      const backgroundImageEl = document.createElement('img')
+      backgroundImageEl.src = backgroundImage
+      backgroundImageEl.onload = () => {
+        const rate = 1020 / backgroundImageEl.width
+        this.canvasHeight = backgroundImageEl.height * rate
+        this.$nextTick(() => {
+          this.fabricInstance = new fabric.Canvas('canvas')
+          // this.fabricInstance = new fabric.Canvas('canvas',{
+          //   fireRightClick: true, // 启用右键，button的数字为3
+          //   stopContextMenu: true,
+          // })
+          // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
+          // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
+          this.setCanvasBackgroundImage(backgroundImage)
+        })
+      }
+    },
+    // canvasOnMouseDown(opt) {
+    //   const delBtn = this.$refs.delBtn
+    //   // 判断：右键，且在元素上右键
+    //   // opt.button: 1-左键；2-中键；3-右键
+    //   // 在画布上点击：opt.target 为 null
+    //   if (opt.button === 3 && opt.target) {
+    //     console.log(opt)
+    //     // 获取当前元素
+    //     let activeEl = opt.target
+    //     opt.e.preventDefault()
+    //     delBtn.style.display = 'block'
+    //     delBtn.style.top = opt.e.pageY + 'px'
+    //     delBtn.style.left = opt.e.pageX + 'px'
+    //   } else {
+    //     delBtn.style.display = 'none'
+    //     // hiddenMenu()
+    //   }
+    // },
+    setCanvasBackgroundImage(backgroundImage){
+      this.fabricInstance.setBackgroundImage(
+        backgroundImage,
+        this.fabricInstance.renderAll.bind(this.fabricInstance)
+      )
+    },
     //控制弹出层关闭
     handleClose() {
       this.dialogVisible = false;
@@ -227,8 +278,39 @@ export default {
     confirm(type) {
       this.$refs.cropper.getCropData(res => {
         console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
-        
+        const imgElement = document.createElement('img')
+        imgElement.src = res
+        imgElement.onload = () => {
+          let imgInstance = new fabric.Image(imgElement, {
+            left: 100,
+            top: 100,
+            width: 200,
+            height: 200,
+            clipPath: new fabric.Circle({
+              radius: 100,
+              originX: 'center',
+              originY: 'center',
+            }),
+          })
+          this.fabricInstance.add(imgInstance)
+          this.dialogVisible = false
+        }
       });
+    },
+    downloadImage(){
+      if(!this.fabricInstance){
+        return
+      }
+      console.log(this.fabricInstance)
+      const url = this.fabricInstance.toDataURL('png')
+      const a = document.createElement('a')
+      a.href = url
+      a.download = '保存图片'
+      // 触发a链接点击事件，浏览器开始下载文件
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+
     }
   }
 };
@@ -362,24 +444,23 @@ body {
   background: url(../../static/button.png);
 }
 
-
-.select {
+.return {
   height: 40px;
   margin-top: -44px;
   background-color: #a40404;
 }
 
+.return p{
+
+  font-size: 20px;
+  padding-top: 5px;
+  color:#fff
+}
 .select p{
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
   color:#fff
-}
-
-.information{
-  height: 30px;
-  margin-top: 0px;
-  background-color: #fff;
 }
 
 .selfid{
