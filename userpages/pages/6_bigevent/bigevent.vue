@@ -208,14 +208,19 @@ export default {
     getPageNum(val) {
       // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
       $.ajax({
-        url: "",
+        url: "http://10.133.18.143:8000/bigevent",
         type: "get",
         data: {
-          x: 2,
+          x: val,
         },
         //dataType: 'json',
         success: (e) => {
-          console.log(e.data[0]);
+          console.log(e.data);
+          for (var i = 0; i < 10; i++) {
+            this.eventdatas[i].title = e.data[i].title;
+            this.eventdatas[i].time = e.data[i].date;
+            this.eventdatas[i].eventurl = e.data[i].link;
+          }
         },
       });
       console.log(val);
@@ -229,15 +234,20 @@ export default {
     console.log(
       "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
     );
-    $.ajax({
-      url: "",
+    $.get({
+      url: "http://10.133.18.143:8000/bigevent",
       type: "get",
       data: {
         x: 1,
       },
       //dataType: 'json',
       success: (e) => {
-        console.log(e.data[0]);
+        console.log(e.data);
+        for (var i = 0; i < 10; i++) {
+          this.eventdatas[i].title = e.data[i].title;
+          this.eventdatas[i].time = e.data[i].date;
+          this.eventdatas[i].eventurl = e.data[i].link;
+        }
       },
     });
   },

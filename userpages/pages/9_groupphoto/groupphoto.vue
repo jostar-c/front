@@ -76,26 +76,49 @@
     <!-- 功能主题 -->
     <div class="select">
       <p>请选择您想使用的照片模板</p>
+    </div>
+
+    <div class="temp">
+      <div class="temp1">
+        <img
+          src="../../static/p1.jpg"
+          alt=""
+          width="360px"
+          height="auto"
+          @click="toselectposition('../../static/p1.jpg')"
+        />
       </div>
 
-      <div class="temp">
-        <div class="temp1">
-          <router-link to="selectposition"><img src="../../static/p1.jpg" alt="" width="360px" height="auto" /></router-link>
-        </div>
-
-        <div class="temp2">
-          <router-link to="show"><img src="../../static/p2.jpg" alt="" width="400px" height="auto" /></router-link>
-        </div>
-
-        <div class="temp3">
-          <router-link to="selectposition"><img src="../../static/p3.jpg" alt="" width="400px" height="auto" /></router-link>
-        </div>
-
-        <div class="temp4">
-          <router-link to="selectposition"><img src="../../static/p4.jpg" alt="" width="400px" height="auto" /></router-link>
-        </div>
-        
+      <div class="temp2">
+        <img
+          src="../../static/p2.jpg"
+          alt=""
+          width="400px"
+          height="auto"
+          @click="toselectposition('../../static/p2.jpg')"
+        />
       </div>
+
+      <div class="temp3">
+        <img
+          src="../../static/p3.jpg"
+          alt=""
+          width="400px"
+          height="auto"
+          @click="toselectposition('../../static/p3.jpg')"
+        />
+      </div>
+
+      <div class="temp4">
+        <img
+          src="../../static/p4.jpg"
+          alt=""
+          width="400px"
+          height="auto"
+          @click="toselectposition('../../static/p4.jpg')"
+        />
+      </div>
+    </div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -109,7 +132,7 @@
   </div>
 </template>
       
-      <script>
+<script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -122,6 +145,27 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
+export default {
+  data() {
+    return {};
+  },
+  methods: {
+    toselectposition(url) {
+      this.$router.push({
+        path: "/selectposition",
+        query: {
+          imgurl: url,
+        },
+      });
+    },
+  },
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
+  },
+};
 </script>
       
       <style>
@@ -252,46 +296,45 @@ body {
   background: url(../../static/button.png);
 }
 
-
 .select {
   height: 40px;
   margin-top: -44px;
   background-color: #a40404;
 }
 
-.select p{
+.select p {
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
 
-.temp{
+.temp {
   float: left;
   margin-top: 70px;
   margin-left: 70px;
   margin-right: 70px;
 }
 
-.temp1{
+.temp1 {
   float: left;
   margin-top: -30px;
   margin-left: 280px;
 }
 
-.temp2{
+.temp2 {
   float: left;
   margin-left: 0px;
   margin-top: 20px;
 }
 
-.temp3{
+.temp3 {
   float: left;
   margin-top: -47px;
   margin-left: 200px;
 }
 
-.temp4{
+.temp4 {
   float: left;
   margin-top: -5px;
   margin-left: 0px;
@@ -313,6 +356,4 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-
-
 </style>

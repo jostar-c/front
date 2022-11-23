@@ -75,64 +75,77 @@
 
     <!-- 功能主题 -->
     <div class="return">
-      <p><i class="el-icon-arrow-left"></i>返回选择模板</p>
-      </div>
+      <router-link to="/groupphoto"
+        ><p><i class="el-icon-arrow-left"></i>返回选择模板</p></router-link
+      >
+    </div>
 
+    <div class="temp">
+      <canvas width="1020" :height="canvasHeight" id="canvas"></canvas>
+    </div>
+    <el-button @click="downloadImage">下载到本地</el-button>
 
-      <div class="temp">
-          <canvas width="1020" :height="canvasHeight" id="canvas"></canvas>
-      </div>
-      <el-button @click="downloadImage">下载到本地</el-button>
-
-      <div class="footerBtn">
-    <el-button @click="dialogVisible=true">上传头像</el-button>
-    <!-- 弹出层-裁剪 -->
-    <el-dialog title="编辑头像" :visible.sync="dialogVisible" :before-close="handleClose">
-      <span>
-        <el-row>
-          <input
-            ref="filElem"
-            type="file"
-            id="uploads"
-            accept="image/png, image/jpeg, image/gif, image/jpg"
-            @change="uploadImg($event,1)"
-            class="el-button hide"
-            style="margin-bottom:15px"
-          />
-          <div class="upload-img" @click="clickUpload">点击上传图片</div>
-        </el-row>
-        <el-row>
-          <el-col :span="14">
-            <!-- 裁剪 -->
-            <vueCropper
-              style="width:100%;height:300px"
-              ref="cropper"
-              :img="attach.customaryUrl"
-              :autoCrop="options.autoCrop"
-              :fixedBox="options.fixedBox"
-              :canMoveBox="options.canMoveBox"
-              :autoCropWidth="options.autoCropWidth"
-              :autoCropHeight="options.autoCropHeight"
-              :centerBox="options.centerBox"
-              @realTime="realTime"
-            ></vueCropper>
-          </el-col>
-          <el-col :span="6.5">
-            <h2 align="center" class=" mar-left-50">头像预览</h2>
-            <div class="show-preview">
-              <div :style="previews.div" class="preview">
-                <img :src="previews.url" :style="previews.img" width="100%" />
+    <div class="footerBtn">
+      <el-button @click="dialogVisible = true">上传头像</el-button>
+      <!-- 弹出层-裁剪 -->
+      <el-dialog
+        title="编辑头像"
+        :visible.sync="dialogVisible"
+        :before-close="handleClose"
+      >
+        <span>
+          <el-row>
+            <input
+              ref="filElem"
+              type="file"
+              id="uploads"
+              accept="image/png, image/jpeg, image/gif, image/jpg"
+              @change="uploadImg($event, 1)"
+              class="el-button hide"
+              style="margin-bottom: 15px"
+            />
+            <div class="upload-img" @click="clickUpload">点击上传图片</div>
+          </el-row>
+          <el-row>
+            <el-col :span="14">
+              <!-- 裁剪 -->
+              <vueCropper
+                style="width: 100%; height: 300px"
+                ref="cropper"
+                :img="attach.customaryUrl"
+                :autoCrop="options.autoCrop"
+                :fixedBox="options.fixedBox"
+                :canMoveBox="options.canMoveBox"
+                :autoCropWidth="options.autoCropWidth"
+                :autoCropHeight="options.autoCropHeight"
+                :centerBox="options.centerBox"
+                @realTime="realTime"
+              ></vueCropper>
+            </el-col>
+            <el-col :span="6.5">
+              <h2 align="center" class="mar-left-50">头像预览</h2>
+              <div class="show-preview">
+                <div :style="previews.div" class="preview">
+                  <img :src="previews.url" :style="previews.img" width="100%" />
+                </div>
               </div>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row class="footerBtn" align="center">
-          <el-button type="primary " size="medium" round @click="confirm('blob')">确认</el-button>
-          <el-button type="info" size="medium" round @click="handleClose">取消</el-button>
-        </el-row>
-      </span>
-    </el-dialog>
-  </div>
+            </el-col>
+          </el-row>
+          <el-row class="footerBtn" align="center">
+            <el-button
+              type="primary "
+              size="medium"
+              round
+              @click="confirm('blob')"
+              >确认</el-button
+            >
+            <el-button type="info" size="medium" round @click="handleClose"
+              >取消</el-button
+            >
+          </el-row>
+        </span>
+      </el-dialog>
+    </div>
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -144,11 +157,25 @@
       <!-- footer 底部制作区域end -->
     </div>
 
-    <div ref="delBtn" style="position: fixed;top: 0px;left: 0px;z-index:100;display:none;padding: 4px 8px;background-color: #fff" @click="delEl">删除</div>
+    <div
+      ref="delBtn"
+      style="
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 100;
+        display: none;
+        padding: 4px 8px;
+        background-color: #fff;
+      "
+      @click="delEl"
+    >
+      删除
+    </div>
   </div>
 </template>
       
-      <!-- <script>
+<!-- <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -164,11 +191,11 @@ for (var i = 0; i < btns.length; i++) {
 </script> -->
 
 <script>
-import { fabric } from 'fabric'
-import backgroundImage from '../../static/p1.jpg'
+import { fabric } from "fabric";
 export default {
   data() {
     return {
+      backgroundImage: "",
       canvasHeight: 0,
       dialogVisible: false,
       options: {
@@ -176,8 +203,8 @@ export default {
         fixedBox: true, //固定截图框大小
         canMoveBox: false, //截图框不能拖动
         centerBox: false, //截图框被限制在图片里面
-        autoCropWidth:200,  //截图框宽度
-        autoCropHeight:200, //截图框高度        
+        autoCropWidth: 200, //截图框宽度
+        autoCropHeight: 200, //截图框高度
       },
       previews: {}, //实时预览图数据
       attach: {
@@ -186,38 +213,43 @@ export default {
         userId: "",
         customaryUrl: "", //原图片路径
         laterUrl: "", //裁剪后图片路径  /static/logo.png
-        attachType: "photo" //附件类型
+        attachType: "photo", //附件类型
       },
-      fabricInstance: null
+      fabricInstance: null,
     };
   },
-  mounted(){
+  mounted() {
     //现在用的是本地图片，后期可以通过传递图片url为参数的方式来动态修改背景图
-    this.initCanvas(backgroundImage)
+    this.initCanvas(this.backgroundImage);
   },
   methods: {
-    delEl(){console.log(4)},
+    getquery() {
+      this.backgroundImage = this.$route.query.imgurl;
+    },
+    delEl() {
+      console.log(4);
+    },
     //参数背景图片地址
-    initCanvas(backgroundImage){
+    initCanvas(backgroundImage) {
       // 设置背景图
       // 参数1：背景图资源（可以引入本地，也可以使用网络图）
       // 参数2：设置完背景图执行以下重新渲染canvas的操作，这样背景图就会展示出来了
-      const backgroundImageEl = document.createElement('img')
-      backgroundImageEl.src = backgroundImage
+      const backgroundImageEl = document.createElement("img");
+      backgroundImageEl.src = backgroundImage;
       backgroundImageEl.onload = () => {
-        const rate = 1020 / backgroundImageEl.width
-        this.canvasHeight = backgroundImageEl.height * rate
+        const rate = 1020 / backgroundImageEl.width;
+        this.canvasHeight = backgroundImageEl.height * rate;
         this.$nextTick(() => {
-          this.fabricInstance = new fabric.Canvas('canvas')
+          this.fabricInstance = new fabric.Canvas("canvas");
           // this.fabricInstance = new fabric.Canvas('canvas',{
           //   fireRightClick: true, // 启用右键，button的数字为3
           //   stopContextMenu: true,
           // })
           // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
           // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
-          this.setCanvasBackgroundImage(backgroundImage)
-        })
-      }
+          this.setCanvasBackgroundImage(backgroundImage);
+        });
+      };
     },
     // canvasOnMouseDown(opt) {
     //   const delBtn = this.$refs.delBtn
@@ -237,11 +269,11 @@ export default {
     //     // hiddenMenu()
     //   }
     // },
-    setCanvasBackgroundImage(backgroundImage){
+    setCanvasBackgroundImage(backgroundImage) {
       this.fabricInstance.setBackgroundImage(
         backgroundImage,
         this.fabricInstance.renderAll.bind(this.fabricInstance)
-      )
+      );
     },
     //控制弹出层关闭
     handleClose() {
@@ -252,8 +284,8 @@ export default {
       this.previews = data;
     },
     //点击图片调取input
-    clickUpload(){
-      this.$refs.filElem.dispatchEvent(new MouseEvent('click')) 
+    clickUpload() {
+      this.$refs.filElem.dispatchEvent(new MouseEvent("click"));
     },
     //选择本地图片
     uploadImg(e, num) {
@@ -265,7 +297,7 @@ export default {
       //fileReader 接口，用于异步读取文件数据
       var reader = new FileReader();
       reader.readAsDataURL(file); //重要 以dataURL形式读取文件
-      reader.onload = e => {
+      reader.onload = (e) => {
         // data = window.URL.createObjectURL(new Blob([e.target.result])) 转化为blob格式
         let data = e.target.result;
         this.attach.customaryUrl = data;
@@ -276,10 +308,10 @@ export default {
     },
     //确认截图,上传
     confirm(type) {
-      this.$refs.cropper.getCropData(res => {
-        console.log(res)//这里截图后的url 是base64格式 让后台转下就可以
-        const imgElement = document.createElement('img')
-        imgElement.src = res
+      this.$refs.cropper.getCropData((res) => {
+        console.log(res); //这里截图后的url 是base64格式 让后台转下就可以
+        const imgElement = document.createElement("img");
+        imgElement.src = res;
         imgElement.onload = () => {
           let imgInstance = new fabric.Image(imgElement, {
             left: 100,
@@ -288,31 +320,37 @@ export default {
             height: 200,
             clipPath: new fabric.Circle({
               radius: 100,
-              originX: 'center',
-              originY: 'center',
+              originX: "center",
+              originY: "center",
             }),
-          })
-          this.fabricInstance.add(imgInstance)
-          this.dialogVisible = false
-        }
+          });
+          this.fabricInstance.add(imgInstance);
+          this.dialogVisible = false;
+        };
       });
     },
-    downloadImage(){
-      if(!this.fabricInstance){
-        return
+    downloadImage() {
+      if (!this.fabricInstance) {
+        return;
       }
-      console.log(this.fabricInstance)
-      const url = this.fabricInstance.toDataURL('png')
-      const a = document.createElement('a')
-      a.href = url
-      a.download = '保存图片'
+      console.log(this.fabricInstance);
+      const url = this.fabricInstance.toDataURL("png");
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "保存图片";
       // 触发a链接点击事件，浏览器开始下载文件
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    },
+  },
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
     }
-  }
+    this.getquery();
+  },
 };
 </script>
       
@@ -450,45 +488,44 @@ body {
   background-color: #a40404;
 }
 
-.return p{
-
+.return p {
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
-.select p{
+.select p {
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
 
-.selfid{
+.selfid {
   float: left;
   font-size: 15px;
   padding-top: 5px;
-  color:rgb(0, 0, 0)
+  color: rgb(0, 0, 0);
 }
 
-.addsomeone{
+.addsomeone {
   float: right;
   font-size: 15px;
   padding-top: 5px;
-  color:rgb(0, 0, 0)
+  color: rgb(0, 0, 0);
 }
 
-.temp{
+.temp {
   float: left;
-} 
+}
 
-.footerBtn button{
+.footerBtn button {
   float: left;
   margin-top: 235px;
   margin-left: 20px;
   color: #a40404;
 }
 
-.el-dialog{
+.el-dialog {
   width: 1200px !important;
   height: auto;
 }
@@ -506,10 +543,10 @@ body {
   margin-left: 50px;
   margin-top: 50px;
 }
-.upload-img{
+.upload-img {
   width: 100px;
   height: 30px;
-  border:1px solid #f08512;
+  border: 1px solid #f08512;
   margin-bottom: 5px;
   line-height: 30px;
   text-align: center;
@@ -537,6 +574,4 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-
-
 </style>
