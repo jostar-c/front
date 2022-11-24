@@ -18,7 +18,7 @@ import groupphoto from '../../pages/9_groupphoto/groupphoto.vue'
 import recruit from '../../pages/10_recruit/recruit.vue'
 import messageupdate from '../../pages/4_personalpage/messageupdate.vue'
 import selectposition from '../../pages/9_groupphoto/selectposition.vue'
-import show from '../../pages/9_groupphoto/show.vue'
+
 
 Vue.use(Router)
 
@@ -102,11 +102,6 @@ export default new Router({
       component: selectposition
     }
     ,
-    {
-      path: '/show',
-      name: 'show',
-      component: show
-    },
     {
       path: '/photo',
       name: 'photo',

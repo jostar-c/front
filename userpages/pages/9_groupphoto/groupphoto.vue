@@ -8,15 +8,17 @@
         </a>
       </div>
       <div class="user">
-        <router-link to="personalpage">
-          <!-- 注意！！！记得改为从后端调取的头像图片信息！！！！！！！！！ -->
-          <img
-            src="../../static/user.png"
-            href="#"
-            width="15px"
-            height="auto"
-          />
-        </router-link>
+        <img
+          :src="
+            islogin == 0
+              ? require('../../static/user.png')
+              : require('../../static/userimg.png')
+          "
+          href="#"
+          width="15px"
+          height="auto"
+          @click="goTopersonalpage()"
+        />
       </div>
     </div>
     <!-- top部分end -->
@@ -125,7 +127,7 @@
       <p>
         学院地址：福州市闽侯县学园路2号福州大学计算机与大数据学院/软件学院
         <br />
-        版权声明：© 2022 栋感光波. 版权所有. 保留所有权利
+        版权声明： 2022 栋感光波. 版权所有. 保留所有权利
       </p>
       <!-- footer 底部制作区域end -->
     </div>
@@ -150,6 +152,10 @@ export default {
     return {};
   },
   methods: {
+    goTopersonalpage() {
+      if (this.islogin == 0) this.$router.push("/login");
+      else this.$router.push("/personalpage");
+    },
     toselectposition(url) {
       this.$router.push({
         path: "/selectposition",
@@ -167,8 +173,8 @@ export default {
   },
 };
 </script>
-      
-      <style>
+
+<style>
 * {
   margin: 0;
   padding: 0;
@@ -302,39 +308,39 @@ body {
   background-color: #a40404;
 }
 
-.select p {
+.select p{
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
-  color: #fff;
+  color:#fff
 }
 
-.temp {
+.temp{
   float: left;
   margin-top: 70px;
   margin-left: 70px;
   margin-right: 70px;
 }
 
-.temp1 {
+.temp1{
   float: left;
   margin-top: -30px;
   margin-left: 280px;
 }
 
-.temp2 {
+.temp2{
   float: left;
   margin-left: 0px;
   margin-top: 20px;
 }
 
-.temp3 {
+.temp3{
   float: left;
   margin-top: -47px;
   margin-left: 200px;
 }
 
-.temp4 {
+.temp4{
   float: left;
   margin-top: -5px;
   margin-left: 0px;
@@ -356,4 +362,5 @@ body {
   text-align: center;
   padding-top: 5px;
 }
+
 </style>
