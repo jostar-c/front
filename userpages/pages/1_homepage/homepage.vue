@@ -86,9 +86,8 @@
             disablepictureinpicture=""
             controlslist="nodownload"
             jm_neat="1007234049"
+            :src ="address"
           >
-            <source src="https://cdn.modao.cc/Default_video.mp4" />
-            Video element is not supported in this browser.
           </video>
 
           <div class="flex" style="margin-top: 30px">
@@ -181,6 +180,7 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
+import axios from "axios"
 export default {
   data() {
     return {
@@ -213,7 +213,20 @@ export default {
       ],
     };
   },
+  created: function () {
+    this.getAddress();
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
+  },
   methods: {
+    getAddress(){
+      axios.get("http://192.168.48.210:8000/zhibo").then((res)=>{
+        this.address = res.data.data;
+        console.log(this.address);
+      })
+    },
     goTopersonalpage() {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/personalpage");
@@ -234,12 +247,6 @@ export default {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/groupphoto");
     },
-  },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
   },
 };
 </script>
