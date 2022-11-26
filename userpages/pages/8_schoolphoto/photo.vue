@@ -74,13 +74,13 @@
 
     <!-- 功能主题 -->
     <div id="ph">
-      <img :src="ph" alt="" id="pho" />
+      <img :src="pic_url" alt="" id="pho">
       <div id="goods">
-        <i class="el-icon-star-on" id="phgood"></i>
-        {{ good }}
-        <router-link to="schoolphoto"
-          ><button id="phback">返回</button></router-link
-        >
+        <i class="el-icon-star-on" 
+        :id="flag == 1 ? 'isgood':'phgood'"
+          @click="phgood">{{thumbs_up}}</i>
+        
+        <router-link to="schoolphoto"><button id="phback">返回</button></router-link>
       </div>
     </div>
 
@@ -95,8 +95,9 @@
     </div>
   </div>
 </template>
-      
-      <script>
+    
+    <script>
+     import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -111,25 +112,40 @@ for (var i = 0; i < btns.length; i++) {
 }
 export default {
   data() {
-    return {};
+    return {
+      pic_url:'',
+      thumbs_up:0,
+      flag:1,
+    };
   },
-  methods: {
-    getParams() {
-      this.ph = this.$route.query.ph;
-      this.good = this.$route.query.good;
+  methods:{
+    getParams(){
+        this.pic_url = this.$route.query.pic_url;
+        this.thumbs_up = this.$route.query.thumbs_up;
+        this.flag = this.$route.query.flag;
+			},
+    phgood(){
+      //判断点赞
+      this.flag*=-1;
+      this.thumbs_up-=(-this.flag);
+      const that=this;
+      axios.post('http://172.20.10.6:8080/scenery/like',{pic_url:that.pic_url,thumbs_up:that.thumbs_up})
+      .then(res => {
+        //后端点赞数+1 改变点赞状态
+      })
+      .catch(err => {
+        console.error(err); 
+      })
     },
-  },
-  created() {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-    this.getParams();
-  },
-};
+
+    },
+    created(){
+  	this.getParams();
+    },
+}
 </script>
-      
-      <style>
+    
+    <style>
 * {
   margin: 0;
   padding: 0;
@@ -273,27 +289,32 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-#ph {
+#ph{
   width: 600px;
   height: auto;
   margin-left: auto;
   margin-right: auto;
 }
-#pho {
+#pho{
   width: 600px;
 }
-#goods {
+#goods{
   margin-top: 10px;
   font-size: 20px;
   height: 40px;
   width: 600px;
   line-height: 40px;
 }
-#phgood {
+#phgood{
   font-size: 40px;
   float: left;
 }
-#phback {
+#isgood{
+  font-size: 40px;
+  float: left;
+  color: #a40404;
+}
+#phback{
   float: right;
   height: 30px;
   width: 60px;

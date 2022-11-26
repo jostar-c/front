@@ -80,16 +80,18 @@
         </div>
         -->
         <div id="photos">
-          <div class="readyph" v-for="(item, index) in readyphoto" :key="item">
-            <i class="el-icon-delete deleteph" @click="deleteopen"></i>
-            <img :src="readyphoto[index].ph" class="ph" />
+
+          <div class="readyph" v-for="(item,index) in photos">
+            <i class="el-icon-delete deleteph" @click="deleteopen(index)"></i>
+            <img :src="photos[index].pic_url" class="ph">
             <i class="el-icon-user-solid lefticon">
-              {{ readyphoto[index].name }}
+             {{photos[index].pic_url}}111
             </i>
             <i class="el-icon-info righticon">
-              {{ readyphoto[index].time }}
+             <!-- {{photos[index].time}}-->
             </i>
           </div>
+
         </div>
       </div>
     </div>
@@ -97,71 +99,88 @@
 </template>
       
 <script>
-export default {
-  data() {
-    return {
-      phstate: 1,
-      readyphoto: [
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx张三",
-          time: "2022.10.20",
-        },
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx李四",
-          time: "2022.10.21",
-        },
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx王五",
-          time: "2022.10.22",
-        },
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx飞机",
-          time: "2022.10.23",
-        },
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx大炮",
-          time: "2022.10.24",
-        },
-        {
-          ph: "../../static/6_photo_manage/p.jpg",
-          name: "032002xxx坦克",
-          time: "2022.10.25",
-        },
-      ],
-    };
-  },
-  methods: {
-    ready() {
-      this.phstate = 1;
+import axios from "axios";
+  export default {
+    data() {
+      return {
+        //phstate: 1,
+
+        photos:[],
+      };
     },
-    notready() {
-      this.phstate = 0;
+    methods:{
+      //ready(){
+      //  this.phstate=1;
+      //},
+      // notready(){
+      //  this.phstate=0;
+      //},
+      deleteopen(i) {
+        this.$confirm('此操作将永久删除该照片, 是否继续?', '提示', {
+          confirmButtonText: '删除',
+          cancelButtonText: '取消',
+          type: 'warning'
+            })
+            .then(() => {
+              this.deletephoto(i);
+              this.$message({
+                type: 'success',
+                message: '删除成功!'
+              });
+            })
+        },
+      refresh(){//刷新评论
+        const that=this;
+        this.photos.splice(0, this.photos.length);
+                axios.get('http://172.20.10.6:8080/scenery/all')
+                .then(function(response) {
+                  console.log(response.data);
+                  var l=response.data.length-1;
+                    for(var i = 0;i<=l;i++)
+                    {
+                      that.photos.push(
+                       {
+                          //id:response.data.photos[i].id,
+                          //ph:response.data.photos[i].ph,
+                          //name:response.data.photos[i].name,
+                          //time:response.data.photos[i].time,
+                          pic_url:response.data[i],
+                        }
+                      )
+                    }
+                });
     },
-    deleteopen() {
-      this.$confirm("此操作将永久删除该照片, 是否继续?", "提示", {
-        confirmButtonText: "删除",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: "删除成功!",
-        });
-      });
-    },
-  },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-  },
-};
+      deletephoto(i){//删除照片
+          const that=this;
+         // this.photos.splice(i, 1);//前端模拟删除
+         console.log(that.photos[i].pic_url);
+                axios.post('http://172.20.10.6:8080/scenery/deny',{pic_url:that.photos[i].pic_url})
+                .then(function(response) {
+                    that.refresh();
+                });
+      }
+      },
+      created() {//展示出照片
+                const that=this;
+                axios.get('http://172.20.10.6:8080/scenery/all')
+                .then(function(response) {
+                  console.log(response.data);
+                  var l=response.data.length-1;
+                    for(var i = 0;i<=l;i++)
+                    {
+                      that.photos.push(
+                       {
+                          //id:response.data.photos[i].id,
+                          //ph:response.data.photos[i].ph,
+                          //name:response.data.photos[i].name,
+                          //time:response.data.photos[i].time,
+                          pic_url:response.data[i],
+                        }
+                      )
+                    }
+                });
+            },
+  }
 </script>
       
       <style>
@@ -267,79 +286,81 @@ a {
   color: #00a4ff;
 }
 .main {
-  margin-top: 0%;
-  margin-left: 0%;
+  margin-top: 40px;
+  margin-left: 165px;
   width: 100%;
   height: 100%;
   float: right;
   position: fixed;
 }
-#phtitle {
+#phtitle{
   margin-top: 40px;
-  margin-left: 100px;
+  margin-left: 30px;
   width: 100%;
   height: 70px;
   font-size: 50px;
   line-height: 70px;
 }
-#line {
+#line{
   width: 75%;
   margin-top: 5px;
-  margin-left: 100px;
+  margin-left: 25px;
   height: 1px;
   background-color: #757575;
 }
-#phstate {
+#phstate
+{
   margin-top: 20px;
   margin-left: 25px;
   width: 100%;
   height: 35px;
 }
-.bt {
-  width: 100px;
-  height: 33px;
-  line-height: 30px;
-  text-align: center;
-  border: 2px solid rgb(84, 163, 203);
-  border-radius: 30px;
-  color: rgb(84, 163, 203);
-  margin-right: 40px;
-  float: left;
+.bt{
+    width: 100px;
+    height: 33px;
+    line-height: 30px;
+    text-align: center;
+    border: 2px solid rgb(84, 163, 203);
+    border-radius: 30px;
+    color: rgb(84, 163, 203);
+    margin-right: 40px;
+    float: left;
 }
-#already {
+#already{
   color: white;
   background-color: rgb(84, 163, 203);
 }
-#photos {
+#photos{
   margin-top: 30px;
-  margin-left: 100px;
+  margin-left: 25px;
   width: 80%;
   height: 800px;
 }
-.readyph {
+.readyph
+{
   width: 300px;
   height: 250px;
   margin-right: 40px;
   float: left;
 }
-.ph {
+.ph{
   width: 300px;
   height: 200px;
   margin-bottom: 5px;
   margin-top: -25px;
   float: left;
 }
-.lefticon {
+.lefticon{
   color: #808080;
   font-size: 15px;
   float: left;
 }
-.righticon {
+.righticon{
   color: #808080;
   font-size: 15px;
   float: right;
 }
-.deleteph {
+.deleteph{
   float: right;
   position: relative;
   bottom: -5px;

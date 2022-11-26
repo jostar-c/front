@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <!-- 1.top部分start -->
@@ -72,23 +73,26 @@
     </div>
     <!-- 头部区域end-->
 
+
     <!-- 发布留言栏 -->
     <div id="issue">
+    
       <!-- 写留言 -->
       <div id="issueleft">
-        <el-input
-          id="issuecomments"
-          type="textarea"
-          placeholder="对学校说点什么吧"
-          :autosize="{ minRows: 4, maxRows: 4 }"
-          v-model="textarea"
-        >
-        </el-input>
+      <el-input
+      id="issuecomments"
+      type="textarea"
+      placeholder="对学校说点什么吧"
+      :autosize="{ minRows: 4, maxRows: 4}"
+      v-model="comment">
+      </el-input>
       </div>
       <!-- 添加照片 -->
-      <div id="picture"></div>
+      <div id="picture">
+      </div>
       <!-- 发布 -->
-      <div id="push"></div>
+      <div id="push" @click="leave_comment">
+      </div>
     </div>
 
     <!-- 留言展示顶部 -->
@@ -100,26 +104,30 @@
         <i class="el-icon-refresh-left"></i>
       </div>
       <!-- 右侧文字 -->
-      <button id="righttext" @click="changeSort">{{ sort }}</button>
+      <button id="righttext" @click="changeSort">{{sort}}</button>
     </div>
 
     <div id="comments">
-      <div id="comment" v-for="(item, index) in comments" :key="item">
-        <img :src="comments[index].head" class="photo" />
-        <p class="name">{{ comments[index].name }}</p>
-        <p class="time">{{ comments[index].time }}</p>
-        <div class="inside">{{ comments[index].inside }}</div>
+      <div id="comment" v-for="(item,index) in comments">
+        <img :src="comments[index].head" class="photo">
+        <p class="name">{{comments[index].name}}</p>
+        <p class="time">{{comments[index].time}}</p>
+        <div class="inside">{{comments[index].inside}}</div>
         <router-link to="detail">
           <div class="say" @click="pushdetail(index)">
             <i class="el-icon-s-comment"></i>
           </div>
         </router-link>
         <div class="good">
-          <i class="el-icon-star-on"></i>
+          <i class="el-icon-star-on" 
+          :id="comments[index].good == 1 ? 'isgood':''"
+          @click="good(index)">
+            {{comments[index].goods}}</i>
         </div>
         <div class="blank"></div>
       </div>
     </div>
+
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -133,8 +141,9 @@
   </div>
 </template>
 
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
   <script>
+  import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -151,72 +160,135 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      sort: "按热度排序",
-      textarea: "",
-      comments: [
-        {
-          head: "../../static/userimg.png",
-          name: "张三",
-          time: "2022.11.13",
-          inside: "我爱母校",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "李四",
-          time: "2022.11.12",
-          inside: "母校加油",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "王五",
-          time: "20221.11.11",
-          inside: "感恩母校培养",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "老六",
-          time: "2022.11.10",
-          inside: "感谢母校",
-        },
-      ],
+      sortway:0,
+      sort:'按热度排序',
+      comment: '',
+      id:'',
+      comments: [],
     };
+
   },
-  methods: {
-    changeSort() {
-      if (this.sort == "按热度排序") {
-        this.sort = "按时间排序";
-        //在这里改变排序方式
-      } else {
-        this.sort = "按热度排序";
+  methods:{
+    changeSort(){
+      if(this.sort=='按热度排序')
+      {
+        this.sortway=1;
+        this.sort='按时间排序';
         //在这里改变排序方式
       }
+      else 
+      {
+        this.sortway=0;
+        this.sort='按热度排序';
+        //在这里改变排序方式
+      }
+      const that=this;
+      axios.get('../../static/comments.json',{sortway:that.sortway})
+      .then(res => {
+        that.refresh();//自动刷新
+      })
+      .catch(err => {
+        console.error(err); 
+      })
     },
-    good() {
+    good(i){
       //判断点赞
+      this.comments[i].good*=-1;
+      this.comments[i].goods+=this.comments[i].good;
+      const that=this;
+      axios.get('../../static/comments.json',{id:that.id})
+      .then(res => {
+        //后端点赞数+1 改变点赞状态
+      })
+      .catch(err => {
+        console.error(err); 
+      })
     },
-    refresh() {
-      //在这里刷新留言
+    refresh(){//刷新评论
+      const that=this;
+      this.comments.splice(0, this.comments.length);
+                axios.get('../../static/comments.json')
+                .then(function(response) {
+                    for(var i=response.data.comments.length-1;i>=0;i--)
+                    {
+                      that.comments.push(
+                       {
+                          id:response.data.comments[i].id,
+                          goods:response.data.comments[i].goods,
+                          name:response.data.comments[i].name,
+                          head:response.data.comments[i].head,
+                          time:response.data.comments[i].time,
+                          inside:response.data.comments[i].inside
+                        }
+                      )
+                    }
+                });
     },
-    pushdetail(i) {
+
+    leave_comment(){//把新的评论加入数据库
+      const that=this;
+      axios.get('../../static/comments.json',{comment:that.comment,id:that.id})
+      .then(res => {
+        that.refresh();//添加后自动刷新
+        that.comments.push(//模拟添加评论
+                       {
+                          id:that.id,
+                          goods:0,
+                          good:-1,
+                          name:"new",
+                          head:"../../static/userimg.png",
+                          time:"刚刚",
+                          inside:that.comment
+                        }
+                      )
+        
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+    pushdetail(i){//点进具体评论
       this.$router.push({
-        path: "/detail",
-        query: {
-          head: this.comments[i].head,
-          name: this.comments[i].name,
-          time: this.comments[i].time,
-          inside: this.comments[i].inside,
-        },
-      });
+			path:'/detail',
+			query:{
+				head: this.comments[i].head,
+        name: this.comments[i].name,
+        time: this.comments[i].time,
+        inside: this.comments[i].inside,
+        goods: this.comments[i].goods,
+        good: this.comments[i].good,
+        id: this.comments[i].id,
+			}
+		  })
     },
+    
   },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-  },
-};
+  created() {//展示出所有评论
+                const that=this;
+                axios.get('../../static/comments.json')
+                .then(function(response) {
+                    console.log(response.data);
+                    for(var i=response.data.comments.length-1;i>=0;i--)
+                    {
+                      that.comments.push(
+                       {
+                          id:response.data.comments[i].id,
+                          goods:response.data.comments[i].goods,
+                          name:response.data.comments[i].name,
+                          head:response.data.comments[i].head,
+                          time:response.data.comments[i].time,
+                          inside:response.data.comments[i].inside,
+                          good:-1
+                        }
+                      )
+                    }
+                });
+            },
+
+}
 //排序方式
+
+
 </script>
   
   <style>
@@ -353,7 +425,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -30%;
+  bottom: 0;
   width: 100%;
 }
 
@@ -379,34 +451,34 @@ body {
   height: 100px;
   margin-left: 0px;
   margin-top: 2px;
-  border: Transparent;
+  border:Transparent;
   color: #a40404;
   font-size: 14px;
 }
-#issueleft {
+#issueleft{
   float: left;
 }
-#picture {
+#picture{
   width: 100px;
   height: 100px;
   padding-left: 0px;
   margin-top: -1px;
   border: 1px solid #a40404;
   float: left;
-  /* background: url(../../static/7_comments/picture.jpg); */
+  background: url(../../static/7_comments/picture.jpg);
 }
-#push {
+#push{
   width: 196px;
   height: 100px;
   padding-left: 0px;
   margin-top: -1px;
   border: 1px solid #a40404;
   float: right;
-  /* background: url(../../static/7_comments/push.jpg); */
+  background: url(../../static/7_comments/push.jpg);
 }
 
 /* 留言展示顶部 */
-#showtop {
+#showtop{
   margin-top: 20px;
   width: 1102px;
   height: 30px;
@@ -414,7 +486,7 @@ body {
   margin-right: auto;
   background-color: #c20a0a;
 }
-#lefttext {
+#lefttext{
   width: 80px;
   height: 30px;
   float: left;
@@ -422,18 +494,18 @@ body {
   color: #fff;
   text-align: center;
 }
-#refresh {
+#refresh{
   width: 30px;
   height: 30px;
   float: right;
 }
-.el-icon-refresh-left {
+.el-icon-refresh-left{
   padding-top: 5px;
   padding-left: 5px;
   color: #fff;
   font-size: 20px;
 }
-#righttext {
+#righttext{
   width: 90px;
   height: 30px;
   float: right;
@@ -444,14 +516,14 @@ body {
   color: #fff;
   text-align: center;
 }
-#comments {
+#comments{
   margin-top: 20px;
   margin-left: auto;
   margin-right: auto;
   width: 1100px;
   height: auto;
 }
-#comment {
+#comment{
   margin-left: auto;
   margin-right: auto;
   width: 1100px;
@@ -460,7 +532,7 @@ body {
 }
 
 /* 头像 */
-.photo {
+.photo{
   margin-top: 15px;
   margin-left: 15px;
   width: 60px;
@@ -468,40 +540,44 @@ body {
   float: left;
 }
 /* 名称 时间 */
-.name {
+.name{
   margin-top: 20px;
   margin-left: 90px;
   font-weight: 500;
   font-size: 20px;
 }
-.time {
+.time{
   margin-top: 5px;
   margin-left: 90px;
   font-size: 13px;
   color: rgb(149, 149, 149);
 }
-.inside {
+.inside{
   margin-top: 20px;
   margin-left: 20px;
 }
-.good {
+.good{
   float: right;
   padding-right: 10px;
 }
-.say {
+.say{
   float: right;
   padding-right: 10px;
 }
-.el-icon-s-comment {
+.el-icon-s-comment{
   font-size: 28px;
   margin-top: 2px;
   margin-right: 10px;
 }
-.el-icon-star-on {
+.el-icon-star-on{
   font-size: 30px;
+  font-weight: 350;
   margin-right: 5px;
 }
-.blank {
+.blank{
   height: 40px;
+}
+#isgood{
+  color: #a40404;
 }
 </style>

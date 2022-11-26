@@ -73,56 +73,68 @@
     <!-- 头部区域end-->
 
     <!-- 功能主题 -->
-
+    
     <router-link to="schoolphoto">
       <div id="ranktop">
         <i class="el-icon-back"></i>
-        <div id="rankback">返回</div>
+        <div id="rankback">
+          返回
+       </div>
       </div>
     </router-link>
 
     <div id="therank">
       <div class="bigger1">
-        <div class="bigger2">NO.1</div>
-        <img :src="no1" class="bigger3" />
-        <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good1 }}
-        </div>
+        <div class="bigger2">No.1</div>
+          <img :src="tops[0].pic_url" class="bigger3">
+          <div class="bigger4">
+            <i class="el-icon-star-on biggergood"
+            :id="tops[0].flag == 1 ? 'isgood1':''"
+            @click="phgood(0)">{{tops[0].thumbs_up}}</i>
+          </div>
       </div>
       <div class="bigger1">
-        <div class="bigger2">NO.2</div>
-        <img :src="no2" class="bigger3" />
+        <div class="bigger2">No.2</div>
+        <img :src="tops[1].pic_url" class="bigger3">
         <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good2 }}
-        </div>
+            <i class="el-icon-star-on biggergood"
+            :id="tops[1].flag == 1 ? 'isgood1':''"
+            @click="phgood(1)">{{tops[1].thumbs_up}}</i>
+            
+          </div>
       </div>
       <div class="bigger1">
-        <div class="bigger2">NO.3</div>
-        <img :src="no3" class="bigger3" />
+        <div class="bigger2">No.3</div>
+        <img :src="tops[2].pic_url" class="bigger3">
         <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good3 }}
-        </div>
+            <i class="el-icon-star-on biggergood"
+            :id="tops[2].flag == 1 ? 'isgood1':''"
+            @click="phgood(2)">{{tops[2].thumbs_up}}</i>
+            
+          </div>
       </div>
       <div class="smaller1">
-        <div class="smaller2">NO.4</div>
-        <img :src="no4" class="smaller3" />
+        <div class="smaller2">No.4</div>
+        <img :src="tops[3].pic_url" class="smaller3">
         <div class="smaller4">
-          <i class="el-icon-star-on smallergood"></i>
-          {{ good4 }}
-        </div>
+            <i class="el-icon-star-on smallergood"
+            :id="tops[3].flag == 1 ? 'isgood2':''"
+            @click="phgood(3)">{{tops[3].thumbs_up}}</i>
+            
+          </div>
       </div>
       <div class="smaller1">
-        <div class="smaller2">NO.5</div>
-        <img :src="no5" class="smaller3" />
+        <div class="smaller2">No.5</div>
+        <img :src="tops[4].pic_url" class="smaller3">
         <div class="smaller4">
-          <i class="el-icon-star-on smallergood"></i>
-          {{ good5 }}
-        </div>
+            <i class="el-icon-star-on smallergood"
+            :id="tops[4].flag == 1 ? 'isgood2':''"
+            @click="phgood(4)">{{tops[4].thumbs_up}}</i>
+            
+          </div>
       </div>
     </div>
+
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -135,8 +147,9 @@
     </div>
   </div>
 </template>
-      
-      <script>
+    
+    <script>
+     import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -152,30 +165,47 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      no1: "../../static/8_schoolphoto/p.jpg",
-      no2: "../../static/8_schoolphoto/p.jpg",
-      no3: "../../static/8_schoolphoto/p.jpg",
-      no4: "../../static/8_schoolphoto/p.jpg",
-      no4: "../../static/8_schoolphoto/p.jpg",
-      no5: "../../static/8_schoolphoto/p.jpg",
-      good1: 999,
-      good2: 888,
-      good3: 777,
-      good4: 666,
-      good5: 555,
+       tops:[],
     };
   },
-  methods: {},
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-  },
-};
+  methods:{
+    phgood(i){
+      //判断点赞
+      this.tops[i].flag*=-1;
+      this.tops[i].thumbs_up-=(-this.tops[i].flag);
+      const that=this;
+      console.log(that.tops[i].thumbs_up);
+      axios.post('http://172.20.10.6:8080/scenery/like',{pic_url:that.tops[i].pic_url,thumbs_up:that.tops[i].thumbs_up})
+      .then(res => {
+        //后端点赞数+1 改变点赞状态3
+        
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+    },
+  created() {//展示出排行榜照片
+                const that=this;
+                axios.get('http://172.20.10.6:8080/scenery/five')
+                .then(function(response) {
+                  console.log(response.data);
+                    for(var i = 0;i<=4;i++)
+                    {
+                      that.tops.push(
+                       {
+                          pic_url:response.data[i].pic_url,
+                          thumbs_up:response.data[i].thumbs_up,
+                          flag:response.data[i].flag,
+                        }
+                      )
+                    }
+                });
+            },
+}
 </script>
-      
-      <style>
+    
+    <style>
 * {
   margin: 0;
   padding: 0;
@@ -309,7 +339,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -135%;
+  bottom: 0;
   width: 100%;
 }
 
@@ -319,17 +349,18 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-#ranktop {
+#ranktop{
   width: 100px;
   height: 40px;
   background-color: #a40404;
 }
-.el-icon-back {
+.el-icon-back
+{
   margin-left: 5px;
   color: white;
   font-size: 40px;
 }
-#rankback {
+#rankback{
   width: 55px;
   height: 40px;
   font-size: 22px;
@@ -337,17 +368,17 @@ body {
   color: white;
   line-height: 40px;
 }
-#therank {
+#therank{
   width: 800px;
   height: auto;
   margin-right: auto;
   margin-left: auto;
 }
-.bigger1 {
+.bigger1{
   width: 800px;
   height: 400px;
 }
-.bigger2 {
+.bigger2{
   width: 150px;
   height: 400px;
   font-size: 45px;
@@ -356,24 +387,24 @@ body {
   color: #a40404;
   float: left;
 }
-.bigger3 {
+.bigger3{
   width: 550px;
   float: left;
 }
-.bigger4 {
+.bigger4{
   width: 100px;
   height: 40px;
   line-height: 40px;
   float: left;
   font-size: 25px;
 }
-.smaller1 {
+.smaller1{
   width: 700px;
   height: 300px;
   margin-left: auto;
   margin-right: auto;
 }
-.smaller2 {
+.smaller2{
   width: 150px;
   height: 300px;
   font-size: 40px;
@@ -382,23 +413,32 @@ body {
   color: #a40404;
   float: left;
 }
-.smaller3 {
+.smaller3{
   width: 450px;
   float: left;
 }
-.smaller4 {
+.smaller4{
   width: 100px;
   height: 35px;
   float: left;
   line-height: 35px;
   font-size: 20px;
 }
-.biggergood {
+.biggergood{
   font-size: 40px;
   float: left;
 }
-.smallergood {
+.smallergood{
   font-size: 35px;
   float: left;
 }
+#isgood1{
+  font-size: 40px;
+  color: #a40404;
+}
+#isgood2{
+  font-size: 35px;
+  color: #a40404;
+}
+
 </style>

@@ -72,51 +72,52 @@
     </div>
     <!-- 头部区域end-->
 
+
+
     <!-- 具体评论 -->
-    <div id="comment">
-      <img :src="head" class="photo" />
-      <p class="name">{{ name }}</p>
-      <p class="time">{{ time }}</p>
-      <div class="inside">{{ inside }}</div>
-      <div class="say">
-        <i class="el-icon-s-comment"></i>
-      </div>
-      <div class="good">
-        <i class="el-icon-star-on"></i>
-      </div>
-      <div class="blank"></div>
-    </div>
-
-    <div id="issue2">
-      <!-- 评论 -->
-      <div id="issueleft2">
-        <el-input
-          id="issuecomments2"
-          type="textarea"
-          placeholder="评论点什么吧"
-          maxlength="15"
-          show-word-limit
-          :autosize="{ minRows: 2, maxRows: 4 }"
-          v-model="message"
-        >
-        </el-input>
-      </div>
-      <!-- 添加照片 -->
-
-      <!-- 发布 -->
-      <div id="push2">发布评论</div>
-    </div>
-
-    <div id="comments2">
-      <div id="comment" v-for="(item, index) in comments" :key="item">
-        <img :src="comments[index].head" class="photo" />
-        <div class="name2">
-          {{ comments[index].name }}: {{ comments[index].inside }}
+      <div id="comment">
+        <img :src="head" class="photo">
+        <p class="name">{{name}}</p>
+        <p class="time">{{time}}</p>
+        <div class="inside"> {{inside}} </div>
+        <div class="good">
+          <router-link to="comments">
+          <i class="el-icon-caret-left"></i>
+          </router-link>
         </div>
-        <p class="time">{{ comments[index].time }}</p>
+        <div class="blank"></div>
+      </div>
+    
+      <div id="issue2">
+    <!-- 评论 -->
+    <div id="issueleft2">
+    <el-input
+    id="issuecomments2"
+    type="textarea"
+    placeholder="评论点什么吧"
+    maxlength="15"
+    show-word-limit
+    :autosize="{ minRows: 2, maxRows: 4}"
+    v-model="message">
+    </el-input>
+    </div>
+    <!-- 添加照片 -->
+
+    <!-- 发布 -->
+    <div id="push2" @click="leave_reply">
+      发布评论
+    </div>
+  </div>
+
+  <div id="comments2">
+      <div id="comment" v-for="(item,index) in replys">
+        <img :src="replys[index].head" class="photo">
+        <div class="name2">{{replys[index].name}}: {{replys[index].inside}}</div>
+        <p class="time">{{replys[index].time}}</p>
         <div class="blank2"></div>
       </div>
     </div>
+
 
     <!-- footer 底部制作区域start -->
     <div class="footer">
@@ -129,8 +130,9 @@
     </div>
   </div>
 </template>
-      
-      <script>
+    
+    <script>
+    import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -146,44 +148,86 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      message: "",
-      comments: [
-        {
-          head: "../../static/userimg.png",
-          name: "大炮",
-          time: "2022.11.13",
-          inside: "我爱母校",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "飞机",
-          time: "2022.11.12",
-          inside: "母校加油",
-        },
-        {
-          head: "../../static/userimg.png",
-          name: "坦克",
-          time: "20221.11.11",
-          inside: "感恩母校培养",
-        },
+      message:'',
+      replys: [
+
       ],
     };
   },
-  methods: {
-    getParams() {
-      this.head = this.$route.query.head;
-      this.name = this.$route.query.name;
-      this.time = this.$route.query.time;
-      this.inside = this.$route.query.inside;
+  methods:{
+    getParams(){
+        this.head = this.$route.query.head;
+				this.name = this.$route.query.name;
+        this.time = this.$route.query.time;
+        this.inside = this.$route.query.inside;
+        this.good = this.$route.query.good;
+        this.goods = this.$route.query.goods;
+        this.id = this.$route.query.id;
+			},
+      refresh(){//刷新回复
+      const that=this;
+      this.replys.splice(0, this.replys.length);
+                axios.get('../../static/replys.json')
+                .then(function(response) {
+                    for(var i=response.data.replys.length-1;i>=0;i--)
+                    {
+                      that.replys.push(
+                       {
+                          id:response.data.replys[i].id,
+                          name:response.data.replys[i].name,
+                          head:response.data.replys[i].head,
+                          time:response.data.replys[i].time,
+                          inside:response.data.replys[i].inside
+                        }
+                      )
+                    }
+                });
     },
-  },
-  created() {
-    this.getParams();
-  },
-};
+    leave_reply(){//把新的回复加入数据库
+      const that=this;
+      axios.get('../../static/replys.json',{message:that.message,id:that.id})
+      .then(res => {
+        that.refresh();//添加后自动刷新
+        that.replys.push(//模拟添加评论
+                       {
+                          id:that.id,
+                          name:"new",
+                          head:"../../static/userimg.png",
+                          time:"刚刚",
+                          inside:that.message
+                        }
+                      )
+        
+      })
+      .catch(err => {
+        console.error(err); 
+      })
+    },
+    },
+    created(){
+  	this.getParams();//获取上一页数据
+    const that=this;
+                axios.get('../../static/replys.json',{id:that.id})//展示回复
+                .then(function(response) {
+                  console.log(response.data.replys.length);
+                    for(var i=response.data.replys.length-1;i>=0;i--)
+                    {
+                      that.replys.push(
+                       {
+                          id:response.data.replys[i].id,
+                          name:response.data.replys[i].name,
+                          head:response.data.replys[i].head,
+                          time:response.data.replys[i].time,
+                          inside:response.data.replys[i].inside,
+                        }
+                      )
+                    }
+                });
+    },
+}
 </script>
-      
-      <style>
+    
+    <style>
 * {
   margin: 0;
   padding: 0;
@@ -342,21 +386,21 @@ body {
   height: 54px;
   margin-left: 0px;
   margin-top: 2px;
-  border: Transparent;
+  border:Transparent;
   color: #a40404;
   font-size: 14px;
 }
-#issueleft2 {
+#issueleft2{
   float: left;
 }
 
-.el-icon-camera-solid {
+.el-icon-camera-solid{
   padding-top: 9px;
   padding-left: 7px;
   font-size: 40px;
   color: #a40404;
 }
-#push2 {
+#push2{
   width: 154px;
   height: 54px;
   padding-left: 0px;
@@ -370,19 +414,22 @@ body {
   text-align: center;
 }
 
-#comments2 {
+#comments2{
   margin-left: auto;
   margin-right: auto;
   width: 1102px;
   height: auto;
 }
-.blank2 {
+.blank2{
   height: 22px;
 }
-.name2 {
+.name2{
   margin-top: 24px;
   margin-left: 90px;
   font-weight: 500;
   font-size: 16px;
+}
+.el-icon-caret-left{
+  font-size: 40px;
 }
 </style>
