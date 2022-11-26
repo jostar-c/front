@@ -43,7 +43,7 @@
         <form>
           <div class="inputBox">
             <input type="text" name="" required="" v-model="uname" />
-            <label>账号</label>
+            <label>邮箱/电话</label>
           </div>
           <div class="inputBox">
             <input type="text" name="" required="" v-model="nickname" />
@@ -55,7 +55,7 @@
           </div>
           <div class="inputBox">
             <input type="text" name="" required="" v-model="yearOfGraduate" />
-            <label>毕业年份</label>
+            <label>年级</label>
           </div>
           <div class="inputBox">
             <input type="text" name="" required="" v-model="umajor" />
@@ -67,7 +67,7 @@
           </div>
           <div class="submit">
             <!--  @click.prevent="btn"-->
-            <input type="submit" value="注册" @click.prevent="login" />
+            <input type="submit" value="注册" @click.prevent="register" />
           </div>
         </form>
       </div>
@@ -102,30 +102,39 @@ export default {
   },
   methods: {
     register() {
-      http({
-        method: "post",
-        url: "http://localhost:8081/user/register",
-        params: {
+      this.$axios
+        .post("http://192.168.31.149:8083/user/register", {
           uname: this.uname,
           nickname: this.nickname,
           password: this.password,
-          yearOfGraduate: this.yearOfGraduate,
+          grade: this.yearOfGraduate,
           umajor: this.umajor,
           uclass: this.uclass,
-        },
-      })
-        .then((res) => {
-          if (res.data.code === 200) {
-            window.localStorage.setItem("uname", this.uname);
-            this.$router.replace("/all");
+        })
+        .then((response) => {
+          if (response.data.result == "0") {
+            this.$message({
+              showClose: true,
+              message: "注册成功",
+              type: "success",
+            });
+            clearTimeout(this.timer); //清除延迟执行
+            this.timer = setTimeout(() => {
+              //设置延迟执行
+              //跳转的页面
+              this.$router.push("/login");
+            }, 1000);
           } else {
-            this.err = "";
-            this.$router.replace("/");
-            this.err = this.err.concat("账号已存在");
+            this.$message({
+              showClose: true,
+              message: "用户已存在",
+              type: "error",
+            });
           }
+          console.log(response);
         })
         .catch((err) => {
-          console.log("error");
+          console.log(err);
         });
     },
   },
@@ -300,7 +309,7 @@ body {
 .box .inputBox input {
   width: 100%;
   padding: 10px 0;
-  font-side: 16px;
+  font: 16px;
   color: #fff;
   letter-spacing: 1px;
   margin-bottom: 30px;

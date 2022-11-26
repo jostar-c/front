@@ -9,12 +9,7 @@
       </div>
       <div class="user">
         <router-link to="personalpage">
-          <img
-            src="../../static/userimg.png"
-            href="#"
-            width="15px"
-            height="auto"
-          />
+          <img :src="userimg" href="#" width="15px" height="auto" />
         </router-link>
       </div>
     </div>
@@ -74,10 +69,14 @@
 
     <!-- 功能主题 -->
     <div id="ph">
-      <img :src="ph" alt="" id="pho" />
+      <img :src="pic_url" alt="" id="pho" />
       <div id="goods">
-        <i class="el-icon-star-on" id="phgood"></i>
-        {{ good }}
+        <i
+          class="el-icon-star-on"
+          :id="flag == 1 ? 'isgood' : 'phgood'"
+          @click="phgood"
+          >{{ thumbs_up }}</i
+        >
         <router-link to="schoolphoto"
           ><button id="phback">返回</button></router-link
         >
@@ -111,12 +110,35 @@ for (var i = 0; i < btns.length; i++) {
 }
 export default {
   data() {
-    return {};
+    return {
+      userimg: sessionStorage.getItem("userimg"),
+      pic_url: "",
+      thumbs_up: 0,
+      flag: 1,
+    };
   },
   methods: {
     getParams() {
-      this.ph = this.$route.query.ph;
-      this.good = this.$route.query.good;
+      this.pic_url = this.$route.query.pic_url;
+      this.thumbs_up = this.$route.query.thumbs_up;
+      this.flag = this.$route.query.flag;
+    },
+    phgood() {
+      //判断点赞
+      this.flag *= -1;
+      this.thumbs_up -= -this.flag;
+      const that = this;
+      axios
+        .post("http://119.91.217.141:8080/scenery/like", {
+          pic_url: that.pic_url,
+          thumbs_up: that.thumbs_up,
+        })
+        .then((res) => {
+          //后端点赞数+1 改变点赞状态
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
   },
   created() {
@@ -292,6 +314,11 @@ body {
 #phgood {
   font-size: 40px;
   float: left;
+}
+#isgood {
+  font-size: 40px;
+  float: left;
+  color: #a40404;
 }
 #phback {
   float: right;

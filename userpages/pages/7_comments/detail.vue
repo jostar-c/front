@@ -9,12 +9,7 @@
       </div>
       <div class="user">
         <router-link to="personalpage">
-          <img
-            src="../../static/userimg.png"
-            href="#"
-            width="15px"
-            height="auto"
-          />
+          <img :src="userimg" href="#" width="15px" height="auto" />
         </router-link>
       </div>
     </div>
@@ -147,6 +142,7 @@ export default {
   data() {
     return {
       message: "",
+      userimg: sessionStorage.getItem("userimg"),
       comments: [
         {
           head: "../../static/userimg.png",

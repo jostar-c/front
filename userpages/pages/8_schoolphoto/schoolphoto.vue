@@ -9,12 +9,7 @@
       </div>
       <div class="user">
         <router-link to="personalpage">
-          <img
-            src="../../static/userimg.png"
-            href="#"
-            width="15px"
-            height="auto"
-          />
+          <img :src="userimg" href="#" width="15px" height="auto" />
         </router-link>
       </div>
     </div>
@@ -143,6 +138,7 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
+      userimg: sessionStorage.getItem("userimg"),
       lp1: "../../static/8_schoolphoto/p.jpg",
       goodlp1: 150,
     };

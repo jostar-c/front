@@ -58,7 +58,7 @@
           </li>
           <li>
             <router-link to="Live_manage"
-              >直播跳转链接管理 <span>&gt;</span></router-link
+              >直播跳转链接管理<span>&gt;</span></router-link
             >
           </li>
         </ul>
@@ -85,18 +85,23 @@
         <div id="newlive" v-show="updata == 1">
           <div class="explain">新直播平台:</div>
           <el-input
-            v-model="newplatform"
+            v-model="site"
             placeholder="请输入平台"
             class="new"
           ></el-input>
           <div class="explain">新直播链接:</div>
           <el-input
-            v-model="newlive"
+            v-model="website"
             placeholder="请输入链接"
             class="new"
           ></el-input>
           <div id="livebutton">
-            <el-button round @click="updataLive">确认</el-button>
+            <el-button
+              round
+              @click="updataLive"
+              :disabled="this.website == '' || this.site == ''"
+              >确认</el-button
+            >
             <el-button round @click="changeUpdata">取消</el-button>
           </div>
         </div>
@@ -112,8 +117,8 @@ export default {
       updata: -1,
       oldplatform: "哔哩哔哩",
       oldlive: "http://live.blibli.com/*****",
-      newplatform: "",
-      newlive: "",
+      site: "",
+      website: "",
     };
   },
   methods: {
@@ -121,18 +126,47 @@ export default {
       this.updata *= -1;
     },
     updataLive() {
-      this.oldplatform = this.newplatform;
-      this.oldlive = this.newlive;
-      this.newlive = "";
-      this.newplatform = "";
-      this.updata *= -1;
+      //更新网站和平台
+      const that = this;
+      let Params = new FormData();
+      Params.append(that.website, that.site);
+      axios
+        .post("http://119.91.217.141:8080/insertzhibo", {
+          website: that.website,
+          site: that.site,
+        })
+        .then((res) => {
+          console.log(that.site);
+          console.log(that.website);
+          //that.oldplatform=that.site;
+          //that.oldlive=that.website;
+          //that.website="";
+          //that.site="";
+          that.refresh();
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    refresh() {
+      const that = this;
+      axios
+        .get("http://119.91.217.141:8080/httpquery")
+        .then(function (response) {
+          console.log(response.data);
+          that.oldlive = response.data.data[0].website;
+          that.oldplatform = response.data.data[0].site;
+        });
     },
   },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
+  created() {
+    //展示当前链接
+    const that = this;
+    axios.get("http://119.91.217.141:8080/httpquery").then(function (response) {
+      console.log(response.data);
+      that.oldlive = response.data.data[0].website;
+      that.oldplatform = response.data.data[0].site;
+    });
   },
 };
 </script>

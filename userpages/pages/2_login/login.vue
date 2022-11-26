@@ -106,49 +106,52 @@ export default {
   },
   methods: {
     login() {
+      // sessionStorage.setItem("islogin", "true");
+      // sessionStorage.setItem(
+      //   "userimg",
+      //   response.data.data.userimg == ""
+      //     ? "../../static/avatar.jpg"
+      //     : response.data.data.userimg
+      // );
       //将用户账号密码发送给后端，若已注册，则返回"true"，否则返回"false"，弹窗显示未注册
-      // this.$axios
-      //   .post("", {
-      //     uname: this.uname,
-      //     password: this.password,
-      //   })
-      //   .then((response) => {
-      //     sessionStorage.setItem("uid", response.data.user.uid);
-      //     sessionStorage.setItem("uname", response.data.user.uname);
-      //     sessionStorage.setItem("email", response.data.user.email);
-      //     sessionStorage.setItem("grade", response.data.user.grade);
-      //     sessionStorage.setItem("major", response.data.user.major);
-      //     sessionStorage.setItem("uclass", response.data.user.uclass);
-      //     sessionStorage.setItem("userimg", response.data.user.userimg);
-      //     sessionStorage.setItem("islogin", "true");
-      //     this.success = true;
-      //     this.$message({
-      //       showClose: true,
-      //       message: response.data.msg,
-      //       type: "success",
-      //     });
-      //     console.log(response);
-      //   })
-      //   .catch((err) => {
-      //     this.$message({
-      //       showClose: true,
-      //       message: err.data.msg,
-      //       type: "error",
-      //     });
-      //     console.log(err);
-      //   });
-
-      ////////////////////////////////////////模拟/////////////////////////////////////////////////
-      sessionStorage.setItem("uid", "21");
-      sessionStorage.setItem("islogin", "true");
-      this.success = true;
-      this.$message({
-        showClose: true,
-        message: "登录成功",
-        type: "success",
-      });
-      console.log(this.success);
-      /////////////////////////////////////////////////////////////////////////////////////////////
+      this.$axios
+        .post("http://192.168.31.149:8083/user/login", {
+          uname: this.uname,
+          password: this.password,
+        })
+        .then((response) => {
+          if (response.data.code == "0") {
+            sessionStorage.setItem("uid", response.data.data.uid);
+            sessionStorage.setItem("uname", response.data.data.uname);
+            sessionStorage.setItem("email", response.data.data.email);
+            sessionStorage.setItem("grade", response.data.data.grade);
+            sessionStorage.setItem("major", response.data.data.major);
+            sessionStorage.setItem("uclass", response.data.data.uclass);
+            sessionStorage.setItem(
+              "userimg",
+              response.data.data.userimg == undefined
+                ? "../../static/avatar.jpg"
+                : response.data.data.userimg
+            );
+            sessionStorage.setItem("islogin", "true");
+            this.success = true;
+            this.$message({
+              showClose: true,
+              message: response.data.msg,
+              type: "success",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: response.data.msg,
+              type: "error",
+            });
+          }
+          console.log(response, sessionStorage.getItem("userimg"));
+        })
+        .catch((err) => {
+          console.log(err);
+        });
 
       if (this.success) {
         clearTimeout(this.timer); //清除延迟执行

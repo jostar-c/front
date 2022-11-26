@@ -48,7 +48,7 @@
           </li> -->
           <li>
             <router-link to="class_manage"
-              >班级信息管理 <span>&gt;</span></router-link
+              >班级信息管理<span>&gt;</span></router-link
             >
           </li>
           <li>

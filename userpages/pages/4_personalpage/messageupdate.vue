@@ -59,7 +59,7 @@
           v-model="uname"
         />
       </form>
-      <form action="#">
+      <!-- <form action="#">
         <span>邮箱/手机号码</span>
         <input
           type="search"
@@ -68,7 +68,7 @@
           class="input"
           v-model="email"
         />
-      </form>
+      </form> -->
       <form action="#">
         <span>年级</span>
         <input
@@ -100,10 +100,40 @@
         />
       </form>
 
-      <div>
+      <div style="margin-top: 4%">
+        <el-button plain type="text" @click="dialogFormVisible = true"
+          >修改密码</el-button
+        >
         <el-button plain @click="open4"> 提 交 </el-button>
       </div>
     </div>
+
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogFormVisible"
+      style="width: 70%; margin-left: 15%"
+    >
+      <el-form :model="form">
+        <el-form-item label="旧密码：" :label-width="formLabelWidth">
+          <el-input v-model="oldpassword" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="新密码：" :label-width="formLabelWidth">
+          <el-input v-model="newpassword" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button
+          type="primary"
+          @click="
+            dialogFormVisible = false;
+            updatepassword();
+          "
+          >确 定</el-button
+        >
+      </div>
+    </el-dialog>
 
     <el-upload
       class="avatar-uploader"
@@ -132,20 +162,54 @@
 export default {
   data() {
     return {
+      dialogFormVisible: false,
+      uid: sessionStorage.getItem("uid"),
       uname: "",
-      email: "",
+      // email: "",
       grade: "",
       major: "",
       uclass: "",
-      imageUrl: "../../static/avatar.jpg",
+      imageUrl: sessionStorage.getItem("userimg"),
+      oldpassword: "",
+      newpassword: "",
     };
   },
   methods: {
     open4() {
-      this.$notify.error({
-        title: "错误",
-        message: "您填写的信息有误",
-      });
+      this.$axios
+        .post("http://192.168.31.149:8083/user/changeInformation", {
+          uid: this.uid,
+          newGrade: this.grade,
+          newMajor: this.major,
+          newClass: this.uclass,
+          newNickname: this.uname,
+          newAvatar: this.imageUrl,
+        })
+        .then((response) => {
+          if (response.data.result == "0") {
+            sessionStorage.setItem("uname", this.uname);
+            // sessionStorage.setItem("email", this.email);
+            sessionStorage.setItem("grade", this.grade);
+            sessionStorage.setItem("major", this.major);
+            sessionStorage.setItem("uclass", this.uclass);
+            sessionStorage.setItem("userimg", this.imageUrl);
+            this.$message({
+              showClose: true,
+              message: "资料修改成功",
+              type: "success",
+            });
+          } else {
+            this.$message({
+              showClose: true,
+              message: "您填写的资料格式有误或资料没有变更",
+              type: "error",
+            });
+          }
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
@@ -161,6 +225,32 @@ export default {
         this.$message.error("上传头像图片大小不能超过 2MB!");
       }
       return isJPG && isLt2M;
+    },
+    updatepassword() {
+      this.$axios
+        .post("http://192.168.31.149:8083/user/changePassword", {
+          uid: this.uid,
+          oldPassword: this.oldpassword,
+          newPassword: this.newpassword,
+        })
+        .then((response) => {
+          if (response.data.result == "0")
+            this.$message({
+              showClose: true,
+              message: "密码更改成功",
+              type: "success",
+            });
+          else
+            this.$message({
+              showClose: true,
+              message: "旧密码不匹配",
+              type: "error",
+            });
+          console.log(response, this.oldpassword, this.newpassword);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   created: function () {

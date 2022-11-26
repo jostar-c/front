@@ -9,11 +9,7 @@
       </div>
       <div class="user">
         <img
-          :src="
-            islogin == 0
-              ? require('../../static/user.png')
-              : require('../../static/userimg.png')
-          "
+          :src="userimg"
           href="#"
           width="15px"
           height="auto"
@@ -149,7 +145,9 @@ for (var i = 0; i < btns.length; i++) {
 }
 export default {
   data() {
-    return {};
+    return {
+      userimg: sessionStorage.getItem("userimg"),
+    };
   },
   methods: {
     goTopersonalpage() {
@@ -308,39 +306,39 @@ body {
   background-color: #a40404;
 }
 
-.select p{
+.select p {
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
 
-.temp{
+.temp {
   float: left;
   margin-top: 70px;
   margin-left: 70px;
   margin-right: 70px;
 }
 
-.temp1{
+.temp1 {
   float: left;
   margin-top: -30px;
   margin-left: 280px;
 }
 
-.temp2{
+.temp2 {
   float: left;
   margin-left: 0px;
   margin-top: 20px;
 }
 
-.temp3{
+.temp3 {
   float: left;
   margin-top: -47px;
   margin-left: 200px;
 }
 
-.temp4{
+.temp4 {
   float: left;
   margin-top: -5px;
   margin-left: 0px;
@@ -362,5 +360,4 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-
 </style>

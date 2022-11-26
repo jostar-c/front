@@ -9,11 +9,7 @@
       </div>
       <div class="user">
         <img
-          :src="
-            islogin == 0
-              ? require('../../static/user.png')
-              : require('../../static/userimg.png')
-          "
+          :src="userimg"
           href="#"
           width="15px"
           height="auto"
@@ -77,67 +73,97 @@
 
     <!-- 功能主题 -->
     <div class="return">
-      <router-link to="groupphoto"><p><i class="el-icon-arrow-left"></i>返回选择模板</p></router-link>
-      </div>
+      <router-link to="groupphoto"
+        ><p><i class="el-icon-arrow-left"></i>返回选择模板</p></router-link
+      >
+    </div>
 
-        <div class="temp">
-          <canvas width="800" height="550" id="canvas"></canvas>
-      </div>
-      <!-- <div class="downloadbtn"><el-button @click="downloadImage">下载照片</el-button></div> -->
+    <div class="temp">
+      <canvas width="800" height="550" id="canvas"></canvas>
+    </div>
+    <!-- <div class="downloadbtn"><el-button @click="downloadImage">下载照片</el-button></div> -->
 
-      <div class="avatarbtn">
-      <el-button @click="dialogVisible=true">上传头像</el-button>
+    <div class="avatarbtn">
+      <el-button @click="dialogVisible = true">上传头像</el-button>
 
-    <!-- 弹出层-裁剪 -->
-    <el-dialog title="编辑头像" :visible.sync="dialogVisible" :before-close="handleClose">
-      <span>
-        <el-row>
-          <input
-            ref="filElem"
-            type="file"
-            id="uploads"
-            accept="image/png, image/jpeg, image/gif, image/jpg"
-            @change="uploadImg($event,1)"
-            class="el-button hide"
-            style="margin-bottom:15px"
-          />
-          <div class="upload-img" @click="clickUpload">点击上传图片</div>
-        </el-row>
-        <el-row>
-          <el-col :span="14">
-            <!-- 裁剪 -->
-            <vueCropper
-              style="width:100%;height:400px"
-              ref="cropper"
-              :img="attach.customaryUrl"
-              :autoCrop="options.autoCrop"
-              :fixedBox="options.fixedBox"
-              :canMoveBox="options.canMoveBox"
-              :autoCropWidth="options.autoCropWidth"
-              :autoCropHeight="options.autoCropHeight"
-              :centerBox="options.centerBox"
-              @realTime="realTime"
-            ></vueCropper>
-          </el-col>
-          <el-col :span="6.5">
-            <h2 align="center" class=" mar-left-50">头像预览</h2>
-            <div class="show-preview">
-              <div :style="previews.div" class="preview">
-                <img :src="previews.url" :style="previews.img" width="100%" />
+      <!-- 弹出层-裁剪 -->
+      <el-dialog
+        title="编辑头像"
+        :visible.sync="dialogVisible"
+        :before-close="handleClose"
+      >
+        <span>
+          <el-row>
+            <input
+              ref="filElem"
+              type="file"
+              id="uploads"
+              accept="image/png, image/jpeg, image/gif, image/jpg"
+              @change="uploadImg($event, 1)"
+              class="el-button hide"
+              style="margin-bottom: 15px"
+            />
+            <div class="upload-img" @click="clickUpload">点击上传图片</div>
+          </el-row>
+          <el-row>
+            <el-col :span="14">
+              <!-- 裁剪 -->
+              <vueCropper
+                style="width: 100%; height: 400px"
+                ref="cropper"
+                :img="attach.customaryUrl"
+                :autoCrop="options.autoCrop"
+                :fixedBox="options.fixedBox"
+                :canMoveBox="options.canMoveBox"
+                :autoCropWidth="options.autoCropWidth"
+                :autoCropHeight="options.autoCropHeight"
+                :centerBox="options.centerBox"
+                @realTime="realTime"
+              ></vueCropper>
+            </el-col>
+            <el-col :span="6.5">
+              <h2 align="center" class="mar-left-50">头像预览</h2>
+              <div class="show-preview">
+                <div :style="previews.div" class="preview">
+                  <img :src="previews.url" :style="previews.img" width="100%" />
+                </div>
               </div>
-            </div>
-          </el-col>
-        </el-row>
-        <el-row class="confirmBtn" align="center">
-          <el-button type="primary " size="medium" round @click="confirm('blob')">确认</el-button>
-          <el-button type="info" size="medium" round @click="handleClose">取消</el-button>
-        </el-row>
-      </span>
-    </el-dialog>
-  </div>
-  <div ref="delBtn" style="position: fixed;top: 0px;left: 0px;z-index:10;display:none;padding: 4px 8px;background-color: #fff" @click="delEl">删除</div>
- 
-  <div class="downloadbtn"><el-button @click="downloadImage">下载照片</el-button></div>
+            </el-col>
+          </el-row>
+          <el-row class="confirmBtn" align="center">
+            <el-button
+              type="primary "
+              size="medium"
+              round
+              @click="confirm('blob')"
+              >确认</el-button
+            >
+            <el-button type="info" size="medium" round @click="handleClose"
+              >取消</el-button
+            >
+          </el-row>
+        </span>
+      </el-dialog>
+    </div>
+    <div
+      ref="delBtn"
+      style="
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        z-index: 10;
+        display: none;
+        padding: 4px 8px;
+        background-color: #fff;
+      "
+      @click="delEl"
+    >
+      删除
+    </div>
+
+    <div class="downloadbtn">
+      <el-button @click="downloadImage">下载照片</el-button>
+    </div>
     <!-- footer 底部制作区域start -->
     <div class="footer">
       <p>
@@ -155,6 +181,7 @@ import { fabric } from "fabric";
 export default {
   data() {
     return {
+      userimg: sessionStorage.getItem("userimg"),
       backgroundImage: "",
       canvasHeight: 0,
       dialogVisible: false,
@@ -211,7 +238,7 @@ export default {
           // })
           // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
           // this.fabricInstance.on('mouse:down', this.canvasOnMouseDown)
-          this.setCanvasBackgroundImage(backgroundImage,backgroundImageEl);
+          this.setCanvasBackgroundImage(backgroundImage, backgroundImageEl);
         });
       };
     },
@@ -233,15 +260,14 @@ export default {
     //     // hiddenMenu()
     //   }
     // },
-    setCanvasBackgroundImage(backgroundImage,backgroundImageEl) {
+    setCanvasBackgroundImage(backgroundImage, backgroundImageEl) {
       this.fabricInstance.setBackgroundImage(
         backgroundImage,
         this.fabricInstance.renderAll.bind(this.fabricInstance),
-          {
-            scaleX: 800 / backgroundImageEl.width,
-            scaleY: 550 / backgroundImageEl.height
-
-          }
+        {
+          scaleX: 800 / backgroundImageEl.width,
+          scaleY: 550 / backgroundImageEl.height,
+        }
       );
     },
     //控制弹出层关闭
@@ -457,40 +483,39 @@ body {
   background-color: #a40404;
 }
 
-.return p{
-
+.return p {
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
-.select p{
+.select p {
   text-align: center;
   font-size: 20px;
   padding-top: 5px;
-  color:#fff
+  color: #fff;
 }
 
-.selfid{
+.selfid {
   float: left;
   font-size: 15px;
   padding-top: 5px;
-  color:rgb(0, 0, 0)
+  color: rgb(0, 0, 0);
 }
 
-.addsomeone{
+.addsomeone {
   float: right;
   font-size: 15px;
   padding-top: 5px;
-  color:rgb(0, 0, 0)
+  color: rgb(0, 0, 0);
 }
 
-.temp{
+.temp {
   float: left;
   margin-top: 40px;
   margin-left: 120px;
-} 
+}
 
-.el-dialog{
+.el-dialog {
   width: 1200px !important;
   height: 650px;
 }
@@ -508,10 +533,10 @@ body {
   margin-left: 50px;
   margin-top: 50px;
 }
-.upload-img{
+.upload-img {
   width: 100px;
   height: 30px;
-  border:1px solid #f08512;
+  border: 1px solid #f08512;
   margin-bottom: 5px;
   line-height: 30px;
   text-align: center;
@@ -526,20 +551,20 @@ body {
   margin-left: -200px;
 }
 
-.avatarbtn button{
+.avatarbtn button {
   /* float: left; */
   margin-top: 170px;
   margin-left: 155px;
   color: #a40404;
-  box-shadow:2px 2px 2px 2px  rgba(102, 102, 102, 0.653);
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
 }
 
-.downloadbtn button{
+.downloadbtn button {
   float: left;
   margin-top: 200px;
   margin-left: 155px;
   color: #a40404;
-  box-shadow:2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
 }
 /* footer 模块 */
 
@@ -557,5 +582,4 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-
 </style>

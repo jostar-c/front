@@ -67,7 +67,11 @@
       <div class="main">
         <div style="padding: 30px">
           <div class="c-title" style="font-size: 30px">用户账号管理</div>
-          <el-table :data="tableData" border style="width: 100%">
+          <el-table
+            :data="tableData.filter((v) => v.id)"
+            border
+            style="width: 100%"
+          >
             <el-table-column
               fixed
               prop="id"
@@ -92,7 +96,7 @@
             </el-table-column>
             <el-table-column
               prop="yearOfGraduate"
-              label="毕业年份"
+              label="年级"
               width="140"
               align="center"
             >
@@ -133,16 +137,16 @@
           <el-pagination
             :page-size="8"
             background
-            layout="prev, pager, next"
+            layout="total, prev, pager, next"
             :total="tablenum"
             style="text-align: center; margin-top: 3%"
-            @current-change="getPageNum"
+            @current-change="handleCurrentChange"
           >
           </el-pagination>
         </div>
       </div>
     </div>
-    <el-button type="text" @click="dialogFormVisible = true">封禁</el-button>
+    <!-- <el-button type="text" @click="dialogFormVisible = true">封禁</el-button>
 
     <el-dialog title="" :visible.sync="dialogFormVisible">
       <el-form :model="form">
@@ -187,123 +191,165 @@
           >确 定</el-button
         >
       </div>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
 export default {
   methods: {
-    banClick(id) {
-      // 改为向后端传送封禁第几个用户，后端返回封禁后的用户信息赋给tableData进行渲染更新
-      console.log(id);
-      this.dialogFormVisible = true;
+    getPage() {
+      this.$axios
+        .post("http://119.91.217.141:8080/user/users", {
+          page: this.currentpage,
+        })
+        .then((res) => {
+          this.tablenum = res.data.count * 1;
+          for (var i = 0; i < 8; i++) this.tableData[i].id = "no";
+          for (var i = 0; i < 8; i++) {
+            this.tableData[i].id = res.data["uid" + i];
+            this.tableData[i].name = res.data["uname" + i];
+            this.tableData[i].nickname = res.data["nickname" + i];
+            this.tableData[i].yearOfGraduate = res.data["grade" + i];
+            this.tableData[i].pClass =
+              res.data["umajor" + i] + res.data["uclass" + i];
+            this.tableData[i].date = res.data["createTime" + i];
+            this.tableData[i].state = res.data["ban" + i];
+          }
+          console.log(res);
+        });
     },
-    unlockClick(id) {
-      // 改为向后端传送解封第几个用户，后端返回解封后的用户信息赋给tableData进行渲染更新
-      console.log(id);
-      this.dialogVisible = true;
+    handleCurrentChange(currentPage) {
+      this.currentpage = currentPage;
+      this.getPage();
     },
-  },
-  created() {
-    console.log("向后端请求前8条信息存入tableData");
+    banClick(i) {
+      this.$axios
+        .post("http:/119.91.217.141:8080/user/users/ban", {
+          uname: i.name,
+          ban: "true",
+        })
+        .then((res) => {
+          this.$message({
+            showClose: true,
+            message: "更改用户状态成功",
+            type: "success",
+          });
+          this.getPage();
+        });
+    },
+    unlockClick(i) {
+      this.$axios
+        .post("http://119.91.217.141:8080/user/users/ban", {
+          uname: i.name,
+          ban: "false",
+        })
+        .then((res) => {
+          this.$message({
+            showClose: true,
+            message: "更改用户状态成功",
+            type: "success",
+          });
+          this.getPage();
+        });
+    },
   },
 
   data() {
     return {
-      dialogVisible: false,
-      dialogFormVisible: false,
+      // dialogVisible: false,
+      // dialogFormVisible: false,
       tablenum: 500,
       currentpage: 1,
       tableData: [
         {
-          id: 1,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "1",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 2,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "2",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 3,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "3",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 4,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "4",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 5,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "5",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 6,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "6",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 7,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "7",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
         {
-          id: 8,
-          name: "1113756394",
-          nickname: "zhang san",
-          yearOfGraduate: "2024",
-          pClass: "计算机与大数据4班",
-          date: "2022-11-11",
-          state: "正常",
+          id: "8",
+          name: "",
+          nickname: "",
+          yearOfGraduate: "",
+          pClass: "",
+          date: "",
+          state: "",
         },
       ],
-      banData: {
-        reason: "发表不良信息",
-        duration: "一个月",
-      },
-      form: {
-        name: "",
-        region: "",
-        date1: "",
-        date2: "",
-        delivery: false,
-        type: [],
-        resource: "",
-        desc: "",
-      },
-      formLabelWidth: "80px",
+      // banData: {
+      //   reason: "发表不良信息",
+      //   duration: "一个月",
+      // },
+      // form: {
+      //   name: "",
+      //   region: "",
+      //   date1: "",
+      //   date2: "",
+      //   delivery: false,
+      //   type: [],
+      //   resource: "",
+      //   desc: "",
+      // },
+      // formLabelWidth: "80px",
     };
   },
   created: function () {
@@ -311,6 +357,7 @@ export default {
       location.href = location.href + "#reloaded";
       location.reload();
     }
+    this.getPage();
   },
 };
 </script>

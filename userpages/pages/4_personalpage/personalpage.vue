@@ -98,8 +98,7 @@ export default {
       grade: sessionStorage.getItem("grade"),
       major: sessionStorage.getItem("major"),
       uclass: sessionStorage.getItem("uclass"),
-      // imageUrl: sessionStorage.getItem("userimg"),
-      imageUrl: "../../static/avatar.jpg",
+      imageUrl: sessionStorage.getItem("userimg"),
     };
   },
   created: function () {

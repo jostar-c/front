@@ -9,11 +9,7 @@
       </div>
       <div class="user">
         <img
-          :src="
-            islogin == 0
-              ? require('../../static/user.png')
-              : require('../../static/userimg.png')
-          "
+          :src="userimg"
           href="#"
           width="15px"
           height="auto"
@@ -129,6 +125,7 @@ export default {
   data() {
     return {
       islogin: Boolean(sessionStorage.getItem("islogin")),
+      userimg: "",
       sumevents: 500,
       eventdatas: [
         {
@@ -208,7 +205,7 @@ export default {
     getPageNum(val) {
       // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
       $.ajax({
-        url: "http://10.133.18.143:8000/bigevent",
+        url: "http://119.91.217.141:8080/bigevent",
         type: "get",
         data: {
           x: val,
@@ -227,6 +224,8 @@ export default {
     },
   },
   created() {
+    if (this.islogin == 0) this.userimg = "../../static/user.png";
+    else this.userimg = sessionStorage.getItem("userimg");
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
@@ -235,7 +234,7 @@ export default {
       "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
     );
     $.get({
-      url: "http://10.133.18.143:8000/bigevent",
+      url: "http://119.91.217.141:8080/bigevent",
       type: "get",
       data: {
         x: 1,

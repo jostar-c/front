@@ -9,11 +9,7 @@
       </div>
       <div class="user">
         <img
-          :src="
-            islogin == 0
-              ? require('../../static/user.png')
-              : require('../../static/userimg.png')
-          "
+          :src="userimg"
           href="#"
           width="15px"
           height="auto"
@@ -80,15 +76,16 @@
       <div class="yqzb-module">
         <div class="yqzb-title">院庆直播</div>
         <div class="yqzb-content">
-          <video
-            playsinline=""
-            controls=""
-            disablepictureinpicture=""
-            controlslist="nodownload"
-            jm_neat="1007234049"
-            :src ="address"
-          >
-          </video>
+          <a :href="address" target="blank">
+            <video
+              playsinline=""
+              controls=""
+              disablepictureinpicture=""
+              controlslist="nodownload"
+              jm_neat="1007234049"
+              :src="address"
+            ></video>
+          </a>
 
           <div class="flex" style="margin-top: 30px">
             <div class="c-left">
@@ -180,40 +177,45 @@ for (var i = 0; i < btns.length; i++) {
     this.style.backgroundColor = "red";
   };
 }
-import axios from "axios"
+import axios from "axios";
 export default {
   data() {
     return {
       islogin: Boolean(sessionStorage.getItem("islogin")),
+      userimg: "",
+      address: "https://www.baidu.com/",
       commentList: [
         {
           id: 1,
-          title: "母校变化之大...",
+          title: "校庆快乐",
         },
         {
           id: 2,
-          title: "母校变化之大...",
+          title: "母校变化之大令人震惊",
         },
         {
           id: 3,
-          title: "母校变化之大...",
+          title: "我灰太狼又回来了",
         },
         {
           id: 4,
-          title: "母校变化之大...",
+          title: "福大洪秀全czh又回来了",
         },
         {
           id: 5,
-          title: "母校变化之大...",
+          title: "我不想加班了",
         },
         {
           id: 6,
-          title: "母校变化之大...",
+          title:
+            "我不想秃头啊:(  \xa0 \xa0  \xa0   \xa0 \xa0  \xa0   ——by 痛苦加班ing的学弟",
         },
       ],
     };
   },
   created: function () {
+    if (this.islogin == 0) this.userimg = "../../static/user.png";
+    else this.userimg = sessionStorage.getItem("userimg");
     this.getAddress();
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
@@ -221,11 +223,11 @@ export default {
     }
   },
   methods: {
-    getAddress(){
-      axios.get("http://192.168.48.210:8000/zhibo").then((res)=>{
+    getAddress() {
+      axios.get("http://119.91.217.141:8080/zhibo").then((res) => {
         this.address = res.data.data;
         console.log(this.address);
-      })
+      });
     },
     goTopersonalpage() {
       if (this.islogin == 0) this.$router.push("/login");
