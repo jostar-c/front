@@ -74,45 +74,134 @@
 
     <!-- 功能主题 -->
     <button id="left">
-      <i class="el-icon-refresh"></i>
+      <i class="el-icon-refresh" @click="refresh"></i>
       刷新图片
     </button>
     <div id="right">
-      <div id="upload">贴上您拍摄的照片</div>
+
+      
+      <el-upload
+        class="avatar-uploader"
+        action='http://172.20.10.6:8080/scenery/all'
+        :show-file-list="false"
+        accept=".jpg,.png"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload">
+        <div id="upload">贴上您拍摄的照片</div>
+		  </el-upload>
+      <p>111{{imageUrl}}</p>
+
+
+
       <router-link to="rank">
-        <div id="rank">查看排行榜</div>
+      <div id="rank">查看排行榜</div>
       </router-link>
+      
     </div>
 
     <p id="main">校友眼中的校园风光</p>
     <div id="heart">
       <router-link to="photo">
-        <img :src="lp1" class="p" id="lp1" @click="pushlp1(lp1, goodlp1)" />
+      <img :src="photos[(0)].pic_url" class="p" id="lp1" 
+      @click="pushlp1(photos[0].pic_url,photos[0].thumbs_up,photos[0].flag)">
       </router-link>
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp0" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="p1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp0" />
+      <router-link to="photo">
+       <img :src="photos[1].pic_url" class="p" id="lp2"
+      @click="pushlp1(photos[1].pic_url,photos[1].thumbs_up,photos[1].flag)">
+      </router-link>
+      <router-link to="photo">
+       <img :src="photos[2].pic_url" class="p" id="lp3"
+       @click="pushlp1(photos[2].pic_url,photos[2].thumbs_up,photos[2].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[3].pic_url" class="p" id="lp4"
+       @click="pushlp1(photos[3].pic_url,photos[3].thumbs_up,photos[3].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[4].pic_url" class="p" id="lp5"
+       @click="pushlp1(photos[4].pic_url,photos[4].thumbs_up,photos[4].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[5].pic_url" class="p" id="lp6"
+       @click="pushlp1(photos[5].pic_url,photos[5].thumbs_up,photos[5].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[6].pic_url" class="p" id="lp7"
+       @click="pushlp1(photos[6].pic_url,photos[6].thumbs_up,photos[6].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[7].pic_url" class="p" id="lp8"
+       @click="pushlp1(photos[7].pic_url,photos[7].thumbs_up,photos[7].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[8].pic_url" class="p" id="lp9"
+       @click="pushlp1(photos[8].pic_url,photos[8].thumbs_up,photos[8].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[9].pic_url" class="p" id="lp10"
+       @click="pushlp1(photos[9].pic_url,photos[9].thumbs_up,photos[9].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[10].pic_url" class="p" id="lp11"
+       @click="pushlp1(photos[10].pic_url,photos[10].thumbs_up,photos[10].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[11].pic_url" class="p" id="lp0"
+       @click="pushlp1(photos[11].pic_url,photos[11].thumbs_up,photos[11].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[12].pic_url" class="p" id="p1"
+       @click="pushlp1(photos[12].pic_url,photos[12].thumbs_up,photos[12].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[13].pic_url" class="p" id="rp1"
+       @click="pushlp1(photos[13].pic_url,photos[13].thumbs_up,photos[13].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[14].pic_url" class="p" id="rp2"
+       @click="pushlp1(photos[14].pic_url,photos[14].thumbs_up,photos[14].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[15].pic_url" class="p" id="rp3"
+       @click="pushlp1(photos[15].pic_url,photos[15].thumbs_up,photos[15].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[16].pic_url" class="p" id="rp4"
+       @click="pushlp1(photos[16].pic_url,photos[16].thumbs_up,photos[16].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[17].pic_url" class="p" id="rp5"
+       @click="pushlp1(photos[17].pic_url,photos[17].thumbs_up,photos[17].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[18].pic_url" class="p" id="rp6"
+       @click="pushlp1(photos[18].pic_url,photos[18].thumbs_up,photos[18].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[19].pic_url" class="p" id="rp7"
+       @click="pushlp1(photos[19].pic_url,photos[19].thumbs_up,photos[19].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[20].pic_url" class="p" id="rp8"
+       @click="pushlp1(photos[20].pic_url,photos[20].thumbs_up,photos[20].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[21].pic_url" class="p" id="rp9"
+       @click="pushlp1(photos[21].pic_url,photos[21].thumbs_up,photos[21].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[22].pic_url" class="p" id="rp10"
+       @click="pushlp1(photos[22].pic_url,photos[22].thumbs_up,photos[22].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[23].pic_url" class="p" id="rp11"
+       @click="pushlp1(photos[23].pic_url,photos[23].thumbs_up,photos[23].flag)">
+       </router-link>
+       <router-link to="photo">
+       <img :src="photos[24].pic_url" class="p" id="rp0"
+       @click="pushlp1(photos[24].pic_url,photos[24].thumbs_up,photos[24].flag)">
+       </router-link>
+      
     </div>
 
     <!-- footer 底部制作区域start -->
@@ -128,6 +217,7 @@
 </template>
     
     <script>
+    import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -143,28 +233,70 @@ for (var i = 0; i < btns.length; i++) {
 export default {
   data() {
     return {
-      lp1: "../../static/8_schoolphoto/p.jpg",
-      goodlp1: 150,
+      photos:[],
+      imageUrl: '',
     };
   },
-  methods: {
-    pushlp1(lp1, goodlp1) {
+  methods:{
+    pushlp1(pic_url,thumbs_up,flag){
       this.$router.push({
-        path: "/photo",
-        query: {
-          ph: this.lp1,
-          good: this.goodlp1,
-        },
-      });
+			path:'/photo',
+			query:{
+				pic_url:pic_url,
+        thumbs_up:thumbs_up,
+        flag:flag,
+			}
+		  })
     },
-  },
-  created() {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-  },
-};
+    refresh(){//刷新照片墙
+      this.sj++;
+      const that=this;
+      this.photos.splice(0, this.photos.length);
+      axios.get('http://172.20.10.6:8080/scenery/all')
+                .then(function(response) {
+                  var l=response.data.length-1;
+                    for(var i = 0;i<=l;i++)
+                    {
+                      that.photos.push(
+                       {
+                          pic_url:response.data[i].pic_url,
+                          thumbs_up:response.data[i].thumbs_up,
+                          flag:response.data[i].flag,
+                        }
+                      )
+                    }
+                });
+    },
+    handleAvatarSuccess(res, file) {
+	        this.imageUrl = URL.createObjectURL(file.raw);
+	      },
+	  beforeAvatarUpload(file) {
+			//在头像上传之前需要做的判断，如判断文件格式
+	        const isJPG = file.type === 'image/jpeg';
+	        const isLt2M = file.size / 1024 / 1024 < 2;
+	      }
+
+    },
+    created() {//展示出照片
+                const that=this;
+                axios.get('http://172.20.10.6:8080/scenery/all')
+                .then(function(response) {
+                  console.log(response.data);
+                  var l=response.data.length-1;
+                  that.cnt=l;
+                    for(var i = 0;i<=l;i++)
+                    {
+                      that.photos.push(
+                       {
+                          pic_url:response.data[i].pic_url,
+                          thumbs_up:response.data[i].thumbs_up,
+                          flag:response.data[i].flag,
+                        }
+                      )
+                    }
+                });
+            },
+}
 </script>
     
     <style>
@@ -301,7 +433,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -70%;
+  bottom: 0;
   width: 100%;
 }
 
@@ -311,7 +443,7 @@ body {
   text-align: center;
   padding-top: 5px;
 }
-#left {
+#left{
   width: 60px;
   height: 60px;
   border: 0px;
@@ -319,18 +451,18 @@ body {
   margin-left: 100px;
   text-align: center;
 }
-.el-icon-refresh {
+.el-icon-refresh{
   font-size: 65px;
   color: #a40404;
   margin-left: -4px;
 }
-#right {
+#right{
   width: 250px;
   height: 160px;
   float: right;
   margin-right: 100px;
 }
-#upload {
+#upload{
   width: 250px;
   height: 70px;
   border-radius: 30px;
@@ -340,7 +472,7 @@ body {
   color: white;
   background-color: #a40404;
 }
-#rank {
+#rank{
   margin-top: 20px;
   width: 250px;
   height: 70px;
@@ -351,7 +483,7 @@ body {
   color: white;
   background-color: #a40404;
 }
-#main {
+#main{
   width: 300px;
   margin-right: auto;
   margin-left: auto;
@@ -361,137 +493,137 @@ body {
   font-size: 30px;
   font-weight: 600;
 }
-#heart {
+#heart{
   margin-top: 15px;
   width: 1500px;
   height: 1070px;
   margin-right: auto;
   margin-left: auto;
 }
-.p {
+.p{
   width: 200px;
   height: 150px;
 }
-#lp1 {
-  margin-left: 15%;
+#lp1{
+  margin-left: 250px;
   float: left;
 }
-#lp2 {
+#lp2{
   margin-top: 90px;
   margin-left: -50px;
   float: left;
 }
-#lp3 {
+#lp3{
   margin-top: 130px;
   margin-left: -450px;
   float: left;
 }
-#lp4 {
+#lp4{
   margin-top: 170px;
   margin-left: -300px;
   float: left;
 }
-#lp5 {
+#lp5{
   margin-top: 240px;
   margin-left: -510px;
   float: left;
 }
-#lp6 {
+#lp6{
   margin-top: 350px;
   margin-left: -530px;
   float: left;
 }
-#lp7 {
+#lp7{
   margin-top: 470px;
   margin-left: -480px;
   float: left;
 }
-#lp8 {
+#lp8{
   margin-top: 570px;
   margin-left: -420px;
   float: left;
 }
-#lp9 {
+#lp9{
   margin-top: 670px;
   margin-left: -350px;
   float: left;
 }
-#lp10 {
+#lp10{
   margin-top: 770px;
   margin-left: -260px;
   float: left;
 }
-#lp11 {
+#lp11{
   margin-top: 840px;
   margin-left: -140px;
   float: left;
 }
-#lp0 {
+#lp0{
   margin-left: -120px;
   margin-top: 200px;
   float: left;
 }
-#p1 {
+#p1{
   margin-left: -110px;
   margin-top: 910px;
   float: left;
 }
-#rp1 {
+#rp1{
   margin-right: 0px;
   float: right;
 }
-#rp2 {
+#rp2{
   margin-top: 90px;
   margin-right: -50px;
   float: right;
 }
-#rp3 {
+#rp3{
   margin-top: 130px;
   margin-right: -450px;
   float: right;
 }
-#rp4 {
+#rp4{
   margin-top: 0px;
   margin-right: 100px;
   float: right;
 }
-#rp5 {
+#rp5{
   margin-top: 110px;
   margin-right: -220px;
   float: right;
 }
-#rp6 {
+#rp6{
   margin-top: 230px;
   margin-right: -170px;
   float: right;
 }
-#rp7 {
+#rp7{
   margin-top: 330px;
   margin-right: -140px;
   float: right;
 }
-#rp8 {
+#rp8{
   margin-top: 430px;
   margin-right: -130px;
   float: right;
 }
-#rp9 {
+#rp9{
   margin-top: 440px;
   margin-right: -200px;
   float: right;
 }
-#rp10 {
+#rp10{
   margin-top: 540px;
   margin-right: -110px;
   float: right;
 }
-#rp11 {
+#rp11{
   margin-top: 610px;
   margin-right: -80px;
   float: right;
 }
-#rp0 {
-  margin-left: -120px;
+#rp0{
+  margin-left:-120px;
   margin-top: -850px;
   float: left;
 }

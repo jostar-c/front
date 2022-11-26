@@ -68,217 +68,206 @@
         <div id="classtitle">班级信息管理</div>
         <div id="line"></div>
         <div id="choose">
-          <el-select v-model="value1" placeholder="请选择专业">
-            <el-option
-              v-for="item in specialized"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <el-select
-            v-model="value2"
-            style="margin-left: 20px"
-            placeholder="请选择年级"
-          >
-            <el-option
-              v-for="item in year"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <el-select
-            v-model="value3"
-            style="margin-left: 20px"
-            placeholder="请选择班级"
-          >
-            <el-option
-              v-for="item in classes"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
-            </el-option>
-          </el-select>
-          <el-button type="text" @click="clean" id="resetClass">
-            重置
-          </el-button>
-          <el-button type="text" @click="searchClass" id="searchClass">
-            搜索
-          </el-button>
 
-          <div id="tableHeader" v-show="show == 1">
-            <div class="TH">学号</div>
-            <div class="TH">姓名</div>
-            <div class="TH">操作</div>
-          </div>
+        <el-select v-model="umajor" placeholder="请选择专业">
+          <el-option
+            v-for="item in specialized"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="grade" style="margin-left: 20px;" placeholder="请选择年级">
+          <el-option
+            v-for="item in year"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-select v-model="uclass" style="margin-left: 20px;" placeholder="请选择班级">
+          <el-option
+            v-for="item in classes"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>
+        <el-button type="text" @click="clean" id="resetClass">
+          重置
+        </el-button>
+        <el-button type="text" @click="searchClass" id="searchClass">
+          搜索
+        </el-button>
 
-          <div
-            class="student"
-            v-for="(item, index) in students"
-            v-show="show == 1"
-            :key="item"
-          >
-            <div class="info">{{ students[index].number }}</div>
-            <div class="info">{{ students[index].name }}</div>
-            <el-button type="text" class="delStu">删除</el-button>
+        <div id="tableHeader" v-show="(show==1)">
+          <div class="TH">学号</div>
+          <div class="TH">姓名</div>
+          <div class="TH">操作</div>        
+        </div>          
+
+          <div class="student" v-for="(item,index) in students" v-show="(show==1)">
+            <div class="info">{{students[index].number}}</div>
+            <div class="info">{{students[index].name}}</div>
+            <el-button type="text" class="delStu" @click="opendelstu(index)">删除</el-button>
             <div class="tableLine"></div>
           </div>
+
         </div>
+
       </div>
     </div>
   </div>
 </template>
       
 <script>
-export default {
-  data() {
-    return {
-      specialized: [
+import axios from "axios";
+  export default {
+    data() {
+      return {
+        specialized: [{
+          value: '计算机类',
+          label: '计算机类'
+        }, 
         {
-          value: "选项1",
-          label: "计算机类",
+          value: '大数据',
+          label: '大数据'
+        }, 
+        {
+          value: '人工智能',
+          label: '人工智能'
+        }, 
+        {
+          value: '软件工程',
+          label: '软件工程'
+        }, 
+        {
+          value: '信息安全',
+          label: '信息安全'
+        }],
+        year: [{
+          value: '2018',
+          label: '2018'
+        }, 
+        {
+          value: '2019',
+          label: '2019'
+        }, 
+        {
+          value: '2020',
+          label: '2020'
+        }, 
+        {
+          value: '2021',
+          label: '2021'
+        }, 
+        {
+          value: '2022',
+          label: '2022'
+        }],
+        classes: [{
+          value: '1班',
+          label: '1班'
         },
         {
-          value: "选项2",
-          label: "大数据",
+          value: '2班',
+          label: '2班'
+        }, 
+        {
+          value: '3班',
+          label: '3班'
+        }, 
+        {
+          value: '4班',
+          label: '4班'
+        }, 
+        {
+          value: '5班',
+          label: '5班'
         },
         {
-          value: "选项3",
-          label: "人工智能",
-        },
-        {
-          value: "选项4",
-          label: "软件工程",
-        },
-        {
-          value: "选项5",
-          label: "信息安全",
-        },
-      ],
-      year: [
-        {
-          value: "选项1",
-          label: "2018级",
-        },
-        {
-          value: "选项2",
-          label: "2019级",
-        },
-        {
-          value: "选项3",
-          label: "2020级",
-        },
-        {
-          value: "选项4",
-          label: "2021级",
-        },
-        {
-          value: "选项5",
-          label: "2022级",
-        },
-      ],
-      classes: [
-        {
-          value: "选项1",
-          label: "1班",
-        },
-        {
-          value: "选项2",
-          label: "2班",
-        },
-        {
-          value: "选项3",
-          label: "3班",
-        },
-        {
-          value: "选项4",
-          label: "4班",
-        },
-        {
-          value: "选项5",
-          label: "5班",
-        },
-        {
-          value: "选项4",
-          label: "6班",
-        },
-      ],
-      students: [
-        {
-          number: "032002xx1",
-          name: "张三",
-        },
-        {
-          number: "032002xx2",
-          name: "李四",
-        },
-        {
-          number: "032002xx3",
-          name: "王五",
-        },
-        {
-          number: "032002xx4",
-          name: "老六",
-        },
-        {
-          number: "032002xx5",
-          name: "飞机",
-        },
-        {
-          number: "032002xx6",
-          name: "大炮",
-        },
-        {
-          number: "032002xx7",
-          name: "坦克",
-        },
-      ],
-      value1: "",
-      value2: "",
-      value3: "",
-      show: 0,
-    };
-  },
-  methods: {
-    searchClass() {
-      if (this.value1 == "" || this.value2 == "" || this.value3 == "") {
-        this.$alert("请选择正确的班级", "提示", {
-          confirmButtonText: "确定",
+          value: '6班',
+          label: '6班'
+        }],
+        students:[],
+        umajor: "",
+        stucnt:0,
+        grade: "",
+        uclass: "",
+        show:0,
+      };
+    },
+    methods:{
+      opendelstu(i) {
+        this.$confirm('此操作将永久删除该学生, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.delstu(i);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+
         });
-      } else {
-        this.show = 1;
+      },
+        searchClass(){
+          if(this.umajor==""||this.grade==""||this.uclass=="")
+          {
+            this.$alert('请选择正确的班级', '提示', {
+              confirmButtonText: '确定',
+            });
+          }
+          else
+          {
+            this.show=1;
+            this.showclass();
+          }
+        },
+        showclass(){//展示学生
+          const that=this;
+          this.students.splice(0, this.students.length);
+                axios.post('http://172.20.10.6:8083/user/manager/classUserList',{umajor:that.umajor,grade:that.grade,uclass:that.uclass})
+                .then(function(response) {
+                  console.log(response.data);
+                  that.stucnt=response.data["count"];
+                    for(var i=that.stucnt-1;i>=0;i--)
+                    {
+                      that.students.push(
+                       {
+                          name:response.data["realname"+i],
+                          number:response.data["sno"+i],
+                          //id:response.data.students[i].id,
+                          //name:response.data.students[i].name,
+                          //number:response.data.students[i].number,
+                        }
+                      )
+                    }
+                });
+        },
+      delstu(i){//删除学生
+        const that=this;
+          this.students.splice(i, 1);//前端模拟删除
+                    console.log(i);
+                    console.log(that.umajor);
+                    console.log(that.grade);
+                    console.log(that.uclass);
+                    console.log(that.students[i].number);
+                axios.post('http://172.20.10.6:8083/user/manager/classUserList/out',{sno:that.students[i].number,umajor:that.umajor,grade:that.grade,uclass:that.uclass})
+                .then(function(response) {
+                  //删除数据库照片
+                });
+        },
+      clean(){
+        this.umajor="";
+        this.grade="";
+        this.uclass="";
+        this.show=0;
       }
-    },
-    resetClass() {
-      this.$confirm("此操作将重置所有选项, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: "已重置!",
-        });
-      });
-    },
-    clean() {
-      this.value1 = "";
-      this.value2 = "";
-      this.value3 = "";
-      this.show = 0;
-    },
-  },
-  created: function () {
-    if (location.href.indexOf("#reloaded") == -1) {
-      location.href = location.href + "#reloaded";
-      location.reload();
-    }
-  },
-};
+      },
+  }
 </script>
       
       <style>
@@ -384,14 +373,14 @@ a {
   color: #00a4ff;
 }
 .main {
-  margin-top: 0%;
-  margin-left: 0%;
+  margin-top: 40px;
+  margin-left: 165px;
   width: 100%;
   height: 100%;
   float: right;
   position: fixed;
 }
-#classtitle {
+#classtitle{
   margin-top: 40px;
   margin-left: 30px;
   width: 100%;
@@ -399,27 +388,27 @@ a {
   font-size: 50px;
   line-height: 70px;
 }
-#line {
+#line{
   width: 75%;
   margin-top: 5px;
   margin-left: 25px;
   height: 1px;
   background-color: #757575;
 }
-.tableLine {
+.tableLine{
   width: 1200px;
   margin-top: 5px;
   margin-left: 25px;
   height: 1px;
   background-color: #b5b5b5;
 }
-#choose {
+#choose{
   margin-top: 20px;
   margin-left: 25px;
   width: 900px;
   height: 40px;
 }
-#searchClass {
+#searchClass{
   width: 55px;
   height: 40px;
   background-color: #ffffff;
@@ -429,7 +418,7 @@ a {
   color: black;
   float: right;
 }
-#resetClass {
+#resetClass{
   width: 55px;
   height: 40px;
   background-color: #ffffff;
@@ -438,12 +427,12 @@ a {
   font-size: 18px;
   color: black;
 }
-#tableHeader {
+#tableHeader{
   margin-top: 20px;
   width: 1200px;
   height: 50px;
 }
-.TH {
+.TH{
   float: left;
   width: 400px;
   height: 50px;
@@ -451,11 +440,11 @@ a {
   text-align: center;
   font-weight: 600;
 }
-.student {
+.student{
   width: 1200px;
   height: 50px;
 }
-.info {
+.info{
   width: 400px;
   height: 50px;
   float: left;
@@ -463,7 +452,8 @@ a {
   text-align: center;
   color: #494949;
 }
-.delStu {
+.delStu
+{
   width: 400px;
   height: 50px;
   float: left;
