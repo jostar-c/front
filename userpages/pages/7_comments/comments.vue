@@ -1,3 +1,4 @@
+
 <template>
   <div>
     <!-- 1.top部分start -->
@@ -76,14 +77,14 @@
           type="textarea"
           placeholder="对学校说点什么吧"
           :autosize="{ minRows: 4, maxRows: 4 }"
-          v-model="textarea"
+          v-model="comment"
         >
         </el-input>
       </div>
       <!-- 添加照片 -->
       <div id="picture"></div>
       <!-- 发布 -->
-      <div id="push"></div>
+      <div id="push" @click="leave_comment"></div>
     </div>
 
     <!-- 留言展示顶部 -->
@@ -110,7 +111,13 @@
           </div>
         </router-link>
         <div class="good">
-          <i class="el-icon-star-on"></i>
+          <i
+            class="el-icon-star-on"
+            :id="comments[index].good == 1 ? 'isgood' : ''"
+            @click="good(index)"
+          >
+            {{ comments[index].goods }}</i
+          >
         </div>
         <div class="blank"></div>
       </div>
@@ -121,15 +128,16 @@
       <p>
         学院地址：福州市闽侯县学园路2号福州大学计算机与大数据学院/软件学院
         <br />
-        版权声明：© 2022 栋感光波. 版权所有. 保留所有权利
+        版权声明： 2022 栋感光波. 版权所有. 保留所有权利
       </p>
       <!-- footer 底部制作区域end -->
     </div>
   </div>
 </template>
 
-<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
   <script>
+import axios from "axios";
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -180,20 +188,85 @@ export default {
   methods: {
     changeSort() {
       if (this.sort == "按热度排序") {
+        this.sortway = 1;
         this.sort = "按时间排序";
         //在这里改变排序方式
       } else {
+        this.sortway = 0;
         this.sort = "按热度排序";
         //在这里改变排序方式
       }
+      const that = this;
+      axios
+        .get("../..atic/comments.json", { sortway: that.sortway })
+        .then((res) => {
+          that.refresh(); //自动刷新
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
-    good() {
+    good(i) {
       //判断点赞
+      this.comments[i].good *= -1;
+      this.comments[i].goods += this.comments[i].good;
+      const that = this;
+      axios
+        .get("../..atic/comments.json", { id: that.id })
+        .then((res) => {
+          //后端点赞数+1 改变点赞状态
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     refresh() {
-      //在这里刷新留言
+      //刷新评论
+      const that = this;
+      this.comments.splice(0, this.comments.length);
+      axios.get("../..atic/comments.json").then(function (response) {
+        for (var i = response.data.comments.length - 1; i >= 0; i--) {
+          that.comments.push({
+            id: response.data.comments[i].id,
+            goods: response.data.comments[i].goods,
+            name: response.data.comments[i].name,
+            head: response.data.comments[i].head,
+            time: response.data.comments[i].time,
+            inside: response.data.comments[i].inside,
+          });
+        }
+      });
+    },
+
+    leave_comment() {
+      //把新的评论加入数据库
+      const that = this;
+      axios
+        .get("../..atic/comments.json", {
+          comment: that.comment,
+          id: that.id,
+        })
+        .then((res) => {
+          that.refresh(); //添加后自动刷新
+          that.comments.push(
+            //模拟添加评论
+            {
+              id: that.id,
+              goods: 0,
+              good: -1,
+              name: "new",
+              head: "../../static/userimg.png",
+              time: "刚刚",
+              inside: that.comment,
+            }
+          );
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
     pushdetail(i) {
+      //点进具体评论
       this.$router.push({
         path: "/detail",
         query: {
@@ -201,6 +274,9 @@ export default {
           name: this.comments[i].name,
           time: this.comments[i].time,
           inside: this.comments[i].inside,
+          goods: this.comments[i].goods,
+          good: this.comments[i].good,
+          id: this.comments[i].id,
         },
       });
     },
@@ -210,6 +286,22 @@ export default {
       location.href = location.href + "#reloaded";
       location.reload();
     }
+    //展示出所有评论
+    const that = this;
+    axios.get("../..atic/comments.json").then(function (response) {
+      console.log(response.data);
+      for (var i = response.data.comments.length - 1; i >= 0; i--) {
+        that.comments.push({
+          id: response.data.comments[i].id,
+          goods: response.data.comments[i].goods,
+          name: response.data.comments[i].name,
+          head: response.data.comments[i].head,
+          time: response.data.comments[i].time,
+          inside: response.data.comments[i].inside,
+          good: -1,
+        });
+      }
+    });
   },
 };
 //排序方式
@@ -389,7 +481,7 @@ body {
   margin-top: -1px;
   border: 1px solid #a40404;
   float: left;
-  /* background: url(../../static/7_comments/picture.jpg); */
+  background: url(../../static/7_comments/picture.jpg);
 }
 #push {
   width: 196px;
@@ -398,7 +490,7 @@ body {
   margin-top: -1px;
   border: 1px solid #a40404;
   float: right;
-  /* background: url(../../static/7_comments/push.jpg); */
+  background: url(../../static/7_comments/push.jpg);
 }
 
 /* 留言展示顶部 */
@@ -495,10 +587,14 @@ body {
 }
 .el-icon-star-on {
   font-size: 30px;
+  font-weight: 350;
   margin-right: 5px;
 }
 .blank {
   height: 40px;
+}
+#isgood {
+  color: #a40404;
 }
 </style>
 
@@ -506,9 +602,11 @@ body {
 
 
 
-<!-- <template>
-  <div>
 
+
+<!-- 
+<template>
+  <div>
     <div class="top">
       <div class="fzulink">
         <a href="https://ccds.fzu.edu.cn/index.htm" target="_blank">
@@ -522,10 +620,7 @@ body {
       </div>
     </div>
 
-
-
     <div class="banner">
-
       <div class="logo">
         <img src="../../static/logo.png" width="80px" height="auto" />
       </div>
@@ -544,10 +639,7 @@ body {
       </div>
     </div>
 
-
-
     <div class="header w">
-
       <div class="nav">
         <ul>
           <li>
@@ -574,10 +666,7 @@ body {
       </div>
     </div>
 
-
-
     <div id="issue">
-
       <div id="issueleft">
         <el-input
           id="issuecomments"
@@ -588,21 +677,19 @@ body {
         >
         </el-input>
       </div>
- 
+
       <div id="picture"></div>
 
       <div id="push" @click="leave_comment"></div>
     </div>
 
-  
     <div id="showtop">
-    
       <div id="lefttext">留言展示</div>
-    
+
       <div id="refresh" @click="refresh">
         <i class="el-icon-refresh-left"></i>
       </div>
-  
+
       <button id="righttext" @click="changeSort">{{ sort }}</button>
     </div>
 
@@ -630,19 +717,17 @@ body {
       </div>
     </div>
 
-
     <div class="footer">
       <p>
         学院地址：福州市闽侯县学园路2号福州大学计算机与大数据学院/软件学院
         <br />
         版权声明：© 2022 栋感光波. 版权所有. 保留所有权利
       </p>
-   
     </div>
   </div>
-</template> -->
+</template>
 
-<!-- <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
   <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
@@ -1077,4 +1162,4 @@ body {
 #isgood {
   color: #a40404;
 }
-</style> -->
+</> -->

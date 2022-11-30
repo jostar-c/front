@@ -94,8 +94,8 @@
     </div>
   </div>
 </template>
-      
-      <script>
+    
+    <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -128,8 +128,8 @@ export default {
       this.flag *= -1;
       this.thumbs_up -= -this.flag;
       const that = this;
-      axios
-        .post("http://119.91.217.141:8080/scenery/like", {
+      this.$axios
+        .post("http://192.168.31.77:8000/scenery/like", {
           pic_url: that.pic_url,
           thumbs_up: that.thumbs_up,
         })
@@ -141,7 +141,7 @@ export default {
         });
     },
   },
-  created() {
+  created: function () {
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
@@ -150,8 +150,8 @@ export default {
   },
 };
 </script>
-      
-      <style>
+    
+    <style>
 * {
   margin: 0;
   padding: 0;

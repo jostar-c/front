@@ -16,28 +16,17 @@
       <div class="btn">
         <!--  <router-link to="homepage"> -->
         <router-link to="homepage">
-          <button class="login_btn" onclick="login()">
-            进&nbsp;&nbsp;&nbsp;&nbsp;入
-          </button>
+          <button class="login_btn">进&nbsp;&nbsp;&nbsp;&nbsp;入</button>
         </router-link>
       </div>
     </div>
-
-    <!-- <div>
-    <router-link to="homepage" target="_self">
-      <button>homepage</button>
-    </router-link>
-    {{ islogin }}
-  </div> -->
   </body>
 </template>
 
 <script>
 export default {
   data() {
-    return {
-      islogin: this.global.islogin,
-    };
+    return {};
   },
   methods: {
     onSubmit() {

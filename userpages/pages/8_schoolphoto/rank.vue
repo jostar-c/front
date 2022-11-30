@@ -78,43 +78,63 @@
 
     <div id="therank">
       <div class="bigger1">
-        <div class="bigger2">NO.1</div>
-        <img :src="no1" class="bigger3" />
+        <div class="bigger2">No.1</div>
+        <img :src="tops[0].pic_url" class="bigger3" />
         <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good1 }}
+          <i
+            class="el-icon-star-on biggergood"
+            :id="tops[0].flag == 1 ? 'isgood1' : ''"
+            @click="phgood(0)"
+            >{{ tops[0].thumbs_up }}</i
+          >
         </div>
       </div>
       <div class="bigger1">
-        <div class="bigger2">NO.2</div>
-        <img :src="no2" class="bigger3" />
+        <div class="bigger2">No.2</div>
+        <img :src="tops[1].pic_url" class="bigger3" />
         <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good2 }}
+          <i
+            class="el-icon-star-on biggergood"
+            :id="tops[1].flag == 1 ? 'isgood1' : ''"
+            @click="phgood(1)"
+            >{{ tops[1].thumbs_up }}</i
+          >
         </div>
       </div>
       <div class="bigger1">
-        <div class="bigger2">NO.3</div>
-        <img :src="no3" class="bigger3" />
+        <div class="bigger2">No.3</div>
+        <img :src="tops[2].pic_url" class="bigger3" />
         <div class="bigger4">
-          <i class="el-icon-star-on biggergood"></i>
-          {{ good3 }}
+          <i
+            class="el-icon-star-on biggergood"
+            :id="tops[2].flag == 1 ? 'isgood1' : ''"
+            @click="phgood(2)"
+            >{{ tops[2].thumbs_up }}</i
+          >
         </div>
       </div>
       <div class="smaller1">
-        <div class="smaller2">NO.4</div>
-        <img :src="no4" class="smaller3" />
+        <div class="smaller2">No.4</div>
+        <img :src="tops[3].pic_url" class="smaller3" />
         <div class="smaller4">
-          <i class="el-icon-star-on smallergood"></i>
-          {{ good4 }}
+          <i
+            class="el-icon-star-on smallergood"
+            :id="tops[3].flag == 1 ? 'isgood2' : ''"
+            @click="phgood(3)"
+            >{{ tops[3].thumbs_up }}</i
+          >
         </div>
       </div>
       <div class="smaller1">
-        <div class="smaller2">NO.5</div>
-        <img :src="no5" class="smaller3" />
+        <div class="smaller2">No.5</div>
+        <img :src="tops[4].pic_url" class="smaller3" />
         <div class="smaller4">
-          <i class="el-icon-star-on smallergood"></i>
-          {{ good5 }}
+          <i
+            class="el-icon-star-on smallergood"
+            :id="tops[4].flag == 1 ? 'isgood2' : ''"
+            @click="phgood(4)"
+            >{{ tops[4].thumbs_up }}</i
+          >
         </div>
       </div>
     </div>
@@ -130,8 +150,8 @@
     </div>
   </div>
 </template>
-      
-      <script>
+    
+    <script>
 //1.获取所有元素元素
 var btns = document.getElementsByTagName("button");
 for (var i = 0; i < btns.length; i++) {
@@ -148,30 +168,64 @@ export default {
   data() {
     return {
       userimg: sessionStorage.getItem("userimg"),
-      no1: "../../static/8_schoolphoto/p.jpg",
-      no2: "../../static/8_schoolphoto/p.jpg",
-      no3: "../../static/8_schoolphoto/p.jpg",
-      no4: "../../static/8_schoolphoto/p.jpg",
-      no4: "../../static/8_schoolphoto/p.jpg",
-      no5: "../../static/8_schoolphoto/p.jpg",
-      good1: 999,
-      good2: 888,
-      good3: 777,
-      good4: 666,
-      good5: 555,
+      tops: [
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        {
+          pic_url: sessionStorage.getItem("userimg"),
+          thumbs_up: 110,
+          flag: -1,
+        },
+        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 10, flag: -1 },
+        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
+        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
+        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
+      ],
     };
   },
-  methods: {},
+  methods: {
+    phgood(i) {
+      //判断点赞
+      this.tops[i].flag *= -1;
+      this.tops[i].thumbs_up -= -this.tops[i].flag;
+      const that = this;
+      console.log(that.tops[i].thumbs_up);
+      this.$axios
+        .post("http://192.168.31.77:8000/scenery/like", {
+          pic_url: that.tops[i].pic_url,
+          thumbs_up: that.tops[i].thumbs_up,
+        })
+        .then((res) => {
+          //后端点赞数+1 改变点赞状态3
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+  },
   created: function () {
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
     }
+    //展示出排行榜照片
+    const that = this;
+    this.$axios
+      .get("http://192.168.31.77:8000/scenery/five")
+      .then(function (response) {
+        console.log(response.data);
+        for (var i = 0; i <= 4; i++) {
+          that.tops.push({
+            pic_url: response.data[i].pic_url,
+            thumbs_up: response.data[i].thumbs_up,
+            flag: response.data[i].flag,
+          });
+        }
+      });
   },
 };
 </script>
-      
-      <style>
+    
+    <style>
 * {
   margin: 0;
   padding: 0;
@@ -305,7 +359,7 @@ body {
   height: 40px;
   background-color: #bfbfbf;
   position: absolute;
-  bottom: -135%;
+  bottom: -150%;
   width: 100%;
 }
 
@@ -396,5 +450,13 @@ body {
 .smallergood {
   font-size: 35px;
   float: left;
+}
+#isgood1 {
+  font-size: 40px;
+  color: #a40404;
+}
+#isgood2 {
+  font-size: 35px;
+  color: #a40404;
 }
 </style>

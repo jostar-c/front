@@ -82,9 +82,9 @@
         <div id="photos">
           <div class="readyph" v-for="(item, index) in photos" :key="item">
             <i class="el-icon-delete deleteph" @click="deleteopen(index)"></i>
-            <img :src="readyphoto[index].pic_url" class="ph" />
+            <img :src="photos[index].pic_url" class="ph" />
             <i class="el-icon-user-solid lefticon">
-              {{ photos[index].pic_url }}111
+              {{ photos[index].pic_url }}
             </i>
             <i class="el-icon-info righticon">
               <!-- {{photos[index].time}}-->
@@ -128,8 +128,8 @@ export default {
       //刷新评论
       const that = this;
       this.photos.splice(0, this.photos.length);
-      axios
-        .get("http://119.91.217.141:8080/scenery/all")
+      this.$axios
+        .get("http://192.168.31.77:8000/scenery/all")
         .then(function (response) {
           console.log(response.data);
           var l = response.data.length - 1;
@@ -149,8 +149,8 @@ export default {
       const that = this;
       // this.photos.splice(i, 1);//前端模拟删除
       console.log(that.photos[i].pic_url);
-      axios
-        .post("http://119.91.217.141:8080/scenery/deny", {
+      this.$axios
+        .post("http://192.168.31.77:8000/scenery/deny", {
           pic_url: that.photos[i].pic_url,
         })
         .then(function (response) {
@@ -164,8 +164,8 @@ export default {
       location.reload();
     }
     const that = this;
-    axios
-      .get("http://119.91.217.141:8080/scenery/all")
+    this.$axios
+      .get("http://192.168.31.77:8000/scenery/all")
       .then(function (response) {
         console.log(response.data);
         var l = response.data.length - 1;
@@ -175,7 +175,7 @@ export default {
             //ph:response.data.photos[i].ph,
             //name:response.data.photos[i].name,
             //time:response.data.photos[i].time,
-            pic_url: response.data[i],
+            pic_url: response.data[i].pic_url,
           });
         }
       });
@@ -286,8 +286,6 @@ a {
   color: #00a4ff;
 }
 .main {
-  margin-top: 0%;
-  margin-left: 0%;
   width: 100%;
   height: 100%;
   float: right;
@@ -295,7 +293,7 @@ a {
 }
 #phtitle {
   margin-top: 40px;
-  margin-left: 100px;
+  margin-left: 60px;
   width: 100%;
   height: 70px;
   font-size: 50px;
@@ -304,7 +302,7 @@ a {
 #line {
   width: 75%;
   margin-top: 5px;
-  margin-left: 100px;
+  margin-left: 60px;
   height: 1px;
   background-color: #757575;
 }
@@ -331,14 +329,14 @@ a {
 }
 #photos {
   margin-top: 30px;
-  margin-left: 100px;
+  margin-left: 25px;
   width: 80%;
   height: 800px;
 }
 .readyph {
   width: 300px;
   height: 250px;
-  margin-right: 40px;
+  margin-left: 80px;
   float: left;
 }
 .ph {

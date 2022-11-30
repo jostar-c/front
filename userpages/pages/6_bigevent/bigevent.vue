@@ -205,7 +205,7 @@ export default {
     getPageNum(val) {
       // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
       $.ajax({
-        url: "http://119.91.217.141:8080/bigevent",
+        url: "http://192.168.1.2:8000/bigevent",
         type: "get",
         data: {
           x: val,
@@ -234,7 +234,7 @@ export default {
       "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
     );
     $.get({
-      url: "http://119.91.217.141:8080/bigevent",
+      url: "http://192.168.1.2:8000/bigevent",
       type: "get",
       data: {
         x: 1,

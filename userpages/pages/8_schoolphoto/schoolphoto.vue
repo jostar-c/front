@@ -69,11 +69,22 @@
 
     <!-- 功能主题 -->
     <button id="left">
-      <i class="el-icon-refresh"></i>
+      <i class="el-icon-refresh" @click="refresh"></i>
       刷新图片
     </button>
     <div id="right">
-      <div id="upload">贴上您拍摄的照片</div>
+      <el-upload
+        class="avatar-uploader"
+        action="http://192.168.31.77:8000/uploadphoto/uploadppp"
+        :show-file-list="false"
+        accept=".jpg,.png"
+        :on-success="handleAvatarSuccess"
+        :before-upload="beforeAvatarUpload"
+      >
+        <div id="upload">贴上您拍摄的照片</div>
+      </el-upload>
+      <!-- <p>{{ imageUrl }}</p> -->
+
       <router-link to="rank">
         <div id="rank">查看排行榜</div>
       </router-link>
@@ -82,32 +93,355 @@
     <p id="main">校友眼中的校园风光</p>
     <div id="heart">
       <router-link to="photo">
-        <img :src="lp1" class="p" id="lp1" @click="pushlp1(lp1, goodlp1)" />
+        <img
+          :src="photos[(0 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp1"
+          @click="
+            pushlp1(
+              photos[(0 + sj * 25) % cnt].pic_url,
+              photos[(0 + sj * 25) % cnt].thumbs_up,
+              photos[(0 + sj * 25) % cnt].flag
+            )
+          "
+        />
       </router-link>
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="lp0" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="p1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp1" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp2" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp3" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp4" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp5" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp6" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp7" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp8" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp9" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp10" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp11" />
-      <img src="../../static/8_schoolphoto/p.jpg" class="p" id="rp0" />
+      <router-link to="photo">
+        <img
+          :src="photos[(1 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp2"
+          @click="
+            pushlp1(
+              photos[(1 + sj * 25) % cnt].pic_url,
+              photos[(1 + sj * 25) % cnt].thumbs_up,
+              photos[(1 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(2 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp3"
+          @click="
+            pushlp1(
+              photos[(2 + sj * 25) % cnt].pic_url,
+              photos[(2 + sj * 25) % cnt].thumbs_up,
+              photos[(2 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(3 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp4"
+          @click="
+            pushlp1(
+              photos[(3 + sj * 25) % cnt].pic_url,
+              photos[(3 + sj * 25) % cnt].thumbs_up,
+              photos[(3 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(4 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp5"
+          @click="
+            pushlp1(
+              photos[(4 + sj * 25) % cnt].pic_url,
+              photos[(4 + sj * 25) % cnt].thumbs_up,
+              photos[(4 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(5 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp6"
+          @click="
+            pushlp1(
+              photos[(5 + sj * 25) % cnt].pic_url,
+              photos[(5 + sj * 25) % cnt].thumbs_up,
+              photos[(5 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(6 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp7"
+          @click="
+            pushlp1(
+              photos[(6 + sj * 25) % cnt].pic_url,
+              photos[(6 + sj * 25) % cnt].thumbs_up,
+              photos[(6 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(7 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp8"
+          @click="
+            pushlp1(
+              photos[(7 + sj * 25) % cnt].pic_url,
+              photos[(7 + sj * 25) % cnt].thumbs_up,
+              photos[(7 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(8 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp9"
+          @click="
+            pushlp1(
+              photos[(8 + sj * 25) % cnt].pic_url,
+              photos[(8 + sj * 25) % cnt].thumbs_up,
+              photos[(8 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(9 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp10"
+          @click="
+            pushlp1(
+              photos[(9 + sj * 25) % cnt].pic_url,
+              photos[(9 + sj * 25) % cnt].thumbs_up,
+              photos[(9 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(10 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp11"
+          @click="
+            pushlp1(
+              photos[(10 + sj * 25) % cnt].pic_url,
+              photos[(10 + sj * 25) % cnt].thumbs_up,
+              photos[(10 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(11 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="lp0"
+          @click="
+            pushlp1(
+              photos[(11 + sj * 25) % cnt].pic_url,
+              photos[(11 + sj * 25) % cnt].thumbs_up,
+              photos[(11 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(12 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="p1"
+          @click="
+            pushlp1(
+              photos[(12 + sj * 25) % cnt].pic_url,
+              photos[(12 + sj * 25) % cnt].thumbs_up,
+              photos[(12 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(13 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp1"
+          @click="
+            pushlp1(
+              photos[(13 + sj * 25) % cnt].pic_url,
+              photos[(13 + sj * 25) % cnt].thumbs_up,
+              photos[(13 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(14 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp2"
+          @click="
+            pushlp1(
+              photos[(14 + sj * 25) % cnt].pic_url,
+              photos[(14 + sj * 25) % cnt].thumbs_up,
+              photos[(14 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(15 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp3"
+          @click="
+            pushlp1(
+              photos[(15 + sj * 25) % cnt].pic_url,
+              photos[(15 + sj * 25) % cnt].thumbs_up,
+              photos[(15 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(16 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp4"
+          @click="
+            pushlp1(
+              photos[(16 + sj * 25) % cnt].pic_url,
+              photos[(16 + sj * 25) % cnt].thumbs_up,
+              photos[(16 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(17 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp5"
+          @click="
+            pushlp1(
+              photos[(17 + sj * 25) % cnt].pic_url,
+              photos[(17 + sj * 25) % cnt].thumbs_up,
+              photos[(17 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(18 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp6"
+          @click="
+            pushlp1(
+              photos[(18 + sj * 25) % cnt].pic_url,
+              photos[(18 + sj * 25) % cnt].thumbs_up,
+              photos[(18 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(19 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp7"
+          @click="
+            pushlp1(
+              photos[(19 + sj * 25) % cnt].pic_url,
+              photos[(19 + sj * 25) % cnt].thumbs_up,
+              photos[(19 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(20 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp8"
+          @click="
+            pushlp1(
+              photos[(20 + sj * 25) % cnt].pic_url,
+              photos[(20 + sj * 25) % cnt].thumbs_up,
+              photos[(20 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(21 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp9"
+          @click="
+            pushlp1(
+              photos[(21 + sj * 25) % cnt].pic_url,
+              photos[(21 + sj * 25) % cnt].thumbs_up,
+              photos[(21 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(22 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp10"
+          @click="
+            pushlp1(
+              photos[(22 + sj * 25) % cnt].pic_url,
+              photos[(22 + sj * 25) % cnt].thumbs_up,
+              photos[(22 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(23 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp11"
+          @click="
+            pushlp1(
+              photos[(23 + sj * 25) % cnt].pic_url,
+              photos[(23 + sj * 25) % cnt].thumbs_up,
+              photos[(23 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
+      <router-link to="photo">
+        <img
+          :src="photos[(24 + sj * 25) % cnt].pic_url"
+          class="p"
+          id="rp0"
+          @click="
+            pushlp1(
+              photos[(24 + sj * 25) % cnt].pic_url,
+              photos[(24 + sj * 25) % cnt].thumbs_up,
+              photos[(24 + sj * 25) % cnt].flag
+            )
+          "
+        />
+      </router-link>
     </div>
 
     <!-- footer 底部制作区域start -->
@@ -139,26 +473,80 @@ export default {
   data() {
     return {
       userimg: sessionStorage.getItem("userimg"),
-      lp1: "../../static/8_schoolphoto/p.jpg",
-      goodlp1: 150,
+      photos: [
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
+      ],
+      imageUrl: "",
+      cnt: 1,
+      sj: 0,
     };
   },
   methods: {
-    pushlp1(lp1, goodlp1) {
+    pushlp1(pic_url, thumbs_up, flag) {
       this.$router.push({
         path: "/photo",
         query: {
-          ph: this.lp1,
-          good: this.goodlp1,
+          pic_url: pic_url,
+          thumbs_up: thumbs_up,
+          flag: flag,
         },
       });
     },
+    refresh() {
+      //刷新照片墙
+      this.sj++;
+      // const that = this;
+      // this.photos.splice(0, this.photos.length);
+      // this.$axios
+      //   .get("http://192.168.31.77:8000/scenery/all")
+      //   .then(function (response) {
+      //     var l = response.data.length - 1;
+      //     for (var i = 0; i <= l; i++) {
+      //       that.photos.push({
+      //         pic_url: response.data[i].pic_url,
+      //         thumbs_up: response.data[i].thumbs_up,
+      //         flag: response.data[i].flag,
+      //       });
+      //     }
+      //   });
+    },
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      this.$message({
+        showClose: true,
+        message: "上传成功",
+        type: "success",
+      });
+      console.log(this.imageUrl);
+    },
+    beforeAvatarUpload(file) {
+      //在头像上传之前需要做的判断，如判断文件格式
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+    },
   },
-  created() {
+  created: function () {
     if (location.href.indexOf("#reloaded") == -1) {
       location.href = location.href + "#reloaded";
       location.reload();
     }
+    //展示出照片
+    const that = this;
+    this.$axios
+      .get("http://192.168.31.77:8000/scenery/all")
+      .then(function (response) {
+        console.log(response.data);
+        var l = response.data.length;
+        that.cnt = l;
+        for (var i = 0; i <= l; i++) {
+          that.photos.push({
+            pic_url: response.data[i].pic_url,
+            thumbs_up: response.data[i].thumbs_up,
+            flag: response.data[i].flag,
+          });
+        }
+      });
   },
 };
 </script>
@@ -362,14 +750,14 @@ body {
   width: 1500px;
   height: 1070px;
   margin-right: auto;
-  margin-left: auto;
+  margin-left: -1%;
 }
 .p {
   width: 200px;
   height: 150px;
 }
 #lp1 {
-  margin-left: 15%;
+  margin-left: 250px;
   float: left;
 }
 #lp2 {

@@ -271,7 +271,7 @@ export default {
     }
     var _this = this;
     this.$axios
-      .get("http://119.91.217.141:8080/test/user_show")
+      .get("http://192.168.31.77:8000/test/user_show")
       .then(function (response) {
         //具体操作
         console.log(response.data);

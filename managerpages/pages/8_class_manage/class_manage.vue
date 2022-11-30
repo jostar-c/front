@@ -68,7 +68,7 @@
         <div id="classtitle">班级信息管理</div>
         <div id="line"></div>
         <div id="choose">
-          <el-select v-model="value1" placeholder="请选择专业">
+          <el-select v-model="umajor" placeholder="请选择专业">
             <el-option
               v-for="item in specialized"
               :key="item.value"
@@ -78,7 +78,7 @@
             </el-option>
           </el-select>
           <el-select
-            v-model="value2"
+            v-model="grade"
             style="margin-left: 20px"
             placeholder="请选择年级"
           >
@@ -91,7 +91,7 @@
             </el-option>
           </el-select>
           <el-select
-            v-model="value3"
+            v-model="uclass"
             style="margin-left: 20px"
             placeholder="请选择班级"
           >
@@ -124,7 +124,9 @@
           >
             <div class="info">{{ students[index].number }}</div>
             <div class="info">{{ students[index].name }}</div>
-            <el-button type="text" class="delStu">删除</el-button>
+            <el-button type="text" class="delStu" @click="opendelstu(index)"
+              >删除</el-button
+            >
             <div class="tableLine"></div>
           </div>
         </div>
@@ -139,136 +141,156 @@ export default {
     return {
       specialized: [
         {
-          value: "选项1",
+          value: "计算机类",
           label: "计算机类",
         },
         {
-          value: "选项2",
+          value: "大数据",
           label: "大数据",
         },
         {
-          value: "选项3",
+          value: "人工智能",
           label: "人工智能",
         },
         {
-          value: "选项4",
+          value: "软件工程",
           label: "软件工程",
         },
         {
-          value: "选项5",
+          value: "信息安全",
           label: "信息安全",
         },
       ],
       year: [
         {
-          value: "选项1",
-          label: "2018级",
+          value: "2018",
+          label: "2018",
         },
         {
-          value: "选项2",
-          label: "2019级",
+          value: "2019",
+          label: "2019",
         },
         {
-          value: "选项3",
-          label: "2020级",
+          value: "2020",
+          label: "2020",
         },
         {
-          value: "选项4",
-          label: "2021级",
+          value: "2021",
+          label: "2021",
         },
         {
-          value: "选项5",
-          label: "2022级",
+          value: "2022",
+          label: "2022",
         },
       ],
       classes: [
         {
-          value: "选项1",
+          value: "1班",
           label: "1班",
         },
         {
-          value: "选项2",
+          value: "2班",
           label: "2班",
         },
         {
-          value: "选项3",
+          value: "3班",
           label: "3班",
         },
         {
-          value: "选项4",
+          value: "4班",
           label: "4班",
         },
         {
-          value: "选项5",
+          value: "5班",
           label: "5班",
         },
         {
-          value: "选项4",
+          value: "6班",
           label: "6班",
         },
       ],
-      students: [
-        {
-          number: "032002xx1",
-          name: "张三",
-        },
-        {
-          number: "032002xx2",
-          name: "李四",
-        },
-        {
-          number: "032002xx3",
-          name: "王五",
-        },
-        {
-          number: "032002xx4",
-          name: "老六",
-        },
-        {
-          number: "032002xx5",
-          name: "飞机",
-        },
-        {
-          number: "032002xx6",
-          name: "大炮",
-        },
-        {
-          number: "032002xx7",
-          name: "坦克",
-        },
-      ],
-      value1: "",
-      value2: "",
-      value3: "",
+      students: [],
+      umajor: "",
+      stucnt: 0,
+      grade: "",
+      uclass: "",
       show: 0,
     };
   },
   methods: {
+    opendelstu(i) {
+      this.$confirm("此操作将永久删除该学生, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.delstu(i);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+        })
+        .catch(() => {});
+    },
     searchClass() {
-      if (this.value1 == "" || this.value2 == "" || this.value3 == "") {
+      if (this.umajor == "" || this.grade == "" || this.uclass == "") {
         this.$alert("请选择正确的班级", "提示", {
           confirmButtonText: "确定",
         });
       } else {
         this.show = 1;
+        this.showclass();
       }
     },
-    resetClass() {
-      this.$confirm("此操作将重置所有选项, 是否继续?", "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      }).then(() => {
-        this.$message({
-          type: "success",
-          message: "已重置!",
+    showclass() {
+      //展示学生
+      const that = this;
+      this.students.splice(0, this.students.length);
+      this.$axios
+        .post("http://192.168.31.149:8083/user/manager/classUserList", {
+          umajor: that.umajor,
+          grade: that.grade,
+          uclass: that.uclass,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          that.stucnt = response.data["count"];
+          for (var i = that.stucnt - 1; i >= 0; i--) {
+            that.students.push({
+              name: response.data["realname" + i],
+              number: response.data["sno" + i],
+              //id:response.data.students[i].id,
+              //name:response.data.students[i].name,
+              //number:response.data.students[i].number,
+            });
+          }
         });
-      });
+    },
+    delstu(i) {
+      //删除学生
+      const that = this;
+      this.students.splice(i, 1); //前端模拟删除
+      console.log(i);
+      console.log(that.umajor);
+      console.log(that.grade);
+      console.log(that.uclass);
+      console.log(that.students[i].number);
+      this.$axios
+        .post("http://192.168.31.149:8083/user/manager/classUserList/out", {
+          sno: that.students[i].number,
+          umajor: that.umajor,
+          grade: that.grade,
+          uclass: that.uclass,
+        })
+        .then(function (response) {
+          //删除数据库照片
+        });
     },
     clean() {
-      this.value1 = "";
-      this.value2 = "";
-      this.value3 = "";
+      this.umajor = "";
+      this.grade = "";
+      this.uclass = "";
       this.show = 0;
     },
   },
@@ -384,8 +406,6 @@ a {
   color: #00a4ff;
 }
 .main {
-  margin-top: 0%;
-  margin-left: 0%;
   width: 100%;
   height: 100%;
   float: right;

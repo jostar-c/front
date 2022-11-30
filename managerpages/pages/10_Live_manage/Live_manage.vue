@@ -130,8 +130,8 @@ export default {
       const that = this;
       let Params = new FormData();
       Params.append(that.website, that.site);
-      axios
-        .post("http://119.91.217.141:8080/insertzhibo", {
+      this.$axios
+        .post("http://192.168.1.2:8000/insertzhibo", {
           website: that.website,
           site: that.site,
         })
@@ -150,8 +150,8 @@ export default {
     },
     refresh() {
       const that = this;
-      axios
-        .get("http://119.91.217.141:8080/httpquery")
+      this.$axios
+        .get("http://192.168.1.2:8000/httpquery")
         .then(function (response) {
           console.log(response.data);
           that.oldlive = response.data.data[0].website;
@@ -159,14 +159,20 @@ export default {
         });
     },
   },
-  created() {
+  created: function () {
+    if (location.href.indexOf("#reloaded") == -1) {
+      location.href = location.href + "#reloaded";
+      location.reload();
+    }
     //展示当前链接
     const that = this;
-    axios.get("http://119.91.217.141:8080/httpquery").then(function (response) {
-      console.log(response.data);
-      that.oldlive = response.data.data[0].website;
-      that.oldplatform = response.data.data[0].site;
-    });
+    this.$axios
+      .get("http://192.168.1.2:8000/httpquery")
+      .then(function (response) {
+        console.log(response.data);
+        that.oldlive = response.data.data[0].website;
+        that.oldplatform = response.data.data[0].site;
+      });
   },
 };
 </script>
@@ -274,8 +280,6 @@ a {
   color: #00a4ff;
 }
 .main {
-  margin-top: 0%;
-  margin-left: 0%;
   width: 100%;
   height: 100%;
   float: right;
@@ -295,7 +299,7 @@ a {
   line-height: 70px;
 }
 #line {
-  width: 1200px;
+  width: 75%;
   margin-top: 5px;
   margin-left: 25px;
   height: 1px;
@@ -330,14 +334,12 @@ a {
   float: left;
 }
 #newlive {
-  margin-top: 40px;
+  margin-top: 70px;
   margin-left: 200px;
   width: 800px;
-  height: 300px;
-  border: solid;
+  height: 200px;
 }
 .explain {
-  margin-top: 40px;
   margin-bottom: 20px;
   float: left;
   width: 180px;
@@ -347,7 +349,6 @@ a {
   font-weight: bold;
 }
 .new {
-  margin-top: 40px;
   margin-bottom: 20px;
   float: left;
   width: 620px;

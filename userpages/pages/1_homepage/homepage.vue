@@ -224,7 +224,7 @@ export default {
   },
   methods: {
     getAddress() {
-      axios.get("http://119.91.217.141:8080/zhibo").then((res) => {
+      axios.get("http://192.168.1.2:8000/zhibo").then((res) => {
         this.address = res.data.data;
         console.log(this.address);
       });

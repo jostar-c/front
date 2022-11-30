@@ -109,13 +109,11 @@ export default {
       // sessionStorage.setItem("islogin", "true");
       // sessionStorage.setItem(
       //   "userimg",
-      //   response.data.data.userimg == ""
-      //     ? "../../static/avatar.jpg"
-      //     : response.data.data.userimg
+      //   "" == "" ? "../../static/avatar.jpg" : response.data.data.userimg
       // );
       //将用户账号密码发送给后端，若已注册，则返回"true"，否则返回"false"，弹窗显示未注册
       this.$axios
-        .post("http://192.168.31.149:8083/user/login", {
+        .post("http://119.91.217.141:8088/user/login", {
           uname: this.uname,
           password: this.password,
         })
