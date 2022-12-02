@@ -307,7 +307,7 @@ body {
 }
 
 .select p {
-  text-align: center;
+  text-align: center; 
   font-size: 20px;
   padding-top: 5px;
   color: #fff;
