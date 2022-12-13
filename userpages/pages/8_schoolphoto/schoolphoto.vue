@@ -48,8 +48,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments"><b>校友留言</b></router-link>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li style="background-color: tomato">
             <router-link to="schoolphoto"><b>校园风光</b></router-link>
@@ -75,7 +78,7 @@
     <div id="right">
       <el-upload
         class="avatar-uploader"
-        action="http://192.168.31.77:8000/uploadphoto/uploadppp"
+        action="http://119.91.217.141:8080/uploadphoto/uploadppp"
         :show-file-list="false"
         accept=".jpg,.png"
         :on-success="handleAvatarSuccess"
@@ -473,10 +476,7 @@ export default {
   data() {
     return {
       userimg: sessionStorage.getItem("userimg"),
-      photos: [
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
-      ],
+      photos: [],
       imageUrl: "",
       cnt: 1,
       sj: 0,
@@ -512,7 +512,7 @@ export default {
       //   });
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = res;
       this.$message({
         showClose: true,
         message: "上传成功",
@@ -534,12 +534,12 @@ export default {
     //展示出照片
     const that = this;
     this.$axios
-      .get("http://192.168.31.77:8000/scenery/all")
+      .get("http://119.91.217.141:8080/scenery/all")
       .then(function (response) {
         console.log(response.data);
         var l = response.data.length;
         that.cnt = l;
-        for (var i = 0; i <= l; i++) {
+        for (var i = 0; i < l; i++) {
           that.photos.push({
             pic_url: response.data[i].pic_url,
             thumbs_up: response.data[i].thumbs_up,

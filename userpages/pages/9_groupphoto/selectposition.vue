@@ -52,8 +52,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments"><b>校友留言</b></router-link>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li>
             <router-link to="schoolphoto"><b>校园风光</b></router-link>
@@ -79,9 +82,22 @@
     </div>
 
     <div class="temp">
-      <canvas width="800" height="550" id="canvas"></canvas>
+      <canvas width="800" height="550" id="canvas"
+        >您的浏览器不支持canvas，请升级！</canvas
+      >
     </div>
     <!-- <div class="downloadbtn"><el-button @click="downloadImage">下载照片</el-button></div> -->
+
+    <div class="selfdefine">
+      <!-- <el-button>自定义背景</el-button> -->
+      <el-upload
+        action=""
+        class="upload-demo"
+        :before-upload="onSelectBackground"
+      >
+        <el-button type="primary">自定义背景</el-button>
+      </el-upload>
+    </div>
 
     <div class="avatarbtn">
       <el-button @click="dialogVisible = true">上传头像</el-button>
@@ -103,7 +119,8 @@
               class="el-button hide"
               style="margin-bottom: 15px"
             />
-            <div class="upload-img" @click="clickUpload">点击上传图片</div>
+            <!-- <div class="upload-img" @click="clickUpload">点击上传图片</div> -->
+            <i class="el-icon-error" @click="handleClose"></i>
           </el-row>
           <el-row>
             <el-col :span="14">
@@ -131,21 +148,19 @@
             </el-col>
           </el-row>
           <el-row class="confirmBtn" align="center">
-            <el-button
-              type="primary "
-              size="medium"
-              round
-              @click="confirm('blob')"
+            <el-button size="medium" round @click="confirm('blob')"
               >确认</el-button
             >
-            <el-button type="info" size="medium" round @click="handleClose"
-              >取消</el-button
-            >
+            <!-- <el-button 
+              size="medium" 
+              round 
+              @click="handleClose"
+              >取消</el-button> -->
           </el-row>
         </span>
       </el-dialog>
     </div>
-    <div
+    <!-- <div
       ref="delBtn"
       style="
         position: fixed;
@@ -159,7 +174,7 @@
       @click="delEl"
     >
       删除
-    </div>
+    </div> -->
 
     <div class="downloadbtn">
       <el-button @click="downloadImage">下载照片</el-button>
@@ -207,16 +222,30 @@ export default {
   },
   mounted() {
     //现在用的是本地图片，后期可以通过传递图片url为参数的方式来动态修改背景图
+    this.fabricInstance = new fabric.Canvas("canvas");
     this.initCanvas(this.backgroundImage);
   },
   methods: {
+    onSelectBackground(file) {
+      console.log(file);
+      const fr = new FileReader(file);
+      fr.readAsDataURL(file);
+      const _this = this;
+      fr.onload = function () {
+        _this.initCanvas(this.result);
+      };
+      // return false
+      return Promise.reject();
+    },
     goTopersonalpage() {
       if (this.islogin == 0) this.$router.push("/login");
       else this.$router.push("/personalpage");
     },
     getquery() {
+      // if () this.backgroundImage =;
+      // else
       this.backgroundImage = this.$route.query.imgurl;
-    },
+    }, //获取背景图url
     delEl() {
       console.log(4);
     },
@@ -231,7 +260,6 @@ export default {
         // const rate = 1020 / backgroundImageEl.width;
         // this.canvasHeight = backgroundImageEl.height * rate;
         this.$nextTick(() => {
-          this.fabricInstance = new fabric.Canvas("canvas");
           // this.fabricInstance = new fabric.Canvas('canvas',{
           //   fireRightClick: true, // 启用右键，button的数字为3
           //   stopContextMenu: true,
@@ -515,10 +543,13 @@ body {
   margin-left: 120px;
 }
 
-.el-dialog {
-  width: 1200px !important;
-  height: 650px;
+.el-icon-error {
+  float: right;
+  font-size: 30px;
+  margin-left: 40px;
+  margin-top: -60px;
 }
+
 .show-preview {
   display: flex;
   justify-content: center;
@@ -547,29 +578,74 @@ body {
   z-index: 1;
   display: flex;
   justify-content: center;
-  margin-top: -270px;
+  margin-top: -250px;
   margin-left: -200px;
 }
 
+.selfdefine button {
+  /* float: left; */
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #ffffff;
+  border: none;
+  color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+  /* cursor: pointer; */
+}
+
+.selfdefine button:hover {
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #a40404;
+  color: #ffffff;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+}
+
+.selfdefine button:after {
+  /* float: left; */
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #ffffff;
+  border: none;
+  color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+  /* cursor: pointer; */
+}
 .avatarbtn button {
   /* float: left; */
-  margin-top: 170px;
+  margin-top: 150px;
   margin-left: 155px;
   color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+}
+.avatarbtn button:hover {
+  margin-top: 150px;
+  margin-left: 155px;
+  color: #fcfcfc;
+  background-color: #a40404;
   box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
 }
 
 .downloadbtn button {
   float: left;
-  margin-top: 200px;
+  margin-top: 150px;
   margin-left: 155px;
   color: #a40404;
   box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
 }
+.downloadbtn button:hover {
+  float: left;
+  margin-top: 150px;
+  margin-left: 155px;
+  color: #ffffff;
+  background-color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+}
+
 /* footer 模块 */
 
 .footer {
-  height: 40px;
+  height: 50px;
   background-color: #bfbfbf;
   position: absolute;
   bottom: 0;

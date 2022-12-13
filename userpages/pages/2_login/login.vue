@@ -113,17 +113,17 @@ export default {
       // );
       //将用户账号密码发送给后端，若已注册，则返回"true"，否则返回"false"，弹窗显示未注册
       this.$axios
-        .post("http://119.91.217.141:8088/user/login", {
+        .post("http://119.91.217.141:8080/user/login", {
           uname: this.uname,
           password: this.password,
         })
         .then((response) => {
           if (response.data.code == "0") {
             sessionStorage.setItem("uid", response.data.data.uid);
-            sessionStorage.setItem("uname", response.data.data.uname);
-            sessionStorage.setItem("email", response.data.data.email);
+            sessionStorage.setItem("uname", response.data.data.nickname);
+            sessionStorage.setItem("email", response.data.data.uname);
             sessionStorage.setItem("grade", response.data.data.grade);
-            sessionStorage.setItem("major", response.data.data.major);
+            sessionStorage.setItem("major", response.data.data.umajor);
             sessionStorage.setItem("uclass", response.data.data.uclass);
             sessionStorage.setItem(
               "userimg",

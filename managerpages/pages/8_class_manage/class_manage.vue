@@ -31,11 +31,11 @@
               >用户账号管理 <span>&gt;</span></router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments_manage"
               >留言评论审核 <span>&gt;</span></router-link
             >
-          </li>
+          </li> -->
           <li>
             <router-link to="photo_manage"
               >上传图片审核 <span>&gt;</span></router-link
@@ -248,7 +248,7 @@ export default {
       const that = this;
       this.students.splice(0, this.students.length);
       this.$axios
-        .post("http://192.168.31.149:8083/user/manager/classUserList", {
+        .post("http://119.91.217.141:8080/user/manager/classUserList", {
           umajor: that.umajor,
           grade: that.grade,
           uclass: that.uclass,
@@ -270,14 +270,13 @@ export default {
     delstu(i) {
       //删除学生
       const that = this;
-      this.students.splice(i, 1); //前端模拟删除
       console.log(i);
       console.log(that.umajor);
       console.log(that.grade);
       console.log(that.uclass);
       console.log(that.students[i].number);
       this.$axios
-        .post("http://192.168.31.149:8083/user/manager/classUserList/out", {
+        .post("http://119.91.217.141:8080/user/manager/classUserList/out", {
           sno: that.students[i].number,
           umajor: that.umajor,
           grade: that.grade,
@@ -285,6 +284,7 @@ export default {
         })
         .then(function (response) {
           //删除数据库照片
+          that.students.splice(i, 1); //前端模拟删除
         });
     },
     clean() {
@@ -410,6 +410,7 @@ a {
   height: 100%;
   float: right;
   position: fixed;
+  overflow-y: scroll;
 }
 #classtitle {
   margin-top: 40px;

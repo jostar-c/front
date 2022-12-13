@@ -46,28 +46,28 @@
 
     <div class="message">
       <div class="nicheng">
-        <p>昵称: 浪花朵朵</p>
-        <!-- <p>昵称: {{ uname }}</p> -->
+        <!-- <p>昵称: 浪花朵朵</p> -->
+        <p>昵称: {{ uname }}</p>
       </div>
       <br />
       <div class="youxiang">
-        <p>邮箱/电话: 70980546@qq.com</p>
-        <!-- <p>邮箱/电话: {{ eamil }}</p> -->
+        <!-- <p>邮箱/电话: 70980546@qq.com</p> -->
+        <p>邮箱/电话: {{ eamil }}</p>
       </div>
       <br />
       <div class="biyenianfen">
-        <p>年级: 2002</p>
-        <!-- <p>年级: {{ grade }}</p> -->
+        <!-- <p>年级: 2002</p> -->
+        <p>年级: {{ grade }}</p>
       </div>
       <br />
       <div class="zhuanye">
-        <p>专业: 计算机科学与技术</p>
-        <!-- <p>专业: {{ major }}</p> -->
+        <!-- <p>专业: 计算机科学与技术</p> -->
+        <p>专业: {{ major }}</p>
       </div>
       <br />
       <div class="banji">
-        <p>班级: 01班</p>
-        <!-- <p>班级: {{ uclass }}</p> -->
+        <!-- <p>班级: 01班</p> -->
+        <p>班级: {{ uclass }}</p>
       </div>
 
       <div>

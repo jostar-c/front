@@ -52,8 +52,11 @@
           <li style="background-color: tomato">
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <a @click="goTocomments()"><b>校友留言</b></a>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li>
             <a @click="goToschoolphoto()"><b>校园风光</b></a>
@@ -205,7 +208,7 @@ export default {
     getPageNum(val) {
       // 改为向后端传送目标页数后后端返回目标页对应的10条大事件赋给eventdatas进行渲染更新
       $.ajax({
-        url: "http://192.168.1.2:8000/bigevent",
+        url: "http://119.91.217.141:8080/bigevent",
         type: "get",
         data: {
           x: val,
@@ -234,7 +237,7 @@ export default {
       "向后端请求事件总数量赋给sumevent,请求前十个事件赋给eventdatas"
     );
     $.get({
-      url: "http://192.168.1.2:8000/bigevent",
+      url: "http://119.91.217.141:8080/bigevent",
       type: "get",
       data: {
         x: 1,

@@ -31,11 +31,11 @@
               >用户账号管理 <span>&gt;</span></router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments_manage"
               >留言评论审核 <span>&gt;</span></router-link
             >
-          </li>
+          </li> -->
           <li>
             <router-link to="photo_manage"
               >上传图片审核 <span>&gt;</span></router-link
@@ -131,7 +131,7 @@ export default {
       let Params = new FormData();
       Params.append(that.website, that.site);
       this.$axios
-        .post("http://192.168.1.2:8000/insertzhibo", {
+        .post("http://119.91.217.141:8080/insertzhibo", {
           website: that.website,
           site: that.site,
         })
@@ -151,7 +151,7 @@ export default {
     refresh() {
       const that = this;
       this.$axios
-        .get("http://192.168.1.2:8000/httpquery")
+        .get("http://119.91.217.141:8080/httpquery")
         .then(function (response) {
           console.log(response.data);
           that.oldlive = response.data.data[0].website;
@@ -167,7 +167,7 @@ export default {
     //展示当前链接
     const that = this;
     this.$axios
-      .get("http://192.168.1.2:8000/httpquery")
+      .get("http://119.91.217.141:8080/httpquery")
       .then(function (response) {
         console.log(response.data);
         that.oldlive = response.data.data[0].website;

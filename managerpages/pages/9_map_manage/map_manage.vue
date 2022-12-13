@@ -31,11 +31,11 @@
               >用户账号管理 <span>&gt;</span></router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments_manage"
               >留言评论审核 <span>&gt;</span></router-link
             >
-          </li>
+          </li> -->
           <li>
             <router-link to="photo_manage"
               >上传图片审核 <span>&gt;</span></router-link
@@ -188,7 +188,7 @@ export default {
     },
     change(id) {
       this.$axios
-        .post("http://192.168.31.77:8000/test/update", {
+        .post("http://119.91.217.141:8080/test/update", {
           address: this.events[id].address,
           activity_name: this.events[id].event,
         })
@@ -211,7 +211,7 @@ export default {
 
     var _this = this;
     this.$axios
-      .get("http://192.168.31.77:8000/test/user_show")
+      .get("http://119.91.217.141:8080/test/user_show")
       .then(function (response) {
         //具体操作
         console.log(response.data);

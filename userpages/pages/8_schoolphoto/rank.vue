@@ -48,8 +48,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments"><b>校友留言</b></router-link>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li style="background-color: tomato">
             <router-link to="schoolphoto"><b>校园风光</b></router-link>
@@ -168,18 +171,7 @@ export default {
   data() {
     return {
       userimg: sessionStorage.getItem("userimg"),
-      tops: [
-        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        {
-          pic_url: sessionStorage.getItem("userimg"),
-          thumbs_up: 110,
-          flag: -1,
-        },
-        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 10, flag: -1 },
-        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
-        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
-        { pic_url: sessionStorage.getItem("userimg"), thumbs_up: 1, flag: -1 },
-      ],
+      tops: [],
     };
   },
   methods: {
@@ -190,7 +182,7 @@ export default {
       const that = this;
       console.log(that.tops[i].thumbs_up);
       this.$axios
-        .post("http://192.168.31.77:8000/scenery/like", {
+        .post("http://119.91.217.141:8080/scenery/like", {
           pic_url: that.tops[i].pic_url,
           thumbs_up: that.tops[i].thumbs_up,
         })
@@ -210,7 +202,7 @@ export default {
     //展示出排行榜照片
     const that = this;
     this.$axios
-      .get("http://192.168.31.77:8000/scenery/five")
+      .get("http://119.91.217.141:8080/scenery/five")
       .then(function (response) {
         console.log(response.data);
         for (var i = 0; i <= 4; i++) {

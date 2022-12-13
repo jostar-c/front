@@ -52,8 +52,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments"><b>校友留言</b></router-link>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li>
             <router-link to="schoolphoto"><b>校园风光</b></router-link>

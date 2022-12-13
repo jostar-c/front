@@ -31,11 +31,11 @@
               >用户账号管理 <span>&gt;</span></router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments_manage"
               >留言评论审核 <span>&gt;</span></router-link
             >
-          </li>
+          </li> -->
           <li>
             <router-link to="photo_manage"
               >上传图片审核<span>&gt;</span></router-link
@@ -129,7 +129,7 @@ export default {
       const that = this;
       this.photos.splice(0, this.photos.length);
       this.$axios
-        .get("http://192.168.31.77:8000/scenery/all")
+        .get("http://119.91.217.141:8080/scenery/all")
         .then(function (response) {
           console.log(response.data);
           var l = response.data.length - 1;
@@ -150,7 +150,7 @@ export default {
       // this.photos.splice(i, 1);//前端模拟删除
       console.log(that.photos[i].pic_url);
       this.$axios
-        .post("http://192.168.31.77:8000/scenery/deny", {
+        .post("http://119.91.217.141:8080/scenery/deny", {
           pic_url: that.photos[i].pic_url,
         })
         .then(function (response) {
@@ -165,7 +165,7 @@ export default {
     }
     const that = this;
     this.$axios
-      .get("http://192.168.31.77:8000/scenery/all")
+      .get("http://119.91.217.141:8080/scenery/all")
       .then(function (response) {
         console.log(response.data);
         var l = response.data.length - 1;
@@ -290,6 +290,7 @@ a {
   height: 100%;
   float: right;
   position: fixed;
+  overflow-y: scroll;
 }
 #phtitle {
   margin-top: 40px;

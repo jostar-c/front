@@ -137,8 +137,9 @@
 
     <el-upload
       class="avatar-uploader"
-      action="https://jsonplaceholder.typicode.com/posts/"
+      action="http://119.91.217.141:8080/user/uploadAvatar"
       :show-file-list="false"
+      accept=".jpg,.png"
       :on-success="handleAvatarSuccess"
       :before-upload="beforeAvatarUpload"
     >
@@ -177,7 +178,7 @@ export default {
   methods: {
     open4() {
       this.$axios
-        .post("http://192.168.31.149:8083/user/changeInformation", {
+        .post("http://119.91.217.141:8080/user/changeInformation", {
           uid: this.uid,
           newGrade: this.grade,
           newMajor: this.major,
@@ -192,7 +193,6 @@ export default {
             sessionStorage.setItem("grade", this.grade);
             sessionStorage.setItem("major", this.major);
             sessionStorage.setItem("uclass", this.uclass);
-            sessionStorage.setItem("userimg", this.imageUrl);
             this.$message({
               showClose: true,
               message: "资料修改成功",
@@ -212,7 +212,14 @@ export default {
         });
     },
     handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
+      this.imageUrl = res;
+      sessionStorage.setItem("userimg", this.imageUrl);
+      this.$message({
+        showClose: true,
+        message: "上传成功",
+        type: "success",
+      });
+      console.log(this.imageUrl);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -228,7 +235,7 @@ export default {
     },
     updatepassword() {
       this.$axios
-        .post("http://192.168.31.149:8083/user/changePassword", {
+        .post("http://119.91.217.141:8080/user/changePassword", {
           uid: this.uid,
           oldPassword: this.oldpassword,
           newPassword: this.newpassword,

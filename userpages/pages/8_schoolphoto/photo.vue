@@ -48,8 +48,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments"><b>校友留言</b></router-link>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li style="background-color: tomato">
             <router-link to="schoolphoto"><b>校园风光</b></router-link>
@@ -129,7 +132,7 @@ export default {
       this.thumbs_up -= -this.flag;
       const that = this;
       this.$axios
-        .post("http://192.168.31.77:8000/scenery/like", {
+        .post("http://119.91.217.141:8080/scenery/like", {
           pic_url: that.pic_url,
           thumbs_up: that.thumbs_up,
         })

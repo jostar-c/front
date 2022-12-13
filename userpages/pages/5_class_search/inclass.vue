@@ -108,7 +108,13 @@
           >
             <img
               :src="smessage[i - 1].imglink"
-              style="display: inline-block; margin-top: 3%; margin-left: 4%"
+              style="
+                display: inline-block;
+                margin-top: 3%;
+                margin-left: 4%;
+                max-height: 100%;
+                max-width: 100%;
+              "
             />
             <span
               style="
@@ -143,20 +149,34 @@
       top="7%"
       class="classmate"
     >
-      <img :src="classmate.imglink" alt="" />
-      <p>
-        <b>昵称：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.userid }}
-      </p>
-      <p><b>邮箱/电话：&emsp;&emsp;&emsp;</b>{{ classmate.email }}</p>
-      <p>
-        <b>年级：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.grade }}
-      </p>
-      <p>
-        <b>专业：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.subject }}
-      </p>
-      <p>
-        <b>班级：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.class }}
-      </p>
+      <div style="margin-left: 12%; margin-right: 12%">
+        <img
+          :src="classmate.imglink"
+          style="
+            display: inline-block;
+            margin-top: 3%;
+            margin-left: 0%;
+            max-height: 100%;
+            max-width: 100%;
+          "
+          alt=""
+        />
+        <p>
+          <b>昵称：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b
+          >{{ classmate.userid }}
+        </p>
+        <p><b>邮箱/电话：&emsp;&emsp;&emsp;</b>{{ classmate.email }}</p>
+        <p>
+          <b>年级：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.grade }}
+        </p>
+        <p>
+          <b>专业：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b
+          >{{ classmate.subject }}
+        </p>
+        <p>
+          <b>班级：&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;</b>{{ classmate.class }}
+        </p>
+      </div>
     </el-dialog>
 
     <!-- footer 底部制作区域start -->
@@ -637,7 +657,7 @@ export default {
       // 改为向后端传送用户信息，包括头像学号姓名，并加入smessage
       this.$axios
         .post(
-          "http://192.168.31.149:8083/user/classSelect/classUserList/join",
+          "http://119.91.217.141:8080/user/classSelect/classUserList/join",
           {
             umajor: this.value[1],
             grade: this.value[0],
@@ -678,7 +698,7 @@ export default {
       // 改为向后端传送this.smessage[i].sno,请求该用户信息赋给classmate
       this.$axios
         .post(
-          "http://192.168.31.149:8083/user/classSelect/classUserList/information",
+          "http://119.91.217.141:8080/user/classSelect/classUserList/information",
           {
             sno: this.smessage[i].sno,
           }
@@ -715,7 +735,7 @@ export default {
     this.getquery();
     // 改为向后端传送value（年级，专业，班级）与用户账户后后端返回该班级的班级信息（用户是否加入班级与同学信息，包括头像学号姓名）
     this.$axios
-      .post("http://192.168.31.149:8083/user/classSelect/classUserList", {
+      .post("http://119.91.217.141:8080/user/classSelect/classUserList", {
         uid: sessionStorage.getItem("uid"),
         umajor: this.value[1],
         grade: this.value[0],

@@ -103,7 +103,7 @@ export default {
   methods: {
     register() {
       this.$axios
-        .post("http://192.168.31.149:8083/user/register", {
+        .post("http://119.91.217.141:8080/user/register", {
           uname: this.uname,
           nickname: this.nickname,
           password: this.password,

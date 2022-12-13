@@ -52,8 +52,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <a @click="goTocomments()"><b>校友留言</b></a>
+          </li> -->
+          <li style="background-color: tomato">
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li>
             <a @click="goToschoolphoto()"><b>校园风光</b></a>
@@ -271,7 +274,7 @@ export default {
     }
     var _this = this;
     this.$axios
-      .get("http://192.168.31.77:8000/test/user_show")
+      .get("http://119.91.217.141:8080/test/user_show")
       .then(function (response) {
         //具体操作
         console.log(response.data);

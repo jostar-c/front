@@ -31,11 +31,11 @@
               >用户账号管理<span>&gt;</span></router-link
             >
           </li>
-          <li>
+          <!-- <li>
             <router-link to="comments_manage"
               >留言评论审核 <span>&gt;</span></router-link
             >
-          </li>
+          </li> -->
           <li>
             <router-link to="photo_manage"
               >上传图片审核 <span>&gt;</span></router-link
@@ -200,7 +200,7 @@ export default {
   methods: {
     getPage() {
       this.$axios
-        .post("http://192.168.31.149:8083/user/users", {
+        .post("http://119.91.217.141:8080/user/users", {
           page: this.currentpage,
         })
         .then((res) => {
@@ -225,7 +225,7 @@ export default {
     },
     banClick(i) {
       this.$axios
-        .post("http:/192.168.31.149:8083/user/users/ban", {
+        .post("http://119.91.217.141:8080/user/users/ban", {
           uname: i.name,
           ban: "true",
         })
@@ -240,7 +240,7 @@ export default {
     },
     unlockClick(i) {
       this.$axios
-        .post("http://192.168.31.149:8083/user/users/ban", {
+        .post("http://119.91.217.141:8080/user/users/ban", {
           uname: i.name,
           ban: "false",
         })

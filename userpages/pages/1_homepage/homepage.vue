@@ -52,8 +52,11 @@
           <li>
             <router-link to="bigevent"><b>大事记</b></router-link>
           </li>
-          <li>
+          <!-- <li>
             <a @click="goTocomments()"><b>校友留言</b></a>
+          </li> -->
+          <li>
+            <router-link to="map"><b>福大地图</b></router-link>
           </li>
           <li>
             <a @click="goToschoolphoto()"><b>校园风光</b></a>
@@ -118,9 +121,9 @@
               <div class="lxwm-module">
                 <div class="m-title">联系我们</div>
                 <div class="lxwm-module-content">
-                  <div>12345678</div>
-                  <div>12345678</div>
-                  <div>12345678@qq.com</div>
+                  <div>628219897</div>
+                  <div>1506845740</div>
+                  <div>1506845740@qq.com</div>
                 </div>
               </div>
             </div>
@@ -147,7 +150,10 @@
           </div>
         </div>
         <div class="bottom">
-          <img src="../../static/1_homepage/bottom.jpg" alt="" />
+          <!-- <img src="../../static/1_homepage/bottom.jpg" alt="" /> -->
+          <el-carousel height="200px">
+            <el-carousel-item v-for="item in 2" :key="item"> </el-carousel-item>
+          </el-carousel>
         </div>
       </div>
     </div>
@@ -199,7 +205,7 @@ export default {
         },
         {
           id: 4,
-          title: "福大洪秀全czh又回来了",
+          title: "希望学长们用得开心",
         },
         {
           id: 5,
@@ -224,7 +230,7 @@ export default {
   },
   methods: {
     getAddress() {
-      axios.get("http://192.168.1.2:8000/zhibo").then((res) => {
+      axios.get("http://119.91.217.141:8080/zhibo").then((res) => {
         this.address = res.data.data;
         console.log(this.address);
       });
@@ -254,6 +260,24 @@ export default {
 </script>
 
 <style>
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+  background: url("../../static/1_homepage/topimg.jpeg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* 保证盒子始终在窗口中心 */
+  background-position: center center;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+  background: url("../../static/1_homepage/bottom.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* 保证盒子始终在窗口中心 */
+  background-position: center center;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -474,10 +498,10 @@ body {
 .bottom {
   margin-top: 30px;
 }
-.bottom img {
+/* .bottom img {
   width: 100%;
   height: 200px;
-}
+} */
 .link-icon {
   width: 24px !important;
 }
