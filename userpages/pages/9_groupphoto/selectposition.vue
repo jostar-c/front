@@ -76,8 +76,8 @@
 
     <!-- 功能主题 -->
     <div class="return">
-      <router-link to="groupphoto"
-        ><p><i class="el-icon-arrow-left"></i>返回选择模板</p></router-link
+      <router-link to="groupphoto">
+        <p><i class="el-icon-arrow-left"></i>返回选择模板</p></router-link
       >
     </div>
 
@@ -138,6 +138,7 @@
                 @realTime="realTime"
               ></vueCropper>
             </el-col>
+
             <el-col :span="6.5">
               <h2 align="center" class="mar-left-50">头像预览</h2>
               <div class="show-preview">
@@ -611,6 +612,36 @@ body {
   box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
   /* cursor: pointer; */
 }
+
+.selfdefine button {
+  /* float: left; */
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #ffffff;
+  border: none;
+  color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+  /* cursor: pointer; */
+}
+
+.selfdefine button:hover {
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #a40404;
+  color: #ffffff;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+}
+
+.selfdefine button:after {
+  /* float: left; */
+  margin-top: 100px;
+  margin-left: 155px;
+  background-color: #ffffff;
+  border: none;
+  color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+  /* cursor: pointer; */
+}
 .avatarbtn button {
   /* float: left; */
   margin-top: 150px;
@@ -618,6 +649,14 @@ body {
   color: #a40404;
   box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
 }
+.avatarbtn button:hover {
+  margin-top: 150px;
+  margin-left: 155px;
+  color: #fcfcfc;
+  background-color: #a40404;
+  box-shadow: 2px 2px 2px 2px rgba(102, 102, 102, 0.653);
+}
+
 .avatarbtn button:hover {
   margin-top: 150px;
   margin-left: 155px;
