@@ -212,7 +212,7 @@ export default {
         },
         {
           address: "中楼",
-          img: "../../static/1_homepage/fuyouge.png",
+          img: "../../static/1_homepage/zhonglou.png",
           event: "暂无",
         },
         {
