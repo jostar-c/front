@@ -77,9 +77,9 @@
         <div>
           <p>今日浏览量</p>
         </div>
-        <!-- <div class="num1">
-              <b>53</b>
-            </div> -->
+        <div class="num1">
+          <b>13</b>
+        </div>
       </div>
 
       <div class="user">
@@ -89,9 +89,9 @@
         <div>
           <p>今日新增用户</p>
         </div>
-        <!-- <div class="num2">
-              <b>16</b>
-            </div> -->
+        <div class="num2">
+          <b>3</b>
+        </div>
       </div>
 
       <div class="browse5" style="width: 1074px; height: 40px">
@@ -115,12 +115,12 @@
       </div>
 
       <div class="entrance-content">
-        <div class="news">
+        <!-- <div class="news">
           <router-link to="comments_manage">
             <img src="../../static/news.png" width="50px" height="auto" />
             <p>待审核留言、评论</p></router-link
           >
-        </div>
+        </div> -->
         <div class="picture">
           <router-link to="photo_manage">
             <img src="../../static/picture.png" width="47px" height="auto" />
@@ -130,7 +130,7 @@
         <div class="one-person">
           <router-link to="uesr_manage">
             <img src="../../static/one person.png" width="44px" height="auto" />
-            <p>待审核用户账号</p></router-link
+            <p>用户账号管理</p></router-link
           >
         </div>
         <div class="money">
@@ -171,7 +171,7 @@ export default {
         },
         xAxis: {
           type: "category", // 还有其他的type，可以去官网喵两眼哦
-          data: ["11.1", "11.2", "11.3", "11.4", "11.5"], // x轴数据
+          data: ["12.15", "12.16", "12.17", "12.18", "12.19"], // x轴数据
           name: "", // x轴名称
           // x轴名称样式
           // nameTextStyle: {
@@ -197,7 +197,7 @@ export default {
         series: [
           {
             name: "浏览量",
-            data: [50, 48, 52, 45, 53],
+            data: [16, 13, 19, 11, 20],
             type: "line",
           },
         ],
@@ -368,13 +368,13 @@ a {
 .num1 {
   font-size: 40px;
   color: #0a0a0a;
-  margin-top: 40px;
+  margin-top: -52px;
 }
 
 .num2 {
   font-size: 40px;
   color: #0a0a0a;
-  left: 100px;
+  margin-top: -52px;
 }
 
 .browse5 {
