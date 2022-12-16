@@ -127,9 +127,9 @@ export default {
             sessionStorage.setItem("uclass", response.data.data.uclass);
             sessionStorage.setItem(
               "userimg",
-              (response.data.data.avatar = undefined
+              response.data.data.avatar == ""
                 ? "../../static/avatar.jpg"
-                : response.data.data.avatar)
+                : response.data.data.avatar
             );
             sessionStorage.setItem("islogin", "true");
             this.success = true;
